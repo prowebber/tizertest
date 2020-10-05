@@ -3,10 +3,10 @@ import os
 
 
 class OTACheck:
-	def __init__(self, github_repo, module='', main_dir='project'):
+	def __init__(self, github_repo, module='', tgt_dir='project'):
 		self.http_client = HttpClient()
 		self.github_repo = github_repo.rstrip('/').replace('https://github.com', 'https://api.github.com/repos')
-		self.main_dir = main_dir
+		self.main_dir = tgt_dir
 		self.module = module.rstrip('/')
 	
 	def start(self):

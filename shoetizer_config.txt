@@ -3,6 +3,8 @@
   "melody_on_boot": "1",
   "melody_on_spray": "1",
   "enable_wifi": "1",
+  "ota_github_url": "https://github.com/prowebber/tizertest",
+  "ota_tgt_dir": "project",
   "pump_delay_ms": "0",
   "pump_run_time_ms": "1000",
   "relay_delay_ms": "200",

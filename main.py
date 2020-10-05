@@ -1,4 +1,5 @@
 from assets.config_man import get_config, save_config
+import gc
 
 # Load config data
 config_data = get_config()
@@ -23,10 +24,30 @@ def _conn_wifi():
 	return is_connected
 
 
-def _ota_check():
-	# @todo add this once ShoteTizer github is added
-	pass
+def ota_check():
+	"""
+	Check for any new updates posted to GitHub
+	"""
+	from assets.ota_check import OTACheck
+	
+	github_url = config_data['ota_github_url']
+	target_dir = config_data['ota_tgt_dir']
+	
+	o = OTACheck(github_url, tgt_dir=target_dir)
+	o.start()  # Check for pending updates
 
+
+def ota_install():
+	"""
+	Download an replace existing files with updated files
+	"""
+	from assets.ota_download import OTADownload
+	
+	github_url = config_data['ota_github_url']
+	target_dir = config_data['ota_tgt_dir']
+	
+	o = OTADownload(github_url, tgt_dir=target_dir)  # Init OTA
+	o.start()
 
 def start(broadcast=0):
 	# 1) Connect to WiFi
