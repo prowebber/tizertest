@@ -22,7 +22,7 @@ file_list = {
 		'assets\\ota_download.py': 'assets/ota_download.py',
 		'assets\\wifi_conn.py': 'assets/wifi_conn.py',
 		'project\\__init__.py': 'project/__init__.py',
-		'project\\steven.py': 'project/steven.py'
+		'project\\pins.py': 'project/pins.py'
 	},
 }
 

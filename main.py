@@ -71,6 +71,14 @@ def ota_install():
 	
 	o = OTADownload(github_url, tgt_dir=target_dir)  # Init OTA
 	o.start()
+	
+def force_ota():
+	import os
+	if 'next' not in os.listdir():  # If next dir does not exist
+		os.mkdir('next')
+	os.rename('/project/.version', '/next/.version_on_reboot')
+	
+	ota()
 
 def start(broadcast=0):
 	wifi_status = _conn_wifi()  # Connect to WiFi
