@@ -1,7 +1,6 @@
 from assets.http_requests import HttpClient
 import os
 import gc
-from machine import reboot
 
 
 class OTADownload:
@@ -26,7 +25,8 @@ class OTADownload:
 		os.rename(self.modulepath('next/.version_on_reboot'), self.modulepath('next/.version'))
 		os.rename(self.modulepath('next'), self.modulepath(self.main_dir))
 		print('Update installed (', latest_version, '), will reboot now')
-		reboot()
+		import machine
+		machine.reset()
 	
 	def rmtree(self, directory):
 		for entry in os.ilistdir(directory):

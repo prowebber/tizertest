@@ -3,7 +3,7 @@ import gc
 
 # Load config data
 config_data = get_config()
-
+gc.enable()  # Enable automatic garbage collection
 
 def _conn_wifi():
 	"""
@@ -23,6 +23,29 @@ def _conn_wifi():
 	
 	return is_connected
 
+
+def ota():
+	"""
+	OTA - All
+	- Check if updates exist
+	- Download, install, & reboot if updates exist
+	:return:
+	"""
+	from assets.ota_check import OTACheck
+	
+	github_url = config_data['ota_github_url']
+	target_dir = config_data['ota_tgt_dir']
+	
+	# Check if any new updates are posted to GitHub
+	oc = OTACheck(github_url, tgt_dir=target_dir)
+	is_update = oc.start()  # Check for new version
+	
+	if is_update:  # If there is a new version
+		from assets.ota_download import OTADownload
+		
+		oi = OTADownload(github_url, tgt_dir=target_dir)  # Init
+		oi.start()  # Download & install; reboot when done
+		
 
 def ota_check():
 	"""
@@ -50,16 +73,17 @@ def ota_install():
 	o.start()
 
 def start(broadcast=0):
-	# 1) Connect to WiFi
-	wifi_status = _conn_wifi()
-	
+	wifi_status = _conn_wifi()  # Connect to WiFi
 	if wifi_status == 1:  # If connected to WiFi
-		pass
-	
+		ota()  # Check for OTA
+		
 	if broadcast == 1:
 		from project.local_server import LocalServer
 		
 		app = LocalServer()
 		app.start()
+		
+	from project.main import Main
+	Main()
 
 

@@ -25,6 +25,8 @@ class OTACheck:
 			with open(self.modulepath('next/.version_on_reboot'), 'w') as versionfile:
 				versionfile.write(latest_version)
 				versionfile.close()
+			return 1  # Return 1 if there is an update
+		return 0
 	
 	def get_version(self, directory, version_file_name='.version'):
 		if version_file_name in os.listdir(directory):

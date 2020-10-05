@@ -1,6 +1,6 @@
 from assets.config_man import get_config, save_config
 from machine import Pin, Timer, PWM
-from pins import *
+from project.pins import *
 from utime import sleep_ms
 
 

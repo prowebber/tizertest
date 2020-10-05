@@ -1,0 +1,14 @@
+D3 = FLASH = 0
+TX = TXD0 = 1
+D4 = TXD1 = 2
+RX = RXD0 = 3
+D2 = 4
+D1 = 5
+SD2 = SDD2 = 9
+SD3 = SDD3 = 10
+D6 = HMOSO = 12
+D7 = RXD2 = HMOSI = 13
+D5 = HSCLK = 14
+D8 = TXD2 = HCS = 15
+D0 = USER = WAKE = 16
+
