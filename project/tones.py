@@ -1,5 +1,5 @@
 from machine import Pin, PWM
-from pins import *
+from project.pins import *
 from utime import sleep_ms
 
 # define frequency for each note
