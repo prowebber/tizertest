@@ -18,9 +18,10 @@ class Main:
 		self.config = get_config()  # Get config info
 		
 	def start(self):
-		
+		print("got to start...")
 		# Play melody on boot
 		if self.config['melody_on_boot']:
+			print("playing melody")
 			play_melody(['C5', 'E5', 'G5'])  # Play tritone
 		
 		while True:

@@ -92,6 +92,7 @@ def start(broadcast=0):
 		app.start()
 		
 	from project.main import Main
-	Main()
+	app = Main()
+	app.start()
 
 
