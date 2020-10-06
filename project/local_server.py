@@ -135,6 +135,7 @@ def broadcast_server():
 	"""
 	Start broadcasting WiFi
 	"""
+	print('broadcast server reached')
 	from assets.wifi_conn import broadcast_wifi
 	
 	wifi_ssid = 'ShoeTizer' # @todo mac address based
