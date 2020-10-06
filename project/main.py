@@ -19,7 +19,6 @@ class Main:
 		
 	def start(self):
 		print("got to start...")
-		print("testing....bbbbtest4")
 		# Play melody on boot
 		if self.config['melody_on_boot']:
 			print("playing melody")
