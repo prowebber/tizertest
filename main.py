@@ -97,6 +97,7 @@ def force_ota():
 	for f in os.listdir('project'):
 		os.remove('project/' + f)
 	
+	print(os.listdir('project'))
 	oi = OTADownload(github_url, tgt_dir=target_dir)  # Init #@todo look at IIFE
 	oi.dev_download()
 
