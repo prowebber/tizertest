@@ -70,7 +70,7 @@ def ota_install():
 	
 	o = OTADownload(github_url, tgt_dir=target_dir)  # Init OTA
 	o.start()
-
+	
 
 def force_ota_prev():
 	import os
@@ -94,14 +94,22 @@ def force_ota():
 	
 	from assets.ota_download import OTADownload
 	
+	for f in os.listdir('project'):
+		os.remove('project/' + f)
+	
 	oi = OTADownload(github_url, tgt_dir=target_dir)  # Init #@todo look at IIFE
 	oi.dev_download()
 
 
-def start_s(broadcast=0):
+def del_proj():
+	import os
+	for f in os.listdir('project'):
+		os.remove('project/' + f)
+
+def start(broadcast=0):
 	wifi_status = _conn_wifi()  # Connect to WiFi
-	if wifi_status:  # If connected to WiFi
-		ota()  # Check for OTA
+	# if wifi_status:  # If connected to WiFi
+		# ota()  # Check for OTA
 	
 	if broadcast == 1:
 		from project.local_server import LocalServer
