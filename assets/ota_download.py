@@ -19,16 +19,22 @@ class OTADownload:
 		else:
 			print('No new updates found...')
 	
+	def dev_download(self):
+		self._download_and_install_update(None)
+	
 	def _download_and_install_update(self, latest_version):
 		self.download_all_files(self.github_repo + '/contents/' + self.main_dir, latest_version)
 		self.rmtree(self.modulepath(self.main_dir))
-		os.rename(self.modulepath('next/.version_on_reboot'), self.modulepath('next/.version'))
-		os.rename(self.modulepath('next'), self.modulepath(self.main_dir))
+		if 'next' in os.listdir(self.module):
+			if '.version_on_reboot' in os.listdir(self.modulepath('next')):
+				os.rename(self.modulepath('next/.version_on_reboot'), self.modulepath('next/.version'))
+			os.rename(self.modulepath('next'), self.modulepath(self.main_dir))
 		print('Update installed (', latest_version, '), will reboot now')
 		import machine
 		machine.reset()
 	
 	def rmtree(self, directory):
+		print("Remove Directory: %s" % directory)
 		for entry in os.ilistdir(directory):
 			is_dir = entry[1] == 0x4000
 			if is_dir:
@@ -39,7 +45,12 @@ class OTADownload:
 	
 	def download_all_files(self, root_url, version):
 		print("\t----- Downloading: %s" % root_url)
-		file_list = self.http_client.get(root_url + '?ref=refs/tags/' + version, dtype='json')
+		
+		# Get Master if no version; otherwise get the specified version
+		if not version:
+			file_list = self.http_client.get(root_url, dtype='json')
+		else:
+			file_list = self.http_client.get(root_url + '?ref=refs/tags/' + version, dtype='json')
 		
 		# Create a much smaller version of the data
 		file_params = {
@@ -66,7 +77,12 @@ class OTADownload:
 				
 				if file_type == 'file':
 					download_path = self.modulepath('next/' + file_path.replace(self.main_dir + '/', ''))
-					self.download_file(download_url.replace('refs/tags/', ''), download_path)
+					if not version:
+						print("Download path: %s" % download_url)
+						self.download_file(download_url, download_path)
+					else:
+						print("Download path: %s" % download_url)
+						self.download_file(download_url.replace('refs/tags/', ''), download_path)
 				elif file_type == 'dir':
 					path = self.modulepath('next/' + file_path.replace(self.main_dir + '/', ''))
 					os.mkdir(path)
@@ -74,7 +90,6 @@ class OTADownload:
 			gc.collect()
 	
 	def download_file(self, url, path):
-		print('\t----- Downloading: ', path)
 		with open(path, 'w') as outfile:
 			try:
 				response = self.http_client.get(url, dtype='text')

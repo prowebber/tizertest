@@ -20,11 +20,10 @@ class OTACheck:
 			print('New version available, will download and install on next reboot')
 			
 			if 'next' not in os.listdir(self.module):
-				os.mkdir(self.modulepath('next'))
+				os.mkdir(self.modulepath('next')) # @todo check if overwrite is default
 			
 			with open(self.modulepath('next/.version_on_reboot'), 'w') as versionfile:
 				versionfile.write(latest_version)
-				versionfile.close()
 			return 1  # Return 1 if there is an update
 		return 0
 	
