@@ -23,24 +23,31 @@ class Main:
 		if self.config['melody_on_boot']:
 			play_melody(['C5', 'E5', 'G5'])  # Play tritone
 		while True:
-			self.check_switch(self.switch_foot)
+			switch_wifi_status = self.check_switch(self.switch_wifi, 2000)
+			if switch_wifi_status == 'held':
+				from project.local_server import LocalServer
+				LocalServer().start()
+				continue
+			elif switch_wifi_status == 'pressed':
+				continue
+			switch_foot_status = self.check_switch(self.switch_foot)
+			if switch_foot_status == 'released':
+				self.run_device()
 
-	def check_switch(self, switch, hold_ms = 2000):
+	def check_switch(self, switch, hold_ms = 500):
 		first = not switch.value()
 		sleep_ms(100)
 		second = not switch.value()
-
+		status = None
 		if first and not second:
 			# return 'released'
-			print('switch released')
-			self.run_device()
+			status = 'released'
 		elif second and not first:
-			print('switch pressed')
-			self.pressed_time = ticks_ms()
+			status = 'pressed'
 		# 	# return None
 		elif first and second and ticks_diff(ticks_ms(), self.pressed_time) >= hold_ms:
-			print('switch held')
-			self.switch_held()
+			status = 'held'
+		return status
 
 	def switch_held(self):
 		self.pressed_time = None
