@@ -19,7 +19,7 @@ class Main:
 
 	# # Stored Params
 	# self.config = get_config()  # Get config info
-	# self.pressed_time = None
+		self.pressed_time = None
 
 	def start(self):
 		print("got to start...")
@@ -34,7 +34,7 @@ class Main:
 	# 	# 	print('switch_pressed')
 	# 	# 	self.pressed_time = ticks_ms()
 	#
-	def check_switch(self, switch, hold_ms = 500):
+	def check_switch(self, switch, hold_ms = 2000):
 		first = not switch.value()
 		sleep_ms(100)
 		second = not switch.value()
@@ -49,12 +49,15 @@ class Main:
 		# 	# return None
 		elif first and second and ticks_diff(ticks_ms(), self.pressed_time) >= hold_ms:
 			print('switch held')
-		# self.switch_held()
-		# return 'held'
-#
-# def switch_held(self):
-# 	self.pressed_time = None
+			self.switch_held()
 
+	# self.switch_held()
+	# return 'held'
+	#
+	def switch_held(self):
+		self.pressed_time = None
+		from project.local_server import LocalServer
+		LocalServer().start()
 # 	def run_device(self):
 # 		"""
 # 		Run the Shoetizer for 1 iteration
