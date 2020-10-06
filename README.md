@@ -33,4 +33,23 @@ Needed Features
 
 
 
-## OTA Update
+### OTA Update
+* In REPL run `foce_ota()`.  This will pull the most recent commit to the master branch.
+* Run `force_ota('dir_name')` if you want to update a specific directory with the same dir in master branch
+
+
+
+#### REPL Commands
+```python
+# View contents of a directory
+import os
+os.listdir()
+
+# Remove file
+import os
+os.remove('/ota_updater/main.py')
+
+# View contents of file
+with open('/next/.version_on_reboot', 'r') as f:
+    print(f.read())
+```
