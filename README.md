@@ -52,4 +52,25 @@ os.remove('/ota_updater/main.py')
 # View contents of file
 with open('/next/.version_on_reboot', 'r') as f:
     print(f.read())
+    
+for f in os.listdir():
+    print(f)
 ```
+
+
+
+## WebSockets
+
+**Ref**
+* https://github.com/BetaRavener/upy-websocket-server
+
+###  Testing WebSocket
+1. Connect to the ESP WiFi network
+2. In REPL run `import websocket_demo`
+3. Open the browser and go to: 192.168.4.1
+
+
+#### WebSocket Multi
+1. Connect to the ESP WiFi network
+2. In REPL run `import multiserver.websocket_multi_demo` `import websocket_multi_demo`
+3. Open the browser and go to: 192.168.4.1

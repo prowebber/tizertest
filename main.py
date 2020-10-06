@@ -62,6 +62,15 @@ def force_ota(target_dir=None):
 		oi.dev_download()
 
 
+def setup():
+	wifi_status = _conn_wifi()  # Connect to WiFi
+	if wifi_status:  # If connected to WiFi
+		import webserver.test
+
+def rest():
+	from api.run_api import api_get
+	api_get()
+
 def start(broadcast=0):
 	wifi_status = _conn_wifi()  # Connect to WiFi
 	# if wifi_status:  # If connected to WiFi

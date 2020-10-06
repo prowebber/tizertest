@@ -60,6 +60,8 @@ class HttpClient:
 			port = int(port)
 		
 		# Get a tuple of address info
+		print("Host: %s" % host)
+		print("Port: %s" % port)
 		ai = usocket.getaddrinfo(host, port, 0, usocket.SOCK_STREAM)
 		ai = ai[0]
 		
