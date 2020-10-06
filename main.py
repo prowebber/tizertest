@@ -46,32 +46,6 @@ def ota():
 		oi.start()  # Download & install; reboot when done
 
 
-def ota_check():
-	"""
-	Check for any new updates posted to GitHub
-	"""
-	from assets.ota_check import OTACheck
-	
-	github_url = config_data['ota_github_url']
-	target_dir = config_data['ota_tgt_dir']
-	
-	o = OTACheck(github_url, tgt_dir=target_dir)
-	o.start()  # Check for pending updates
-
-
-def ota_install():
-	"""
-	Download an replace existing files with updated files
-	"""
-	from assets.ota_download import OTADownload
-	
-	github_url = config_data['ota_github_url']
-	target_dir = config_data['ota_tgt_dir']
-	
-	o = OTADownload(github_url, tgt_dir=target_dir)  # Init OTA
-	o.start()
-	
-
 def force_ota_prev():
 	import os
 	if 'next' not in os.listdir():  # If next dir does not exist
@@ -84,20 +58,15 @@ def force_ota_prev():
 	
 	ota()
 
-def force_ota():
-	import os
+def force_ota(target_dir=None):
+	"""
+	Force update from Master branch
+	"""
 	github_url = config_data['ota_github_url']
-	target_dir = config_data['ota_tgt_dir']
-	
-	if 'next' not in os.listdir():  # If next dir does not exist
-		os.mkdir('next')
+	if not target_dir:
+		target_dir = config_data['ota_tgt_dir']
 	
 	from assets.ota_download import OTADownload
-	
-	for f in os.listdir('project'):
-		os.remove('project/' + f)
-	
-	print(os.listdir('project'))
 	oi = OTADownload(github_url, tgt_dir=target_dir)  # Init #@todo look at IIFE
 	oi.dev_download()
 

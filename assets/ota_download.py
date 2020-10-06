@@ -20,11 +20,20 @@ class OTADownload:
 			print('No new updates found...')
 	
 	def dev_download(self):
+		"""
+		Download and install the latest push to the Master branch
+		"""
+		# Create the 'next' directory
+		if 'next' not in os.listdir():  # If 'next' dir does not exist
+			os.mkdir('next')
+			
 		self._download_and_install_update(None)
 	
 	def _download_and_install_update(self, latest_version):
 		self.download_all_files(self.github_repo + '/contents/' + self.main_dir, latest_version)
-		self.rmtree(self.modulepath(self.main_dir))
+		
+		if self.main_dir in os.listdir():  # If the target directory exists
+			self.rmtree(self.modulepath(self.main_dir))
 		if 'next' in os.listdir(self.module):
 			if '.version_on_reboot' in os.listdir(self.modulepath('next')):
 				os.rename(self.modulepath('next/.version_on_reboot'), self.modulepath('next/.version'))
@@ -47,10 +56,8 @@ class OTADownload:
 		print("\t----- Downloading: %s" % root_url)
 		
 		# Get Master if no version; otherwise get the specified version
-		if not version:
-			file_list = self.http_client.get(root_url, dtype='json')
-		else:
-			file_list = self.http_client.get(root_url + '?ref=refs/tags/' + version, dtype='json')
+		target_url = root_url if not version else root_url + '?ref=refs/tags/'
+		file_list = self.http_client.get(target_url, dtype='json')
 		
 		# Create a much smaller version of the data
 		file_params = {
@@ -77,11 +84,10 @@ class OTADownload:
 				
 				if file_type == 'file':
 					download_path = self.modulepath('next/' + file_path.replace(self.main_dir + '/', ''))
+					print("Downloading: %s" % file_name)
 					if not version:
-						print("Download path: %s" % download_url)
 						self.download_file(download_url, download_path)
 					else:
-						print("Download path: %s" % download_url)
 						self.download_file(download_url.replace('refs/tags/', ''), download_path)
 				elif file_type == 'dir':
 					path = self.modulepath('next/' + file_path.replace(self.main_dir + '/', ''))
