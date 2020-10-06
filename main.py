@@ -46,18 +46,6 @@ def ota():
 		oi.start()  # Download & install; reboot when done
 
 
-def force_ota_prev():
-	import os
-	if 'next' not in os.listdir():  # If next dir does not exist
-		os.mkdir('next')
-	try:
-		f = open('/project/.version', "r")
-		os.rename('/project/.version', '/next/.version_on_reboot')
-	except OSError:  # open failed
-		pass
-	
-	ota()
-
 def force_ota(target_dir=None):
 	"""
 	Force update from Master branch
@@ -67,14 +55,12 @@ def force_ota(target_dir=None):
 		target_dir = config_data['ota_tgt_dir']
 	
 	from assets.ota_download import OTADownload
-	oi = OTADownload(github_url, tgt_dir=target_dir)  # Init #@todo look at IIFE
-	oi.dev_download()
+	
+	wifi_status = _conn_wifi()  # Connect to WiFi
+	if wifi_status:  # If connected to WiFi
+		oi = OTADownload(github_url, tgt_dir=target_dir)  # Init #@todo look at IIFE
+		oi.dev_download()
 
-
-def del_proj():
-	import os
-	for f in os.listdir('project'):
-		os.remove('project/' + f)
 
 def start(broadcast=0):
 	wifi_status = _conn_wifi()  # Connect to WiFi
