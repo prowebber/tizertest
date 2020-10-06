@@ -98,7 +98,7 @@ def force_ota():
 	oi.dev_download()
 
 
-def start(broadcast=0):
+def start_s(broadcast=0):
 	wifi_status = _conn_wifi()  # Connect to WiFi
 	if wifi_status:  # If connected to WiFi
 		ota()  # Check for OTA

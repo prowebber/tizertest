@@ -34,9 +34,7 @@ class OTADownload:
 		machine.reset()
 	
 	def rmtree(self, directory):
-		if directory == self.main_dir:
-			return
-		print("At Directory: %s" % directory)
+		print("Remove Directory: %s" % directory)
 		for entry in os.ilistdir(directory):
 			is_dir = entry[1] == 0x4000
 			if is_dir:
