@@ -137,7 +137,7 @@ def broadcast_server():
 	"""
 	from assets.wifi_conn import broadcast_wifi
 	
-	wifi_ssid = 'ShoeTizer'
+	wifi_ssid = 'ShoeTizer' # @todo mac address based
 	wifi_pass = '123456789'
 	
 	broadcast_wifi(wifi_ssid, wifi_pass)

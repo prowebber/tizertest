@@ -5,6 +5,7 @@ import gc
 config_data = get_config()
 gc.enable()  # Enable automatic garbage collection
 
+
 def _conn_wifi():
 	"""
 	Connect to WiFi
@@ -38,14 +39,12 @@ def ota():
 	
 	# Check if any new updates are posted to GitHub
 	oc = OTACheck(github_url, tgt_dir=target_dir)
-	is_update = oc.start()  # Check for new version
-	
-	if is_update:  # If there is a new version
+	if oc.start():  # If there is a new version
 		from assets.ota_download import OTADownload
 		
-		oi = OTADownload(github_url, tgt_dir=target_dir)  # Init
+		oi = OTADownload(github_url, tgt_dir=target_dir)  # Init #@todo look at IIFE
 		oi.start()  # Download & install; reboot when done
-		
+
 
 def ota_check():
 	"""
@@ -71,28 +70,45 @@ def ota_install():
 	
 	o = OTADownload(github_url, tgt_dir=target_dir)  # Init OTA
 	o.start()
-	
-def force_ota():
+
+
+def force_ota_prev():
 	import os
 	if 'next' not in os.listdir():  # If next dir does not exist
 		os.mkdir('next')
-	os.rename('/project/.version', '/next/.version_on_reboot')
+	try:
+		f = open('/project/.version', "r")
+		os.rename('/project/.version', '/next/.version_on_reboot')
+	except OSError:  # open failed
+		pass
 	
 	ota()
 
+def force_ota():
+	import os
+	github_url = config_data['ota_github_url']
+	target_dir = config_data['ota_tgt_dir']
+	
+	if 'next' not in os.listdir():  # If next dir does not exist
+		os.mkdir('next')
+	
+	from assets.ota_download import OTADownload
+	
+	oi = OTADownload(github_url, tgt_dir=target_dir)  # Init #@todo look at IIFE
+	oi.dev_download()
+
+
 def start(broadcast=0):
 	wifi_status = _conn_wifi()  # Connect to WiFi
-	if wifi_status == 1:  # If connected to WiFi
+	if wifi_status:  # If connected to WiFi
 		ota()  # Check for OTA
-		
+	
 	if broadcast == 1:
 		from project.local_server import LocalServer
 		
 		app = LocalServer()
 		app.start()
-		
+	
 	from project.main import Main
 	app = Main()
 	app.start()
-
-
