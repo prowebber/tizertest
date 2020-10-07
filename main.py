@@ -79,8 +79,9 @@ def rest():
 
 def del_files(dir):
 	import os
-	for f in os.listdir('dir'):
-		os.remove(f)
+	for f in os.listdir(dir):
+		print('Deleted: /' + dir + '/' + f)
+		os.remove('/' + dir + '/' + f)
 
 def start(broadcast=0):
 	if _conn_wifi():  # If connected to WiFi
