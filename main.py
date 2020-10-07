@@ -1,5 +1,6 @@
 from assets.config_man import get_config, save_config
 import gc
+import move_files
 
 # Load config data
 config_data = get_config()
@@ -23,6 +24,11 @@ def _conn_wifi():
 	save_config(config_data)  # Update the config
 	
 	return is_connected
+
+
+def f_read(path):
+	with open(path, 'rt') as f:
+		[print(line) for line in f.readlines()]
 
 
 def ota():
@@ -55,10 +61,9 @@ def force_ota(target_dir=None):
 		target_dir = config_data['ota_tgt_dir']
 	
 	from assets.ota_download import OTADownload
-	
-	wifi_status = _conn_wifi()  # Connect to WiFi
-	if wifi_status:  # If connected to WiFi
-		oi = OTADownload(github_url, tgt_dir=target_dir)  # Init #@todo look at IIFE
+
+	if _conn_wifi():  # Connect to WiFi
+		oi = OTADownload(github_url, tgt_dir = target_dir)  # Init #@todo look at IIFE
 		oi.dev_download()
 
 
@@ -77,6 +82,11 @@ def start(broadcast=0):
 		# ota()  # Check for OTA
 	
 	if broadcast == 1:
+def start(broadcast = 0):
+	if _conn_wifi():  # If connected to WiFi
+		ota()  # Check for OTA
+
+	if broadcast:
 		from project.local_server import LocalServer
 		
 		app = LocalServer()
