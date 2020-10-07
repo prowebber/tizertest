@@ -6,19 +6,20 @@ ws.onmessage = function (evt) {
 };
 
 
-function init(){
+function init() {
     window.addEventListener('click', eventConfig);
 }
 
-function eventConfig(e){
+function eventConfig(e) {
     let d = {
         'div': e.target.closest('div'),
     }
 
-    if(e.type == 'click'){
-        if(d.div && d.div.id == 'submit'){
+    if (e.type == 'click') {
+        if (d.div && d.div.id == 'submit') {
 
             var data = {
+                'action': 'save_settings',
                 'wifi_ssid': document.getElementById('wifi_ssid').value,
                 'wifi_pass': document.getElementById('wifi_pass').value,
             };

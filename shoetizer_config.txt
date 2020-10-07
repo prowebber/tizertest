@@ -1,4 +1,5 @@
 {
+  "doypack_id": "1",
   "enable_led": "1",
   "melody_on_boot": "1",
   "melody_on_spray": "1",

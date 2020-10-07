@@ -64,13 +64,33 @@ for f in os.listdir():
 **Ref**
 * https://github.com/BetaRavener/upy-websocket-server
 
-###  Testing WebSocket
-1. Connect to the ESP WiFi network
-2. In REPL run `import websocket_demo`
-3. Open the browser and go to: 192.168.4.1
-
-
 #### WebSocket Multi
 1. Connect to the ESP WiFi network
-2. In REPL run `import multiserver.websocket_multi_demo` `import websocket_multi_demo`
+2. In REPL call `setup()` in the main.py
 3. Open the browser and go to: 192.168.4.1
+
+
+
+## Features
+
+### Working Features
+
+
+### Future Features
+
+#### Keep Track of Doypack Usage
+Know how much fluid is remaining in each doypack.  Be able to show the user the level of
+remaining solution.  Alert the user if the solution is running low.
+
+#### Keep Track of Device Usage
+Know how frequently devices are being used.  Helpful to determine lifespan of units or
+components.
+
+#### Know what software version each device is using
+We know which devices are using what version.  Use the API to push the tizer software version to the database.
+Probably need to push this to the 'usage' database tables as well so we can monitor how different versions
+are used.  Wouldn't be a bad idea to include the current version in the `config.txt` file.
+
+#### Detect Overuse
+If the device is used too heavily/frequently within a small time window, alert the
+user the spray area may need to be dried.
