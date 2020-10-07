@@ -61,9 +61,9 @@ def force_ota(target_dir=None):
 		target_dir = config_data['ota_tgt_dir']
 	
 	from assets.ota_download import OTADownload
-
+	
 	if _conn_wifi():  # Connect to WiFi
-		oi = OTADownload(github_url, tgt_dir = target_dir)  # Init #@todo look at IIFE
+		oi = OTADownload(github_url, tgt_dir=target_dir)  # Init #@todo look at IIFE
 		oi.dev_download()
 
 
@@ -72,20 +72,16 @@ def setup():
 	if wifi_status:  # If connected to WiFi
 		import webserver.test
 
+
 def rest():
 	from api.run_api import api_get
 	api_get()
 
+
 def start(broadcast=0):
-	wifi_status = _conn_wifi()  # Connect to WiFi
-	# if wifi_status:  # If connected to WiFi
-		# ota()  # Check for OTA
-	
-	if broadcast == 1:
-def start(broadcast = 0):
 	if _conn_wifi():  # If connected to WiFi
 		ota()  # Check for OTA
-
+	
 	if broadcast:
 		from project.local_server import LocalServer
 		
