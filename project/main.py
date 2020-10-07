@@ -24,20 +24,20 @@ class Main:
 		led = RGBLED(Pin(D6), Pin(D7), Pin(D8))
 		led.rgb_color(magenta)
 
-	# # Play melody on boot
-	# if self.config['melody_on_boot']:
-	# 	play_melody(['C5', 'E5', 'G5'])  # Play tritone
-	# while True:
-	# 	switch_wifi_status = self.check_switch(self.switch_wifi, 2000)
-	# 	if switch_wifi_status == 'held':
-	# 		from project.local_server import LocalServer
-	# 		LocalServer().start()
-	# 		continue
-	# 	elif switch_wifi_status == 'pressed':
-	# 		continue
-	# 	switch_foot_status = self.check_switch(self.switch_foot)
-	# 	if switch_foot_status == 'released':
-	# 		self.run_device()
+		# Play melody on boot
+		if self.config['melody_on_boot']:
+			play_melody(['C5', 'E5', 'G5'])  # Play tritone
+		while True:
+			switch_wifi_status = self.check_switch(self.switch_wifi, 2000)
+			if switch_wifi_status == 'held':
+				from project.local_server import LocalServer
+				LocalServer().start()
+				continue
+			elif switch_wifi_status == 'pressed':
+				continue
+			switch_foot_status = self.check_switch(self.switch_foot)
+			if switch_foot_status == 'released':
+				self.run_device()
 
 	def check_switch(self, switch, hold_ms = 500):
 		first = not switch.value()
@@ -56,9 +56,6 @@ class Main:
 
 	def switch_held(self):
 		self.pressed_time = None
-
-	# from project.local_server import LocalServer
-	# LocalServer().start()
 
 	def run_device(self):
 		"""
