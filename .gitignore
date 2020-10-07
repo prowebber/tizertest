@@ -1,3 +1,7 @@
-/venv
+# IDE files
 /.idea
+__pycache__/
+/venv
+
+# Project files
 /boot.py
