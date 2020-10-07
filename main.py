@@ -14,15 +14,15 @@ def _conn_wifi():
 	from assets.wifi_conn import connect_to_wifi
 	wifi_ssid = config_data['wifi_ssid']
 	wifi_pass = config_data['wifi_pass']
-	
+
 	is_connected = 0  # Set to not connected by default
 	if wifi_ssid and wifi_pass:
 		print("Connecting to WiFi")
 		is_connected = connect_to_wifi(wifi_ssid, wifi_pass)
-	
+
 	config_data['wifi_status'] = is_connected
 	save_config(config_data)  # Update the config
-	
+
 	return is_connected
 
 
@@ -39,31 +39,31 @@ def ota():
 	:return:
 	"""
 	from assets.ota_check import OTACheck
-	
+
 	github_url = config_data['ota_github_url']
 	target_dir = config_data['ota_tgt_dir']
-	
+
 	# Check if any new updates are posted to GitHub
-	oc = OTACheck(github_url, tgt_dir=target_dir)
+	oc = OTACheck(github_url, tgt_dir = target_dir)
 	if oc.start():  # If there is a new version
 		from assets.ota_download import OTADownload
-		
-		oi = OTADownload(github_url, tgt_dir=target_dir)  # Init #@todo look at IIFE
+
+		oi = OTADownload(github_url, tgt_dir = target_dir)  # Init #@todo look at IIFE
 		oi.start()  # Download & install; reboot when done
 
 
-def force_ota(target_dir=None):
+def force_ota(target_dir = None):
 	"""
 	Force update from Master branch
 	"""
 	github_url = config_data['ota_github_url']
 	if not target_dir:
 		target_dir = config_data['ota_tgt_dir']
-	
+
 	from assets.ota_download import OTADownload
-	
+
 	if _conn_wifi():  # Connect to WiFi
-		oi = OTADownload(github_url, tgt_dir=target_dir)  # Init #@todo look at IIFE
+		oi = OTADownload(github_url, tgt_dir = target_dir)  # Init #@todo look at IIFE
 		oi.dev_download()
 
 
@@ -77,22 +77,24 @@ def rest():
 	from api.run_api import api_get
 	api_get()
 
+
 def del_files(dir):
 	import os
 	for f in os.listdir(dir):
 		print('Deleted: /' + dir + '/' + f)
 		os.remove('/' + dir + '/' + f)
 
-def start(broadcast=0):
+
+def start(broadcast = 0):
 	if _conn_wifi():  # If connected to WiFi
 		ota()  # Check for OTA
-	
+
 	if broadcast:
 		from project.local_server import LocalServer
-		
+
 		app = LocalServer()
 		app.start()
-	
+
 	from project.main import Main
 	app = Main()
 	app.start()
