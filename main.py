@@ -70,13 +70,17 @@ def force_ota(target_dir=None):
 def setup():
 	wifi_status = _conn_wifi()  # Connect to WiFi
 	if wifi_status:  # If connected to WiFi
-		import webserver.test
+		import webserver.config
 
 
 def rest():
 	from api.run_api import api_get
 	api_get()
 
+def del_files(dir):
+	import os
+	for f in os.listdir('dir'):
+		os.remove(f)
 
 def start(broadcast=0):
 	if _conn_wifi():  # If connected to WiFi
