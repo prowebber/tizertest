@@ -1,8 +1,7 @@
 {
   "doypack_id": "1",
   "enable_led": "1",
-  "melody_on_boot": "1",
-  "melody_on_spray": "1",
+  "mute": "0",
   "enable_wifi": "1",
   "ota_github_url": "https://github.com/prowebber/tizertest",
   "ota_tgt_dir": "project",
