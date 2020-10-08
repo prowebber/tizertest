@@ -24,7 +24,7 @@ class Main:
 		self.led.rgb_color(magenta)
 		self.led.pulse()
 		# Play melody on boot
-		if self.config['melody_on_boot']:
+		if not self.mute:
 			play_melody(['C5', 'E5', 'G5'])  # Play tritone
 		while True:
 			switch_wifi_status = self.check_switch(self.switch_wifi, 2000)
@@ -64,7 +64,7 @@ class Main:
 		self.update_params()
 
 		for i in range(self.burst_count):  # Repeat for each burst
-			if self.melody_on_spray:  # Play note (if enabled)
+			if not self.mute:  # Play note (if enabled)
 				play_melody(['G5'])
 			#
 			self.pump_timer.init(period = self.pump_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_on())
@@ -102,7 +102,7 @@ class Main:
 		# Stored Params
 		self.config = get_config()  # Get config info
 		self.burst_count = int(self.config['spray_burst_count'])
-		self.melody_on_spray = int(self.config['melody_on_spray'])
+		self.mute = int(self.config['mute'])
 		self.pump_delay_ms = int(self.config['pump_delay_ms'])
 		self.pump_run_time_ms = int(self.config['pump_run_time_ms'])
 		self.relay_delay_ms = int(self.config['relay_delay_ms'])
