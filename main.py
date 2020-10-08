@@ -77,7 +77,7 @@ def rest():
 	from project.rest_api import Rest
 	
 	api = Rest()
-	resp = api.get('/tizer')
+	# resp = api.get('/tizer')
 	print(resp)
 
 

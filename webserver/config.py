@@ -24,7 +24,6 @@ class TestClient(WebSocketClient):
 				
 				if cmd == 'save_settings':
 					self.save_settings(data)
-					return
 				elif cmd == 'load_params':
 					self.load_params(data)
 				elif cmd == 'reset_bag':
@@ -40,6 +39,11 @@ class TestClient(WebSocketClient):
 			self.connection.close()
 			
 	def reset_bag(self, data):
+		from core.config_man import get_config, save_config
+		
+		config = get_config()
+		device_id = config['device_id']
+		
 		print("Resetting bag...")
 		
 	def load_params(self, data):
@@ -50,7 +54,14 @@ class TestClient(WebSocketClient):
 		print("Save Settings")
 		print(data)
 		
-		self.connection.write(data['cmd'])
+		from core.config_man import get_config, save_config
+		
+		config = get_config()
+		config['wifi_ssid'] = data['wifi_ssid']
+		config['wifi_pass'] = data['wifi_pass']
+		save_config(config)
+		
+		self.connection.write("Updated successfully!")
 		
 
 
