@@ -1,6 +1,8 @@
 from assets.config_man import get_config, save_config
 from machine import Pin, Timer, PWM
 from project.pins import *
+from project.colors import *
+from project.rgb_led import RGBLED
 from utime import sleep_ms, ticks_ms, ticks_diff
 
 
@@ -19,6 +21,9 @@ class Main:
 		self.update_params()
 
 	def start(self):
+		led = RGBLED(Pin(D6), Pin(D7), Pin(D8))
+		led.rgb_color(magenta)
+
 		# Play melody on boot
 		if self.config['melody_on_boot']:
 			play_melody(['C5', 'E5', 'G5'])  # Play tritone
@@ -51,9 +56,6 @@ class Main:
 
 	def switch_held(self):
 		self.pressed_time = None
-
-	# from project.local_server import LocalServer
-	# LocalServer().start()
 
 	def run_device(self):
 		"""
