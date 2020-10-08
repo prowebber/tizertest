@@ -11,8 +11,8 @@ class Main:
 		self.relay = Pin(D8, Pin.OUT, value = 0)  # green
 		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
 		self.switch_foot = Pin(D2, Pin.IN, Pin.PULL_UP)
-		self.switch_wifi = Pin(5, Pin.IN, Pin.PULL_UP)
-
+		self.switch_wifi = Pin(D1, Pin.IN, Pin.PULL_UP)
+		self.led = RGBLED(Pin(D3), Pin(D4), Pin(D6))
 		# Timers
 		self.pump_timer = Timer(1)
 		self.relay_timer = Timer(4)
