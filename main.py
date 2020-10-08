@@ -99,3 +99,10 @@ def start(broadcast = 0):
 	from project.main import Main
 	app = Main()
 	app.start()
+
+
+def run_main():
+	import move_files
+	from project.main import Main
+	app = Main()
+	app.start()
