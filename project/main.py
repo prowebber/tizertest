@@ -3,17 +3,20 @@ from machine import Pin, Timer, PWM
 from project.pins import *
 from project.colors import *
 from project.rgb_led import RGBLED
-from project.tones import play_tones
+from project.tones import Speaker
 from utime import sleep_ms, ticks_ms, ticks_diff
 
 
 class Main:
 	def __init__(self):
-		self.relay = Pin(D8, Pin.OUT, value = 0)  # green
-		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
-		self.switch_foot = Pin(D2, Pin.IN, Pin.PULL_UP)
+
 		self.switch_wifi = Pin(D1, Pin.IN, Pin.PULL_UP)
-		self.led = RGBLED(Pin(D3, Pin.OUT), Pin(D4), Pin(D5), Pin(D6))
+		self.switch_foot = Pin(D2, Pin.IN, Pin.PULL_UP)
+		self.led = RGBLED(Pin(D3, Pin.OUT), Pin(D4), Pin(D6), Pin(SD2))
+		self.speaker = Speaker(Pin(D5))
+		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
+		self.relay = Pin(D8, Pin.OUT, value = 0)  # green
+
 		# Timers
 		self.pump_timer = Timer(1)
 		self.relay_timer = Timer(4)
@@ -28,7 +31,7 @@ class Main:
 		self.led.pulse(timeout_ms = 5500)
 		# Play melody on boot
 		if not self.mute:
-			play_tones(['C5', 'E5', 'G5'])  # Play tritone
+			self.speaker.play_tones(['C5', 'E5', 'G5'])  # Play tritone
 		while True:
 			switch_wifi_status = self.check_switch(self.switch_wifi, 2000)
 			if switch_wifi_status == 'held':
@@ -68,7 +71,7 @@ class Main:
 
 		for i in range(self.burst_count):  # Repeat for each burst
 			if not self.mute:  # Play note (if enabled)
-				play_tones(['G5'])
+				self.speaker.play_tones(['G5'])
 			#
 			self.pump_timer.init(period = self.pump_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_on())
 			self.relay_timer.init(period = self.relay_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_on())
