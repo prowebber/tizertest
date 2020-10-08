@@ -1,5 +1,5 @@
 from core.config_man import get_config, save_config
-from utils import *
+from utils import move_files, f_read, run_main
 import gc
 
 # Load config data
@@ -78,11 +78,6 @@ def rest():
 	api_get()
 
 
-# def move_files():
-# 	from utils import move_files
-# 	move_files()
-
-
 def start(broadcast = 0):
 	if _conn_wifi():  # If connected to WiFi
 		ota()  # Check for OTA
@@ -93,12 +88,6 @@ def start(broadcast = 0):
 		app = LocalServer()
 		app.start()
 
-	from project.main import Main
-	app = Main()
-	app.start()
-
-
-def run_main():
 	from project.main import Main
 	app = Main()
 	app.start()

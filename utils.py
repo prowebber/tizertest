@@ -18,6 +18,11 @@ def move_files():
 # # Correct (\\r) in file name bullshit
 # [os.rename(f, f.replace('\r', '/r')) for f in os.listdir()]
 
+def run_main():
+	from project.main import Main
+	app = Main()
+	app.start()
+
 
 def rmtree(dir_name):
 	"""
