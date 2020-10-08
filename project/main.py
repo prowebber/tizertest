@@ -9,10 +9,12 @@ from utime import sleep_ms, ticks_ms, ticks_diff
 
 class Main:
 	def __init__(self):
+		self.switch_wifi = Pin(D1, Pin.IN, Pin.PULL_UP)
+		self.switch_foot = Pin(D2, Pin.IN, Pin.PULL_UP)
 		self.relay = Pin(D8, Pin.OUT, value = 0)  # green
 		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
-		self.switch_foot = Pin(D2, Pin.IN, Pin.PULL_UP)
-		self.switch_wifi = Pin(D1, Pin.IN, Pin.PULL_UP)
+
+
 		self.led = RGBLED(Pin(D3, Pin.OUT), Pin(D4), Pin(D5), Pin(D6))
 		# Timers
 		self.pump_timer = Timer(1)
