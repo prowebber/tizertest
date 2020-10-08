@@ -2,7 +2,7 @@ from machine import PWM, Pin
 from math import sin, pi
 from project.pins import *
 from project.colors import *
-from utime import sleep_ms
+from utime import sleep_ms, ticks_ms, ticks_diff
 
 
 class RGBLED:
@@ -18,15 +18,17 @@ class RGBLED:
 		self.G.duty(duty_val(g, 255))
 		self.B.duty(duty_val(b, 255))
 
-	def pulse(self, timeout = 0):
+	def pulse(self, timeout_ms = 0):
 		leds = [self.R, self.G, self.B]
 		init_duties = [led.duty() for led in leds]
-		for i in range(200):
-			gain = sin(i / 100 * pi)
-			print('gain: ', gain)
-			[led.duty(int(duty * gain)) for led in leds for duty in init_duties]
-			print('led duty: ', gain)
-			sleep_ms(10)
+		t0 = ticks_ms()
+		while ticks_diff(ticks_ms(), t0) < timeout_ms:
+			for i in range(200):
+				gain = sin(i / 100 * pi)
+				print('gain: ', gain)
+				[led.duty(int(duty * gain)) for led in leds for duty in init_duties]
+				print('led duty: ', gain)
+				sleep_ms(10)
 
 
 def duty_val(val, max_val = 100):
