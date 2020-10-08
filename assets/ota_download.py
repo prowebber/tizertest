@@ -60,15 +60,13 @@ class OTADownload:
 		# Get Master if no version; otherwise get the specified version
 		target_url = root_url if not version else root_url + '?ref=refs/tags/'
 		file_list = self.http_client.get(target_url, dtype = 'json')
-		print('file_list:\n', file_list)
 		# Create a much smaller version of the data
 		file_params = {
 			'file': [],
 			'dir': []
 		}
 		for file in file_list:
-			if file:
-				print(file)
+			if 'type' in file_list:
 				file_type = file['type']
 
 				file_params[file_type].append({
