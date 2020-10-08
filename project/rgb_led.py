@@ -22,13 +22,15 @@ class RGBLED:
 		leds = [self.R, self.G, self.B]
 		init_duties = [led.duty() for led in leds]
 		t0 = ticks_ms()
-		while ticks_diff(ticks_ms(), t0) < timeout_ms:
+		# while ticks_diff(ticks_ms(), t0) < timeout_ms:
+		while True:
 			for i in range(200):
-				gain = sin(i / 100 * pi)
+				# oscillate from 0 to 1
+				gain = sin(i/100 * pi) * 0.25 + 0.25
 				print('gain: ', gain)
+				# multiply each channel's init_duty by gain to fade without changing ratios
 				[led.duty(int(duty * gain)) for led in leds for duty in init_duties]
-				print('led duty: ', gain)
-				sleep_ms(10)
+				sleep_ms(100)
 
 
 def duty_val(val, max_val = 100):
