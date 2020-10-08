@@ -14,6 +14,7 @@ class RGBLED:
 		self.B = PWM(b_pin, freq = freq)
 
 	def pulse(self, freq = 1, timeout_ms = -1):
+
 		leds = [self.R, self.G, self.B]
 		init_duties = [duty_val(led.duty(), 1023) for led in leds]
 		print('init_duties: ', init_duties)
@@ -29,6 +30,7 @@ class RGBLED:
 				# multiply each channel's init_duty by gain to fade without changing ratios
 				[led.duty(duty_val(int(duty * gain), 1023)) for led in leds for duty in init_duties]
 				sleep_ms(int(freq * 10))
+		self.off()
 
 	def off(self):
 		self.power.value(0)
