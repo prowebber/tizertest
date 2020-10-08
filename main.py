@@ -1,4 +1,4 @@
-from assets.config_man import get_config, save_config
+from core.config_man import get_config, save_config
 import gc
 import move_files
 
@@ -8,14 +8,14 @@ gc.enable()  # Enable automatic garbage collection
 
 # Verify the board ID is recorded
 if not config_data['device_id']:
-	from assets.config_man import board_id
+	from core.config_man import board_id
 	config_data['device_id'] = board_id()
 
 def _conn_wifi():
 	"""
 	Connect to WiFi
 	"""
-	from assets.wifi_conn import connect_to_wifi
+	from core.wifi_conn import connect_to_wifi
 	wifi_ssid = config_data['wifi_ssid']
 	wifi_pass = config_data['wifi_pass']
 
@@ -42,7 +42,7 @@ def ota():
 	- Download, install, & reboot if updates exist
 	:return:
 	"""
-	from assets.ota_check import OTACheck
+	from core.ota_check import OTACheck
 
 	github_url = config_data['ota_github_url']
 	target_dir = config_data['ota_tgt_dir']
@@ -50,7 +50,7 @@ def ota():
 	# Check if any new updates are posted to GitHub
 	oc = OTACheck(github_url, tgt_dir = target_dir)
 	if oc.start():  # If there is a new version
-		from assets.ota_download import OTADownload
+		from core.ota_download import OTADownload
 
 		oi = OTADownload(github_url, tgt_dir = target_dir)  # Init #@todo look at IIFE
 		oi.start()  # Download & install; reboot when done
@@ -64,7 +64,7 @@ def force_ota(target_dir = None):
 	if not target_dir:
 		target_dir = config_data['ota_tgt_dir']
 
-	from assets.ota_download import OTADownload
+	from core.ota_download import OTADownload
 	if _conn_wifi():  # Connect to WiFi
 		oi = OTADownload(github_url, tgt_dir = target_dir)  # Init #@todo look at IIFE
 		oi.dev_download()

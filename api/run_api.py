@@ -1,4 +1,4 @@
-from assets.http_requests import HttpClient
+from core.http_requests import HttpClient
 from machine import unique_id
 
 def board_id():

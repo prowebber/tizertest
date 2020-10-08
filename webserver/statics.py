@@ -1,5 +1,5 @@
 def createParamsJs():
-	from assets.config_man import get_config
+	from core.config_man import get_config
 	
 	config = get_config()  # Load the config
 	
