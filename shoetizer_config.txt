@@ -15,6 +15,6 @@
   "total_unit_spray_time": "0",
   "wifi_connect_on_boot": "0",
   "wifi_status": "0",
-  "wifi_ssid": "",
-  "wifi_pass": "",
+  "wifi_ssid": "magiceye",
+  "wifi_pass": "magiceye",
 }
