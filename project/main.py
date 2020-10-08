@@ -21,8 +21,7 @@ class Main:
 		self.update_params()
 
 	def start(self):
-		led = RGBLED(Pin(D6), Pin(D7), Pin(D8))
-		led.rgb_color(magenta)
+		self.led.rgb_color(magenta)
 
 		# Play melody on boot
 		if self.config['melody_on_boot']:
