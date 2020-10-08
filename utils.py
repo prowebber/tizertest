@@ -6,16 +6,17 @@ def f_read(path):
 def move_files():
 	import os
 	# # one liner (only calls os.rename once)
-	# [os.rename(f, f.replace('\\', '/').replace('\t', '/t').replace('\r', '/r')) for f in os.listdir()]
+	[os.rename(f, f.replace('\\', '/').replace('\t', '/t').replace('\r', '/r')) for f in os.listdir()]
 
-	# correct path from pycharm bullshit
-	[os.rename(f, f.replace('\\', '/')) for f in os.listdir()]
 
-	# Correct tabs (\\t) in file name bullshit
-	[os.rename(f, f.replace('\t', '/t')) for f in os.listdir()]
-
-	# Correct (\\r) in file name bullshit
-	[os.rename(f, f.replace('\r', '/r')) for f in os.listdir()]
+# # correct path from pycharm bullshit
+# [os.rename(f, f.replace('\\', '/')) for f in os.listdir()]
+#
+# # Correct tabs (\\t) in file name bullshit
+# [os.rename(f, f.replace('\t', '/t')) for f in os.listdir()]
+#
+# # Correct (\\r) in file name bullshit
+# [os.rename(f, f.replace('\r', '/r')) for f in os.listdir()]
 
 
 def rmtree(dir_name):
@@ -35,11 +36,10 @@ def rmtree(dir_name):
 		os.rmdir(dir_name)
 
 
-def wipe_all():
+def wipe_all(dir_list = ['api', 'assets', 'multiserver', 'project', 'webserver']):
 	"""
 	Delete all files (and sub-directories) in the list of directories
 	"""
-	dir_list = ['api', 'assets', 'multiserver', 'project', 'webserver']
 	for dir_name in dir_list:
 		rmtree(dir_name)
 	print("Done wiping")
