@@ -12,7 +12,7 @@ class Main:
 		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
 		self.switch_foot = Pin(D2, Pin.IN, Pin.PULL_UP)
 		self.switch_wifi = Pin(D1, Pin.IN, Pin.PULL_UP)
-		self.led = RGBLED(Pin(D3), Pin(D4), Pin(D6))
+		self.led = RGBLED(Pin(D3,Pin.OUT), Pin(D4), Pin(D5), Pin(D6))
 		# Timers
 		self.pump_timer = Timer(1)
 		self.relay_timer = Timer(4)
@@ -21,8 +21,11 @@ class Main:
 		self.update_params()
 
 	def start(self):
-		self.led.rgb_color(magenta)
-		self.led.pulse()
+		self.led.rgb_color(blue)
+		sleep_ms(1000)
+		self.led.on()
+		self.led.pulse(timeout_ms = 5500)
+		self.led.off()
 		# Play melody on boot
 		if not self.mute:
 			play_melody(['C5', 'E5', 'G5'])  # Play tritone
