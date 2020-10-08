@@ -144,7 +144,7 @@ def broadcast_server():
 	print('broadcast server reached')
 	from assets.wifi_conn import broadcast_wifi
 
-	wifi_ssid = 'ShoeTizer-' + board_id()  # @todo mac address based
+	wifi_ssid = 'ShoeTizer-' + board_id()
 	wifi_pass = '123456789'
 
 	broadcast_wifi(wifi_ssid, wifi_pass)
