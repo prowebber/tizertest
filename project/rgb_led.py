@@ -18,9 +18,11 @@ class RGBLED:
 		self.B.duty(duty_val(b, 255))
 
 	def pulse(self, t):
-		for i in range(200):
-			gain = sin(i / 100 * pi)
-			[led.duty(int(led.duty() * gain)) for led in [self.R, self.G, self.B]]
+		leds = [self.R, self.G, self.B]
+		init_duties = [led.duty() for led in leds]
+		for i in range(-200, 200):
+			gain = sin(i / 100 * pi) / 2
+			[led.duty(int(duty * gain)) for led in leds for duty in init_duties]
 			print('led duty: ', gain)
 
 
