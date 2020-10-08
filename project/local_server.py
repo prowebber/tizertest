@@ -2,7 +2,7 @@ from machine import unique_id
 import usocket
 import ure
 from utime import sleep_ms
-from assets.config_man import get_config, save_config
+from core.config_man import get_config, save_config
 
 
 class LocalServer:
@@ -142,7 +142,7 @@ def broadcast_server():
 	Start broadcasting WiFi
 	"""
 	print('broadcast server reached')
-	from assets.wifi_conn import broadcast_wifi
+	from core.wifi_conn import broadcast_wifi
 
 	wifi_ssid = 'ShoeTizer-' + board_id()
 	wifi_pass = '123456789'

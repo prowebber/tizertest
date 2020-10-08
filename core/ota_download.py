@@ -1,4 +1,4 @@
-from assets.http_requests import HttpClient
+from core.http_requests import HttpClient
 import os
 import gc
 

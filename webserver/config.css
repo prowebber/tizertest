@@ -58,7 +58,7 @@ div.bttn {
 progress[value] {
   -webkit-appearance: none;
    appearance: none;
-  height: 20px;
+  height: 34px;
 }
 progress[value]::-webkit-progress-bar {
   background-color: #eee;

@@ -1,4 +1,4 @@
-from assets.config_man import get_config, save_config
+from core.config_man import get_config, save_config
 from machine import Pin, Timer, PWM
 from project.pins import *
 from project.colors import *

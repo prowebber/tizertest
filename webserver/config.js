@@ -25,7 +25,7 @@ function populateData() {
 
     var wifiText = 'Not connected to internet';
 
-    if(wifiStatus == '1'){
+    if (wifiStatus == '1') {
         wifiText = 'Connected to internet'
     }
 
@@ -40,18 +40,26 @@ function eventConfig(e) {
     }
 
     if (e.type == 'click') {
-        if (d.div && d.div.id == 'submit') {
+        if (d.div) {
+            if (d.div.id == 'submit') {
+                var data = {
+                    'cmd': 'save_settings',
+                    'wifi_ssid': document.getElementById('wifi_ssid').value,
+                    'wifi_pass': document.getElementById('wifi_pass').value,
+                };
 
-            var data = {
-                'cmd': 'save_settings',
-                'wifi_ssid': document.getElementById('wifi_ssid').value,
-                'wifi_pass': document.getElementById('wifi_pass').value,
-            };
+                console.log("Saving settings...");
+                // ws.send("Hello");
+                ws.send(JSON.stringify(data));
+            } else if (d.div.id == 'reset_bag') {
+                var data = {
+                    'cmd': 'reset_bag',
+                    'volume_ml': 500,
+                };
 
-            console.log("clicked");
-            console.log("sending...", data)
-            // ws.send("Hello");
-            ws.send(JSON.stringify(data))
+                console.log("Saving settings...");
+                ws.send(JSON.stringify(data));
+            }
         }
     }
 }
