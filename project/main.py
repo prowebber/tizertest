@@ -11,8 +11,8 @@ class Main:
 		self.relay = Pin(D8, Pin.OUT, value = 0)  # green
 		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
 		self.switch_foot = Pin(D2, Pin.IN, Pin.PULL_UP)
-		self.switch_wifi = Pin(5, Pin.IN, Pin.PULL_UP)
-
+		self.switch_wifi = Pin(D1, Pin.IN, Pin.PULL_UP)
+		self.led = RGBLED(Pin(D3,Pin.OUT), Pin(D4), Pin(D5), Pin(D6))
 		# Timers
 		self.pump_timer = Timer(1)
 		self.relay_timer = Timer(4)
@@ -21,11 +21,13 @@ class Main:
 		self.update_params()
 
 	def start(self):
-		led = RGBLED(Pin(D6), Pin(D7), Pin(D8))
-		led.rgb_color(magenta)
-
+		self.led.rgb_color(blue)
+		sleep_ms(1000)
+		self.led.on()
+		self.led.pulse(timeout_ms = 5500)
+		self.led.off()
 		# Play melody on boot
-		if self.config['melody_on_boot']:
+		if not self.mute:
 			play_melody(['C5', 'E5', 'G5'])  # Play tritone
 		while True:
 			switch_wifi_status = self.check_switch(self.switch_wifi, 2000)
@@ -65,7 +67,7 @@ class Main:
 		self.update_params()
 
 		for i in range(self.burst_count):  # Repeat for each burst
-			if self.melody_on_spray:  # Play note (if enabled)
+			if not self.mute:  # Play note (if enabled)
 				play_melody(['G5'])
 			#
 			self.pump_timer.init(period = self.pump_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_on())
@@ -103,7 +105,7 @@ class Main:
 		# Stored Params
 		self.config = get_config()  # Get config info
 		self.burst_count = int(self.config['spray_burst_count'])
-		self.melody_on_spray = int(self.config['melody_on_spray'])
+		self.mute = int(self.config['mute'])
 		self.pump_delay_ms = int(self.config['pump_delay_ms'])
 		self.pump_run_time_ms = int(self.config['pump_run_time_ms'])
 		self.relay_delay_ms = int(self.config['relay_delay_ms'])
