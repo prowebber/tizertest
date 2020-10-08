@@ -69,6 +69,8 @@ def force_ota(target_dir = None):
 def setup():
 	wifi_status = _conn_wifi()  # Connect to WiFi
 	if wifi_status:  # If connected to WiFi
+		from webserver.statics import createParamsJs
+		createParamsJs()  # Create JS params file
 		import webserver.config
 
 

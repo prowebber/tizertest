@@ -2,6 +2,7 @@ from webserver.ws_connection import ClientClosedError
 from webserver.ws_server import WebSocketClient
 from webserver.ws_multiserver import WebSocketMultiServer
 import ujson
+from time import sleep
 
 
 class TestClient(WebSocketClient):
@@ -10,36 +11,47 @@ class TestClient(WebSocketClient):
 	
 	def process(self):
 		try:
-			msg = self.connection.read()
-			if not msg:
+			raw = self.connection.read()
+			if not raw:
 				return
-			msg = msg.decode("utf-8")
-			json_msg = ujson.loads(msg)
+			msg = raw.decode("utf-8")
+			data = ujson.loads(msg)
 			
-			print("Action: %s" % json_msg['action'])
+			print("Command: %s" % data['cmd'])
 			
-			if 'action' in json_msg:
-				print("Action: %s" % json_msg['action'])
+			if 'cmd' in data:
+				cmd = data['cmd']  # Get the command
+				
+				if cmd == 'save_settings':
+					self.save_settings(data)
+					return
+				elif cmd == 'load_params':
+					self.load_params(data)
 			else:
-				print("Not in msg")
+				print("No command")
 			
-			print("message follows...")
 			print(msg)
-			print("SSID: %s" % json_msg['wifi_ssid'])
 			
-			self.connection.write(msg)
-			# items = msg.split(" ")
-			# cmd = items[0]
-			# if cmd == "Hello":
-			#     self.connection.write(cmd + " World")
-			#     print("Hello World")
+			# self.connection.write(msg)
 		except ClientClosedError:
+			print('client closed err')
 			self.connection.close()
+			
+	def load_params(self, data):
+		print("Loading params")
+		self.connection.write('steve')
+			
+	def save_settings(self, data):
+		print("Save Settings")
+		print(data)
+		
+		self.connection.write(data['cmd'])
+		
 
 
 class TestServer(WebSocketMultiServer):
 	def __init__(self):
-		super().__init__("/webserver/config.html", 10)
+		super().__init__("/webserver/config.html", 50)
 	
 	def _make_client(self, conn):
 		return TestClient(conn)
@@ -52,4 +64,5 @@ try:
 		server.process_all()
 except KeyboardInterrupt:
 	pass
+
 server.stop()

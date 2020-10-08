@@ -2,14 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ShoeTizer Setup</title>
+    <title>ShoeTizer</title>
     <link rel="stylesheet" href="/webserver/config.css">
+    <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=5'>
+    <script src='/webserver/params.js'></script>
+    <script src='/webserver/config.js' defer></script>
 </head>
 <body>
 <main>
-    <h1>ShoeTizer Setup</h1>
+    <h1>ShoeTizer</h1>
     <hr>
+    <h3>Sanitizer Bag</h3>
+    <table>
+    <tr><td>70% remaining</td><td><progress value="70" max="100"></progress></td></tr>
+    </table>
+    <hr>
+    <h3>WiFi Settings</h3>
 <table>
+    <tr><td>WiFi status:</td><td><span id="wifi_status"></span></td></tr>
     <tr><td>WiFi network:</td><td><input type="text" name="wifi_ssid" value="" id="wifi_ssid"></td></tr>
     <tr><td>WiFi password:</td><td><input type="text" name="wifi_pass" value="" id="wifi_pass"></td></tr>
 </table>
@@ -17,7 +27,6 @@
 <div class="bttn" id="submit">Save Settings</div>
 <hr>
 <textarea id="output"></textarea>
-<script src='/webserver/config.js'></script>
 </main>
 </body>
 </html>

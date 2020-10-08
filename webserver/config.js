@@ -8,6 +8,30 @@ ws.onmessage = function (evt) {
 
 function init() {
     window.addEventListener('click', eventConfig);
+
+    window.onload = function () {
+        populateData();
+    }
+}
+
+
+function populateData() {
+
+    document.getElementById('wifi_ssid').value = params['ssid'];
+    document.getElementById('wifi_pass').value = params['pass'];
+
+    var wifiStatus = params['wifi_status'];
+    console.log("WifiStatus: " + wifiStatus);
+
+    var wifiText = 'Not connected to internet';
+
+    if(wifiStatus == '1'){
+        wifiText = 'Connected to internet'
+    }
+
+    document.getElementById('wifi_status').innerHTML = wifiText;
+
+    // ws.send(JSON.stringify(data))
 }
 
 function eventConfig(e) {
@@ -19,7 +43,7 @@ function eventConfig(e) {
         if (d.div && d.div.id == 'submit') {
 
             var data = {
-                'action': 'save_settings',
+                'cmd': 'save_settings',
                 'wifi_ssid': document.getElementById('wifi_ssid').value,
                 'wifi_pass': document.getElementById('wifi_pass').value,
             };
