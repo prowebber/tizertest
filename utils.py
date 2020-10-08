@@ -1,27 +1,21 @@
-
+def f_read(path):
+	with open(path, 'rt') as f:
+		[print(line) for line in f.readlines()]
 
 
 def move_files():
 	import os
-	
+	# # one liner (only calls os.rename once)
+	# [os.rename(f, f.replace('\\', '/').replace('\t', '/t').replace('\r', '/r')) for f in os.listdir()]
+
 	# correct path from pycharm bullshit
 	[os.rename(f, f.replace('\\', '/')) for f in os.listdir()]
-	
+
 	# Correct tabs (\\t) in file name bullshit
 	[os.rename(f, f.replace('\t', '/t')) for f in os.listdir()]
-	
+
 	# Correct (\\r) in file name bullshit
 	[os.rename(f, f.replace('\r', '/r')) for f in os.listdir()]
-
-
-def wipe_all():
-	"""
-	Delete all files (and sub-directories) in the list of directories
-	"""
-	dir_list = ['api', 'assets', 'multiserver', 'project', 'webserver']
-	for dir_name in dir_list:
-		rmtree(dir_name)
-	print("Done wiping")
 
 
 def rmtree(dir_name):
@@ -39,3 +33,13 @@ def rmtree(dir_name):
 				print("\tDeleted: %s" % entry[0])
 				os.remove(dir_name + '/' + entry[0])
 		os.rmdir(dir_name)
+
+
+def wipe_all():
+	"""
+	Delete all files (and sub-directories) in the list of directories
+	"""
+	dir_list = ['api', 'assets', 'multiserver', 'project', 'webserver']
+	for dir_name in dir_list:
+		rmtree(dir_name)
+	print("Done wiping")
