@@ -17,15 +17,15 @@ class RGBLED:
 		self.G.duty(duty_val(g, 255))
 		self.B.duty(duty_val(b, 255))
 
+	def pulse(self, t):
+		for i in range(200):
+			gain = sin(i / 100 * pi)
+			[led.duty(int(led.duty() * gain)) for led in [self.R, self.G, self.B]]
+			print('led duty: ', gain)
+
 
 def duty_val(val, max_val = 100):
 	return 1023 - int(val / max_val * 1023)
-
-
-def pulse(self, led, t):
-	for i in range(20):
-		led.duty(int(sin(i / 10 * pi) * 500 + 500))
-
 
 # led = RGBLED(Pin(D6), Pin(D7), Pin(D8))
 # led.rgb_color(magenta)
