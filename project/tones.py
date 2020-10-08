@@ -95,11 +95,12 @@ notes = {
 	'DS8': 4978
 }
 
-class Speaker(PWM):
-	def __init__(self, pin):
-		selfspeaker = PWM(pin)
 
-	def play_tones(pin, notes_list, speed=100, volume=30):
+class Speaker():
+	def __init__(self, pin):
+		self.speaker = PWM(pin)
+
+	def play_tones(self, notes_list, speed = 100, volume = 30):
 		"""
 		Play list of tones at defined volume and speed.
 		:param notes_list: list of string notes (e.g. 'C4')
@@ -110,10 +111,12 @@ class Speaker(PWM):
 		tones = [notes[k] for k in notes_list]
 
 		for i in tones:
-			speaker.freq(i)
-			speaker.duty(_duty_perc(volume))
+			self.speaker.freq(i)
+			self.speaker.duty(_duty_perc(volume))
 			sleep_ms(speed)
 
-		speaker.duty(0)  # speaker off
-def _duty_perc(percentage=30):
+		self.speaker.duty(0)  # speaker off
+
+
+def _duty_perc(percentage = 30):
 	return int(percentage / 100 * 1023)
