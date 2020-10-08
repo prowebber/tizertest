@@ -1,6 +1,5 @@
 from core.config_man import get_config, save_config
 import gc
-import move_files
 
 # Load config data
 config_data = get_config()
@@ -83,11 +82,9 @@ def rest():
 	api_get()
 
 
-def del_files(dir):
-	import os
-	for f in os.listdir(dir):
-		print('Deleted: /' + dir + '/' + f)
-		os.remove('/' + dir + '/' + f)
+def move_files():
+	from utils import move_files
+	move_files()
 
 
 def start(broadcast = 0):
@@ -106,7 +103,6 @@ def start(broadcast = 0):
 
 
 def run_main():
-	import move_files
 	from project.main import Main
 	app = Main()
 	app.start()

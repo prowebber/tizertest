@@ -52,7 +52,7 @@ import os
 os.remove('/ota_updater/main.py')
 
 # View contents of file
-with open('/shoetizer_config.txt', 'r') as f:
+with open('/core/config_man.py', 'r') as f:
     print(f.read())
     
 for f in os.listdir():
