@@ -1,7 +1,5 @@
 from machine import PWM, Pin
 from math import sin, pi
-from project.pins import *
-from project.colors import *
 from utime import sleep_ms, ticks_ms, ticks_diff
 
 
@@ -17,7 +15,6 @@ class RGBLED:
 		self.on()
 		leds = [self.R, self.G, self.B]
 		init_duties = [duty_val(led.duty(), 1023) for led in leds]
-		print('init_duties: ', init_duties)
 		t0 = ticks_ms()
 		timeout = False
 		while not timeout:
