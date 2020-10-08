@@ -1,4 +1,5 @@
 from core.config_man import get_config, save_config
+from utils import *
 import gc
 
 # Load config data
@@ -27,11 +28,6 @@ def _conn_wifi():
 	save_config(config_data)  # Update the config
 
 	return is_connected
-
-
-def f_read(path):
-	with open(path, 'rt') as f:
-		[print(line) for line in f.readlines()]
 
 
 def ota():
@@ -82,9 +78,9 @@ def rest():
 	api_get()
 
 
-def move_files():
-	from utils import move_files
-	move_files()
+# def move_files():
+# 	from utils import move_files
+# 	move_files()
 
 
 def start(broadcast = 0):
