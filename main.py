@@ -61,7 +61,6 @@ def force_ota(target_dir = None):
 		target_dir = config_data['ota_tgt_dir']
 
 	from assets.ota_download import OTADownload
-
 	if _conn_wifi():  # Connect to WiFi
 		oi = OTADownload(github_url, tgt_dir = target_dir)  # Init #@todo look at IIFE
 		oi.dev_download()
