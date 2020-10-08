@@ -27,6 +27,8 @@ class TestClient(WebSocketClient):
 					return
 				elif cmd == 'load_params':
 					self.load_params(data)
+				elif cmd == 'reset_bag':
+					self.reset_bag(data)
 			else:
 				print("No command")
 			
@@ -37,6 +39,9 @@ class TestClient(WebSocketClient):
 			print('client closed err')
 			self.connection.close()
 			
+	def reset_bag(self, data):
+		print("Resetting bag...")
+		
 	def load_params(self, data):
 		print("Loading params")
 		self.connection.write('steve')

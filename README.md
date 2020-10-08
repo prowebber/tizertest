@@ -8,6 +8,8 @@
 | Param                       |  Type  | Description                                                                              | Enabled |
 |:----------------------------|:------:|:-----------------------------------------------------------------------------------------|:-------:|
 | `ota_github_url`            | string | The URL of the GitHub repo to update the project from                                    |         |
+| `device_id`                 | string | The ID of the device                                                                     |         |
+| `doypack_id`                |  int   | The ID of the doypack                                                                    |         |
 | `enable_led`                |  bool  |                                                                                          |         |
 | `melody_on_boot`            |  bool  |                                                                                          |         |
 | `melody_on_spray`           |  bool  |                                                                                          |         |
@@ -50,7 +52,7 @@ import os
 os.remove('/ota_updater/main.py')
 
 # View contents of file
-with open('/next/.version_on_reboot', 'r') as f:
+with open('/shoetizer_config.txt', 'r') as f:
     print(f.read())
     
 for f in os.listdir():

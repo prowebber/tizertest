@@ -17,3 +17,8 @@ def save_config(config_dict):
 	# Save the settings
 	with open('/shoetizer_config.txt', 'w') as data_out:
 		json.dump(config_dict, data_out)
+
+def board_id():
+	from machine import unique_id
+	uid = unique_id()
+	return '{:02x}{:02x}{:02x}{:02x}'.format(uid[0], uid[1], uid[2], uid[3])

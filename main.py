@@ -6,6 +6,10 @@ import move_files
 config_data = get_config()
 gc.enable()  # Enable automatic garbage collection
 
+# Verify the board ID is recorded
+if not config_data['device_id']:
+	from assets.config_man import board_id
+	config_data['device_id'] = board_id()
 
 def _conn_wifi():
 	"""
