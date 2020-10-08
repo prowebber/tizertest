@@ -12,8 +12,8 @@ class Main:
 
 		self.switch_wifi = Pin(D1, Pin.IN, Pin.PULL_UP)
 		self.switch_foot = Pin(D2, Pin.IN, Pin.PULL_UP)
-		self.led = RGBLED(Pin(D3, Pin.OUT), Pin(D4), Pin(D6), Pin(SD2))
-		self.speaker = Speaker(Pin(D5))
+		self.led = RGBLED(Pin(SD2, Pin.OUT), Pin(D3), Pin(D4), Pin(D5))
+		self.speaker = Speaker(Pin(D6))
 		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
 		self.relay = Pin(D8, Pin.OUT, value = 0)  # green
 
