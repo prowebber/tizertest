@@ -22,7 +22,7 @@ class Main:
 
 	def start(self):
 		self.led.rgb_color(magenta)
-
+		self.led.pulse()
 		# Play melody on boot
 		if self.config['melody_on_boot']:
 			play_melody(['C5', 'E5', 'G5'])  # Play tritone

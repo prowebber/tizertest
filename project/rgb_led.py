@@ -17,7 +17,7 @@ class RGBLED:
 		self.G.duty(duty_val(g, 255))
 		self.B.duty(duty_val(b, 255))
 
-	def pulse(self, t):
+	def pulse(self, timeout=0):
 		leds = [self.R, self.G, self.B]
 		init_duties = [led.duty() for led in leds]
 		for i in range(-200, 200):
