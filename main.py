@@ -74,8 +74,11 @@ def setup():
 
 
 def rest():
-	from api.run_api import api_get
-	api_get()
+	from project.rest_api import Rest
+	
+	api = Rest()
+	# resp = api.get('/tizer')
+	print(resp)
 
 
 def start(broadcast = 0):
