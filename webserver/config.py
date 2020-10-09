@@ -40,11 +40,21 @@ class TestClient(WebSocketClient):
 			
 	def reset_bag(self, data):
 		from core.config_man import get_config, save_config
+		from project.rest_api import Rest
 		
-		config = get_config()
-		device_id = config['device_id']
 		
 		print("Resetting bag...")
+		config = get_config()
+		
+		payload = {
+			'device_id': config['device_id'],
+			'volume_ml': 500,
+		}
+		
+		api = Rest()
+		response = api.post('/tizer/doypacks', payload)
+		print(response)
+		self.connection.write(ujson.dumps(response))
 		
 	def load_params(self, data):
 		print("Loading params")

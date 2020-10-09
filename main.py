@@ -77,7 +77,16 @@ def rest():
 	from project.rest_api import Rest
 	
 	api = Rest()
+	
+	# Get time
 	# resp = api.get('/tizer')
+	
+	# Post doypack
+	payload = {
+		'device_id': 'stevtest',
+		'volume_ml': '500'
+	}
+	resp = api.post('/tizer/doypacks', payload)
 	print(resp)
 
 
