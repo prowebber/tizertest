@@ -5,11 +5,11 @@ def createParamsJs():
 	ml_sprayed = getSprayVolumeBag(config)
 	
 	text = "var params={"
-	"'ml_sprayed':'" + str(ml_sprayed) + "',"
-	"'ssid':'" + config['wifi_ssid'] + "',"
-	"'pass':'" + config['wifi_pass'] + "',"
-	"'wifi_status':'" + str(config['wifi_status']) + ""
-	"'};"
+	text += "'ml_sprayed':'" + str(ml_sprayed) + "',"
+	text += "'ssid':'" + config['wifi_ssid'] + "',"
+	text += "'pass':'" + config['wifi_pass'] + "',"
+	text += "'wifi_status':'" + str(config['wifi_status'])
+	text += "'};"
 	
 	f = open('/webserver/src/js/params.js', 'w')
 	f.write(text)
