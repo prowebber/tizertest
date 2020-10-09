@@ -9,6 +9,6 @@ def createParamsJs():
 	       "'wifi_status':'" + str(config['wifi_status']) + "" \
 	       "'};"
 	
-	f = open('/webserver/params.js', 'w')
+	f = open('/webserver/src/js/params.js', 'w')
 	f.write(text)
 	f.close()
