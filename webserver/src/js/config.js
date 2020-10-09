@@ -1,67 +1,62 @@
-var ws = new WebSocket("ws://" + location.hostname + ":80");
+(function () {
+    'use strict';
 
-// When a message is received
-ws.onmessage = function (evt) {
-    document.getElementById("output").value = evt.data;
-};
+    var ws = new WebSocket("ws://" + location.hostname + ":80"); // When a message is received
 
+    ws.onmessage = function (evt) {
+      document.getElementById("output").value = evt.data;
+    };
 
-function init() {
-    window.addEventListener('click', eventConfig);
+    function init() {
+      window.addEventListener('click', eventConfig);
 
-    window.onload = function () {
+      window.onload = function () {
         populateData();
-    }
-}
-
-
-function populateData() {
-
-    document.getElementById('wifi_ssid').value = params['ssid'];
-    document.getElementById('wifi_pass').value = params['pass'];
-
-    var wifiStatus = params['wifi_status'];
-    console.log("WifiStatus: " + wifiStatus);
-
-    var wifiText = 'Not connected to internet';
-
-    if (wifiStatus == '1') {
-        wifiText = 'Connected to internet'
+      };
     }
 
-    document.getElementById('wifi_status').innerHTML = wifiText;
+    function populateData() {
+      document.getElementById('wifi_ssid').value = params['ssid'];
+      document.getElementById('wifi_pass').value = params['pass'];
+      var wifiStatus = params['wifi_status'];
+      console.log("WifiStatus: " + wifiStatus);
+      var wifiText = 'Not connected to internet';
 
-    // ws.send(JSON.stringify(data))
-}
+      if (wifiStatus == '1') {
+        wifiText = 'Connected to internet';
+      }
 
-function eventConfig(e) {
-    let d = {
-        'div': e.target.closest('div'),
+      document.getElementById('wifi_status').innerHTML = wifiText; // ws.send(JSON.stringify(data))
     }
 
-    if (e.type == 'click') {
+    function eventConfig(e) {
+      let d = {
+        'div': e.target.closest('div')
+      };
+
+      if (e.type == 'click') {
         if (d.div) {
-            if (d.div.id == 'submit') {
-                var data = {
-                    'cmd': 'save_settings',
-                    'wifi_ssid': document.getElementById('wifi_ssid').value,
-                    'wifi_pass': document.getElementById('wifi_pass').value,
-                };
+          if (d.div.id == 'submit') {
+            var data = {
+              'cmd': 'save_settings',
+              'wifi_ssid': document.getElementById('wifi_ssid').value,
+              'wifi_pass': document.getElementById('wifi_pass').value
+            };
+            console.log("Saving settings..."); // ws.send("Hello");
 
-                console.log("Saving settings...");
-                // ws.send("Hello");
-                ws.send(JSON.stringify(data));
-            } else if (d.div.id == 'reset_bag') {
-                var data = {
-                    'cmd': 'reset_bag',
-                    'volume_ml': 500,
-                };
-
-                console.log("Saving settings...");
-                ws.send(JSON.stringify(data));
-            }
+            ws.send(JSON.stringify(data));
+          } else if (d.div.id == 'reset_bag') {
+            var data = {
+              'cmd': 'reset_bag',
+              'volume_ml': 500
+            };
+            console.log("Saving settings...");
+            ws.send(JSON.stringify(data));
+          }
         }
+      }
     }
-}
 
-init();
+    init();
+
+}());
