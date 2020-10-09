@@ -5,7 +5,6 @@ ws.onmessage = function (evt) {
     document.getElementById("output").value = evt.data;
 };
 
-
 function init() {
     window.addEventListener('click', eventConfig);
 
@@ -16,26 +15,27 @@ function init() {
 
 
 function populateData() {
+    let mlSprayed = parseInt(params['ssid'], 10);
+    let bagLevel = Math.round((500 - mlSprayed) / 500)
+
+    // Set params for user's screen
+    document.getElementById('bag_level').value = bagLevel;
     document.getElementById('wifi_ssid').value = params['ssid'];
     document.getElementById('wifi_pass').value = params['pass'];
-
-    var wifiStatus = params['wifi_status'];
-    var wifiText = (wifiStatus == '1') ? 'Connected to internet' : 'Not connected to internet';
-
-    document.getElementById('wifi_status').innerHTML = wifiText;
-
-    // ws.send(JSON.stringify(data))
+    document.getElementById('wifi_status').innerHTML = (params['wifi_status'] == '1') ? 'Connected to internet' : 'Not connected to internet';
 }
 
 function eventConfig(e) {
     let d = {
         'a': e.target.closest('a'),
+        'button': e.target.closest('button'),
         'div': e.target.closest('div'),
     }
 
     if (e.type == 'click') {
-        if (d.div) {
-            if (d.div.id == 'submit') {
+        if (d.button) {
+            if (d.button.id == 'submit') {
+                e.preventDefault();
                 var data = {
                     'cmd': 'save_settings',
                     'wifi_ssid': document.getElementById('wifi_ssid').value,
@@ -43,16 +43,22 @@ function eventConfig(e) {
                 };
 
                 console.log("Saving settings...");
-                // ws.send("Hello");
-                ws.send(JSON.stringify(data));
             }
-            else if (d.div.id == 'reset_bag') {
+            else if (d.button.id == 'reset_bag') {
+                e.preventDefault();
+                var data = {
+                    'cmd': 'reset_bag',
+                    'volume_ml': 500,
+                };
 
-                console.log("Saving settings...");
+                console.log("Resetting bag...");
                 ws.send(JSON.stringify({
                     'cmd': 'reset_bag',
                     'volume_ml': 500,
                 }));
+
+                document.getElementById("output").value = "Reset Bag";
+                console.log("Reset...");
             }
         }
     }

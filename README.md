@@ -1,26 +1,50 @@
 # Current Setup
 
+## Known Bugs
+
+### WiFi broadcast cannot restart without doing a soft reboot
+   * It stops after the message 'clock synced to UTC'
+
+### WiFi broadcast won't keep open connection with Android devices
+When Android interacts with the WebSocket connection the following happens:
+* ECP will not complete the request
+* Android disconnects or hangs
+* The ECP needs to be restarted
+
+#### Steps to reproduce
+1. Broadcast WiFi from device
+2. Connect to device via Android and go to `192.168.4.1`
+3. Click any of the buttons that use WebSocket connection
+4. The
+
+### Status Alerts
+
+
+| Mode            | LED          | Melody             |
+|:----------------|:-------------|:-------------------|
+| WiFi connecting | Double blink |                    |
+| Low fluid       | Single blink |                    |
+|                 | Double blink | One note per blink |
+|                 | Single blink | One note per blink |
+
 ### Config Params
-
-
-
 
 | Param                       |  Type  | Description                                                                              | Enabled |
 |:----------------------------|:------:|:-----------------------------------------------------------------------------------------|:-------:|
-| `ota_github_url`            | string | The URL of the GitHub repo to update the project from                                    |         |
 | `device_id`                 | string | The ID of the device                                                                     |         |
 | `doypack_id`                |  int   | The ID of the doypack                                                                    |         |
-| `enable_led`                |  bool  |                                                                                          |         |
-| `melody_on_boot`            |  bool  |                                                                                          |         |
-| `melody_on_spray`           |  bool  |                                                                                          |         |
+| `enable_led`                |  int   |                                                                                          |         |
 | `enable_wifi`               |  bool  |                                                                                          |         |
+| `mute`                      |  bool  |                                                                                          |         |
+| `ota_github_url`            | string | The URL of the GitHub repo to update the project from                                    |         |
+| `ota_tgt_dir`               | string | The default directory to update via OTA                                                  |         |
 | `pump_delay_ms`             |  int   | How many milliseconds the pump waits before turning on after the spray button is pressed |   Yes   |
 | `pump_run_time_ms`          |  int   | How long (in milliseconds) the pump runs for each spray burst                            |   Yes   |
 | `relay_delay_ms`            |  int   | How long to wait after the pump starts before the relay opens                            |   Yes   |
 | `relay_open_time_ms`        |  int   | How long the relay is open                                                               |   Yes   |
 | `spray_burst_count`         |  int   | How many times the nozzle sprays when the spray button is pressed                        |         |
-| `total_unit_spray_time`     |  int   | Total time (in milliseconds) the unit has sprayed solution                               |         |
 | `total_doypack_spray_time ` |  int   | Total tiem (in milliseconds) the current doypack has sprayed solution                    |         |
+| `total_unit_spray_time`     |  int   | Total time (in milliseconds) the unit has sprayed solution                               |         |
 | `wifi_connect_on_boot`      |  bool  | True if the unit automatically connects to WiFi when turned on                           |   Yes   |
 | `wifi_status`               |  bool  | True if the unit is connected to the WiFi network                                        |   Yes   |
 | `wifi_ssid`                 | string | The name of the WiFi network the ShoeTizer connects to for internet access               |   Yes   |
@@ -52,7 +76,7 @@ import os
 os.remove('/ota_updater/main.py')
 
 # View contents of file
-with open('/core/config_man.py', 'r') as f:
+with open('.sconfig', 'r') as f:
     print(f.read())
     
 for f in os.listdir():

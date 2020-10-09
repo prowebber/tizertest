@@ -42,10 +42,8 @@ class TestClient(WebSocketClient):
 		from core.config_man import get_config, save_config
 		from project.rest_api import Rest
 		
-		
-		print("Resetting bag...")
+		print("Reset bag on python side...")
 		config = get_config()
-		
 		payload = {
 			'device_id': config['device_id'],
 			'volume_ml': 500,
@@ -53,6 +51,14 @@ class TestClient(WebSocketClient):
 		
 		api = Rest()
 		response = api.post('/tizer/doypacks', payload)
+		
+		# Save bag ID in config
+		if 'data' in response:
+			if 'doypack_id' in response['data']:
+				config['doypack_id'] = response['data']['doypack_id']
+				save_config(config)
+				print('saved config')
+		
 		print(response)
 		self.connection.write(ujson.dumps(response))
 		

@@ -41,7 +41,9 @@ table{
     width:100%;
 }
 
-div.bttn {
+div.bttn,
+button,
+a.bttn{
     background-color: #2196F3;
     border-radius: 3px;
     box-sizing: border-box;
