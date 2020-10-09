@@ -1,10 +1,3 @@
-var ws = new WebSocket("ws://" + location.hostname + ":80");
-
-// When a message is received
-ws.onmessage = function (evt) {
-    document.getElementById("output").value = evt.data;
-};
-
 
 function init() {
     window.addEventListener('click', eventConfig);
@@ -16,15 +9,10 @@ function init() {
 
 
 function populateData() {
-    document.getElementById('wifi_ssid').value = params['ssid'];
-    document.getElementById('wifi_pass').value = params['pass'];
 
-    var wifiStatus = params['wifi_status'];
-    var wifiText = (wifiStatus == '1') ? 'Connected to internet' : 'Not connected to internet';
+    var wifiText = 'Not connected to internet';
 
     document.getElementById('wifi_status').innerHTML = wifiText;
-
-    // ws.send(JSON.stringify(data))
 }
 
 function eventConfig(e) {
@@ -42,8 +30,6 @@ function eventConfig(e) {
                 };
 
                 console.log("Saving settings...");
-                // ws.send("Hello");
-                ws.send(JSON.stringify(data));
             } else if (d.div.id == 'reset_bag') {
                 var data = {
                     'cmd': 'reset_bag',
@@ -51,7 +37,7 @@ function eventConfig(e) {
                 };
 
                 console.log("Saving settings...");
-                ws.send(JSON.stringify(data));
+                document.getElementById("output").value = "Reset Bag";
             }
         }
     }
