@@ -13,7 +13,6 @@ if not config_data['device_id']:
 	config_data['device_id'] = board_id()
 
 
-def _conn_wifi():
 def _conn_wifi(broadcast=False):
 	"""
 	Connect to WiFi
