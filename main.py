@@ -9,7 +9,9 @@ gc.enable()  # Enable automatic garbage collection
 # Verify the board ID is recorded
 if not config_data['device_id']:
 	from core.config_man import board_id
+
 	config_data['device_id'] = board_id()
+
 
 def _conn_wifi():
 	"""
@@ -75,13 +77,14 @@ def setup():
 
 def rest():
 	from project.rest_api import Rest
-	
+
 	api = Rest()
 	# resp = api.get('/tizer')
-	print(resp)
+	# print(resp)
 
 
 def start(broadcast = 0):
+	move_files()
 	if _conn_wifi():  # If connected to WiFi
 		ota()  # Check for OTA
 
