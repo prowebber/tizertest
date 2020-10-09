@@ -14,10 +14,11 @@ if not config_data['device_id']:
 
 
 def _conn_wifi():
+def _conn_wifi(broadcast=False):
 	"""
 	Connect to WiFi
 	"""
-	from core.wifi_conn import connect_to_wifi
+	from core.wifi_conn import connect_to_wifi, broadcast_wifi
 	wifi_ssid = config_data['wifi_ssid']
 	wifi_pass = config_data['wifi_pass']
 
@@ -28,6 +29,11 @@ def _conn_wifi():
 
 	config_data['wifi_status'] = is_connected
 	save_config(config_data)  # Update the config
+
+	# Broadcast the WiFi
+	if broadcast:
+		broadcast_wifi('ShoeTizer-' + config_data['device_id'], '123456789')
+		print("Broadcasting WiFi...")
 
 	return is_connected
 
@@ -68,7 +74,7 @@ def force_ota(target_dir = None):
 
 
 def setup():
-	wifi_status = _conn_wifi()  # Connect to WiFi
+	wifi_status = _conn_wifi(True)  # Connect to WiFi
 	if wifi_status:  # If connected to WiFi
 		from webserver.statics import createParamsJs
 		createParamsJs()  # Create JS params file
@@ -77,22 +83,25 @@ def setup():
 
 def rest():
 	from project.rest_api import Rest
-
+	
 	api = Rest()
+
+	# Get time
 	# resp = api.get('/tizer')
-	# print(resp)
+
+	# Post doypack
+	payload = {
+		'device_id': 'stevtest',
+		'volume_ml': '500'
+	}
+	resp = api.post('/tizer/doypacks', payload)
+	print(resp)
 
 
 def start(broadcast = 0):
 	move_files()
 	if _conn_wifi():  # If connected to WiFi
 		ota()  # Check for OTA
-
-	if broadcast:
-		from project.local_server import LocalServer
-
-		app = LocalServer()
-		app.start()
 
 	from project.main import Main
 	app = Main()

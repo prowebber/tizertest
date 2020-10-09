@@ -1,7 +1,8 @@
 # IDE files
 /.idea
+/_lib/js/.idea
 __pycache__/
 /venv
 
 # Project files
-/boot.py
+node_modules

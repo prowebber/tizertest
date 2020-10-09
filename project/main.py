@@ -35,8 +35,8 @@ class Main:
 		while True:
 			switch_wifi_status = self.check_switch(self.switch_wifi, 2000)
 			if switch_wifi_status == 'held':
-				from project.local_server import LocalServer
-				LocalServer().start()
+				from main import setup
+				setup()
 				continue
 			elif switch_wifi_status == 'pressed':
 				continue

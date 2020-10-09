@@ -5,16 +5,16 @@
     <title>ShoeTizer</title>
     <link rel="stylesheet" href="/webserver/config.css">
     <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=5'>
-    <script src='/webserver/params.js'></script>
-    <script src='/webserver/config.js' defer></script>
+    <script src='/webserver/src/js/params.js'></script>
+    <script src='/webserver/src/js/config.min.js' defer></script>
 </head>
 <body>
 <main>
     <h1>ShoeTizer</h1>
     <hr>
-    <h3>Sanitizer Bag</h3>
+    <h3>Bag Fluid Level</h3>
     <table>
-    <tr><td>70% remaining</td><td><progress value="70" max="100"></progress></td><td><div class="bttn" id="rest_bag" style="width:auto;">Reset</div></td></tr>
+        <tr><td><span id="bag_pct_msg">70% remaining</span></td><td><progress value="70" max="100" id="bag_level"></progress></td><td><button class="bttn" id="reset_bag" style="width:auto;">Reset</button></td></tr>
     </table>
     <hr>
     <h3>WiFi Settings</h3>
@@ -24,7 +24,7 @@
     <tr><td>WiFi password:</td><td><input type="text" name="wifi_pass" value="" id="wifi_pass"></td></tr>
 </table>
     <br><br>
-<div class="bttn" id="submit">Save Settings</div>
+<button class="bttn" id="submit">Save Settings</button>
 <hr>
 <textarea id="output"></textarea>
 </main>

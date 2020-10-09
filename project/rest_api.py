@@ -1,5 +1,5 @@
 from core.http_requests import HttpClient
-
+import ujson
 
 class Rest:
 	"""
@@ -18,3 +18,14 @@ class Rest:
 		Perform a GET request
 		"""
 		return self.req.get(self._req_url(endpoint), dtype='json')
+	
+	def post(self, endpoint, payload=None):
+		"""
+		Performa a POST request
+		:param payload: Dict of the body you're sending
+		"""
+		if payload:
+			payload = ujson.dumps(payload)  # Convert dict to string
+			return self.req.post(self._req_url(endpoint), data=payload, dtype='json')
+		else:
+			return self.req.post(self._req_url(endpoint), dtype='json')
