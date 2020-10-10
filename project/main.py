@@ -2,7 +2,7 @@ from core.config_man import get_config, save_config
 from machine import Pin, Timer, PWM
 from project.pins import *
 from project.colors import *
-from project.rgb_led import RGBLED
+from project.devices import RGBLED, LED
 from project.tones import Speaker
 from utime import sleep_ms, ticks_ms, ticks_diff
 
@@ -12,7 +12,8 @@ class Main:
 
 		self.switch_wifi = Pin(D1, Pin.IN, Pin.PULL_UP)
 		self.switch_foot = Pin(D2, Pin.IN, Pin.PULL_UP)
-		self.led = RGBLED(Pin(SD2, Pin.OUT), Pin(D3), Pin(D4), Pin(D5))
+		self.rgbled = RGBLED(Pin(SD2, Pin.OUT), Pin(D3), Pin(D4), Pin(D5))
+		self.led = LED(Pin(SD3))
 		self.speaker = Speaker(Pin(D6))
 		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
 		self.relay = Pin(D8, Pin.OUT, value = 0)  # green
@@ -25,24 +26,28 @@ class Main:
 		self.update_params()
 
 	def start(self):
-		self.led.rgb_color(blue)
+		print('project main started')
+		self.led.blink(timeout_ms = 6000)
+
+		self.rgbled.rgb_color(blue)
 		sleep_ms(1000)
 
-		self.led.pulse(timeout_ms = 5500)
-		# Play melody on boot
-		if not self.mute:
-			self.speaker.play_tones(['C5', 'E5', 'G5'])  # Play tritone
-		while True:
-			switch_wifi_status = self.check_switch(self.switch_wifi, 2000)
-			if switch_wifi_status == 'held':
-				from main import setup
-				setup()
-				continue
-			elif switch_wifi_status == 'pressed':
-				continue
-			switch_foot_status = self.check_switch(self.switch_foot)
-			if switch_foot_status == 'released':
-				self.run_device()
+		#
+		# self.rgbled.pulse(timeout_ms = 5500)
+		# # Play melody on boot
+		# if not self.mute:
+		# 	self.speaker.play_tones(['C5', 'E5', 'G5'])  # Play tritone
+		# while True:
+		# 	switch_wifi_status = self.check_switch(self.switch_wifi, 2000)
+		# 	if switch_wifi_status == 'held':
+		# 		from main import setup
+		# 		setup()
+		# 		continue
+		# 	elif switch_wifi_status == 'pressed':
+		# 		continue
+		# 	switch_foot_status = self.check_switch(self.switch_foot)
+		# 	if switch_foot_status == 'released':
+		# 		self.run_device()
 
 	def check_switch(self, switch, hold_ms = 500):
 		first = not switch.value()
