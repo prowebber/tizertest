@@ -4,6 +4,7 @@ from project.pins import *
 from project.colors import *
 from project.devices import RGBLED, LED
 from project.tones import Speaker
+from project.rest_api import Rest
 from utime import sleep_ms, ticks_ms, ticks_diff
 
 
@@ -24,6 +25,12 @@ class Main:
 
 		self.pressed_time = None
 		self.update_params()
+		self.api = Rest()
+		
+		# API params
+		self.device_id = None
+		self.doypack_id = None
+		self.wifi_status = False
 
 	def start(self):
 		print('project main started')
@@ -108,10 +115,23 @@ class Main:
 		self.relay.off()
 		self.config['total_unit_spray_time'] += self.relay_open_time_ms
 		self.config['total_doypack_spray_time'] += self.relay_open_time_ms
+		
+		if self.wifi_status == '1':
+			response = self.api.post('/tizer/devices/' + self.device_id + '/usage', {
+				'doypack_id': self.doypack_id,
+				'usage_type': 1,
+				'duration': self.relay_open_time_ms
+			})
+			print("API Response:")
+			print(response)
+		
 
 	def update_params(self):
 		# Stored Params
 		self.config = get_config()  # Get config info
+		self.device_id = self.config['device_id']
+		self.doypack_id = self.config['doypack_id']
+		self.wifi_status = self.config['wifi_status']
 		self.burst_count = int(self.config['spray_burst_count'])
 		self.mute = int(self.config['mute'])
 		self.pump_delay_ms = int(self.config['pump_delay_ms'])
