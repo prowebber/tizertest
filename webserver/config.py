@@ -73,6 +73,8 @@ class TestClient(WebSocketClient):
 		from core.config_man import get_config, save_config
 		
 		config = get_config()
+		config['mute'] = data['melody_status']
+		config['relay_open_time_ms'] = data['spray_time']
 		config['wifi_ssid'] = data['wifi_ssid']
 		config['wifi_pass'] = data['wifi_pass']
 		save_config(config)
