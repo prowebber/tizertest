@@ -32,11 +32,16 @@ class WebSocketServer:
 		self._listen_s.listen(4)  # Stops the connection if this many items fail
 		if accept_handler:
 			self._listen_s.setsockopt(socket.SOL_SOCKET, 20, accept_handler)
+		
+		for i in (network.AP_IF, network.STA_IF):
+			iface = network.WLAN(i)
+			if iface.active():
+				print("WebSocket started on ws://%s:%d" % (iface.ifconfig()[0], port))
 			
 		# Only broadcast this (don't allow access over network IP)
-		iface = network.WLAN(network.AP_IF)
-		if iface.active():
-			print("WebSocket started on ws://%s:%d" % (iface.ifconfig()[0], port))
+		# iface = network.WLAN(network.AP_IF)
+		# if iface.active():
+		# 	print("WebSocket started on ws://%s:%d" % (iface.ifconfig()[0], port))
 			
 	def _make_client(self, conn):
 		return WebSocketClient(conn)
