@@ -74,6 +74,8 @@
 
       l.getDom('bag_pct_msg').innerHTML = bagPctMsg;
       l.getDom('bag_level').value = bagLevel;
+      l.getDom('volume_sprayed').value = mlSprayed + 'ml';
+      l.getDom('total_sprays').value = Math.round(mlSprayed / 0.8, 2);
       l.getDom('wifi_ssid').value = params['ssid'];
       l.getDom('wifi_pass').value = params['pass'];
       l.getDom('wifi_status').innerHTML = params['wifi_status'] == '1' ? 'Connected to internet' : 'Not connected to internet';
