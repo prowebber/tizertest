@@ -93,7 +93,12 @@ class OTADownload:
 						self.download_file(download_url.replace('refs/tags/', ''), download_path)
 				elif file_type == 'dir':
 					path = self.modulepath('next/' + file_path.replace(self.main_dir + '/', ''))
-					os.mkdir(path)
+					
+					try:
+						os.mkdir(path)
+					except OSError:
+						print('Directory exists; skipping: ' + path)
+					
 					self.download_all_files(root_url + '/' + file_name, version)
 			gc.collect()
 	
