@@ -35,6 +35,7 @@
 
     function init() {
       window.addEventListener('click', eventConfig);
+      window.addEventListener('submit', eventConfig);
 
       window.onload = function () {
         populateData();
@@ -58,22 +59,28 @@
       let d = {
         'a': e.target.closest('a'),
         'button': e.target.closest('button'),
-        'div': e.target.closest('div')
+        'div': e.target.closest('div'),
+        'form': e.target.closest('form')
       };
+
+      if (e.type == 'submit') {
+        if (d.form && d.form.id == 'form_config') {
+          e.preventDefault();
+          let data = {
+            'cmd': 'save_settings',
+            'melody_status': l.getDom('melody_status').value,
+            'spray_time': l.getDom('spray_time_ms').value,
+            'wifi_ssid': l.getDom('wifi_ssid').value,
+            'wifi_pass': l.getDom('wifi_pass').value
+          };
+          console.log("Saving settings...");
+          ws.send(JSON.stringify(data));
+        }
+      }
 
       if (e.type == 'click') {
         if (d.button) {
-          e.preventDefault();
-
-          if (d.button.id == 'submit') {
-            var data = {
-              'cmd': 'save_settings',
-              'wifi_ssid': l.getDom('wifi_ssid').value,
-              'wifi_pass': l.getDom('wifi_pass').value
-            };
-            console.log("Saving settings...");
-            ws.send(JSON.stringify(data));
-          } else if (d.button.id == 'reset_bag') {
+          if (d.button.id == 'reset_bag') {
             console.log("Resetting bag...");
             ws.send(JSON.stringify({
               'cmd': 'reset_bag',
