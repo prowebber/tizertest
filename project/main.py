@@ -34,7 +34,7 @@ class Main:
 
 	def start(self):
 		print('project main started')
-		self.led.blink_multi(2, timeout_ms = 6000)
+		self.led.blink_multi(4, timeout_ms = 6000)
 		#
 		# self.rgbled.rgb_color(blue)
 		# sleep_ms(1000)
