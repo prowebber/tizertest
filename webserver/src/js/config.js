@@ -70,7 +70,7 @@
       let bagLevel = Math.round((500 - mlSprayed) / 500 * 100);
       let bagPctMsg = bagLevel + "% remaining";
       let totalSprays = Math.round(mlSprayed / 0.8, 2);
-      let spraysInBag = Math.round(500 * 0.8);
+      let spraysInBag = Math.round(500 / 0.8);
       console.log('ml sprayed:' + mlSprayed);
       console.log('bag level:' + bagLevel); // Set params for user's screen
 
