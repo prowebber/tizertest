@@ -6,3 +6,5 @@ __pycache__/
 
 # Project files
 node_modules
+# Minified config.js is used
+config.js
