@@ -54,7 +54,7 @@ class OTADownload:
 		os.rmdir(directory)
 	
 	def download_all_files(self, root_url, version):
-		print("\t----- Downloading: %s" % root_url)
+		print("\tFetching Directory: %s" % root_url)
 		
 		# Get Master if no version; otherwise get the specified version
 		target_url = root_url if not version else root_url + '?ref=refs/tags/'

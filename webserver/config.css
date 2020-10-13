@@ -24,7 +24,9 @@ hr{
     height: 1px;
 }
 
-input[type=text]{
+input[type=text],
+input[type=number],
+select{
     border: 1px solid #b0bec5;
     border-radius: 2px;
     box-sizing: border-box;
@@ -45,6 +47,7 @@ div.bttn,
 button,
 a.bttn{
     background-color: #2196F3;
+    border:none;
     border-radius: 3px;
     box-sizing: border-box;
     color: #fff;
