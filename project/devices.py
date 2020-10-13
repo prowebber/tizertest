@@ -6,7 +6,7 @@ from project.pins import *
 
 class LED:
 	def __init__(self, pin):
-		self.led = Pin(pin, Pin.OUT, Pin.PULL_UP, value = 1)
+		self.led = Pin(pin, Pin.OUT, value = 0)
 		self.led_timer = Timer(-1)
 		self.blink_timer = Timer(-1)
 		self.TIMEOUT = False
