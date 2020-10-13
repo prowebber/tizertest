@@ -68,7 +68,8 @@
       // Test
       let mlSprayed = parseInt(params['ml_sprayed'], 10);
       let bagLevel = Math.round((500 - mlSprayed) / 500) * 100;
-      let bagPctMsg = bagLevel + "% remaining"; // Set params for user's screen
+      let bagPctMsg = bagLevel + "% remaining";
+      console.log('ml sprayed:' + mlSprayed); // Set params for user's screen
 
       l.getDom('bag_pct_msg').innerHTML = bagPctMsg;
       l.getDom('bag_level').value = bagLevel;
