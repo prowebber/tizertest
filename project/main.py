@@ -55,7 +55,7 @@ class Main:
 		# 	switch_foot_status = self.check_switch(self.switch_foot)
 		# 	if switch_foot_status == 'released':
 		# 		self.run_device()
-		sleep_ms(2000)
+		sleep_ms(12000)
 		self.start()
 
 	def check_switch(self, switch, hold_ms = 500):
