@@ -13,7 +13,6 @@ class Main:
 		print("main.Main initted")
 		# self.switch_wifi = Pin(D1, Pin.IN, Pin.PULL_UP)
 		# self.switch_foot = Pin(D2, Pin.IN, Pin.PULL_UP)
-		# self.rgbled = RGBLED(Pin(SD2, Pin.OUT), Pin(D3), Pin(D4), Pin(D5))
 		self.led = LED(D8)
 		self.speaker = Speaker(Pin(D6))
 		# self.pump = Pin(D7, Pin.OUT, value = 0)  # green
