@@ -67,7 +67,7 @@
     function populateData() {
       // Test
       let mlSprayed = parseInt(params['ml_sprayed'], 10);
-      let bagLevel = Math.round((500 - mlSprayed) / 500) * 100;
+      let bagLevel = Math.round((500 - mlSprayed) / 500 * 100);
       let bagPctMsg = bagLevel + "% remaining";
       console.log('ml sprayed:' + mlSprayed);
       console.log('bag level:' + bagLevel); // Set params for user's screen
