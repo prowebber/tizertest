@@ -24,7 +24,7 @@ class Main:
 		# self.relay_timer = Timer(4)
 		#
 		# self.pressed_time = None
-		# self.update_params()
+		self.update_params()
 		# self.api = Rest()
 		#
 		# # API params
