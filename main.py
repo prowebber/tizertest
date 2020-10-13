@@ -118,9 +118,7 @@ def rest():
 	print(resp)
 
 
-def start(broadcast = 0):
-	from utils import move_files
-	move_files()
+def start():
 	# if _conn_wifi():  # If connected to WiFi
 	# 	ota()  # Check for OTA
 
