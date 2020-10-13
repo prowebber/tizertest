@@ -22,11 +22,32 @@
       }
     }
 
-    const l = {
+    var l = {
       getDom: function (target) {
         return ctd(target);
+      },
+      loading: {
+        hide: function () {
+          let elem = document.querySelectorAll('#loading_effect'); // Find all the matching elements
+
+          for (let i = 0; i < elem.length; i++) {
+            // Loop through each element
+            elem[i].parentNode.removeChild(elem[i]); // Add the 'hide' class
+          }
+        },
+        show: function () {
+          let dom = ctd('c_main'); // Create the loading graphic
+
+          let loadingDom = document.createElement('div');
+          loadingDom.setAttribute('class', 'loading');
+          loadingDom.id = 'loading_effect';
+          loadingDom.innerHTML = "<div class='spinner'><div class='bounce1'></div><div class='bounce2'></div><div class='bounce3'></div></div>"; // Move inside to bottom
+
+          dom.appendChild(loadingDom);
+        }
       }
     };
+
     var ws = new WebSocket("ws://" + location.hostname + ":80"); // When a message is received
 
     ws.onmessage = function (evt) {
@@ -39,6 +60,7 @@
 
       window.onload = function () {
         populateData();
+        l.loading.hide();
       };
     }
 
@@ -53,6 +75,8 @@
       l.getDom('wifi_ssid').value = params['ssid'];
       l.getDom('wifi_pass').value = params['pass'];
       l.getDom('wifi_status').innerHTML = params['wifi_status'] == '1' ? 'Connected to internet' : 'Not connected to internet';
+      l.getDom('melody_status').value = params['melody'];
+      l.getDom('spray_time_ms').value = parseInt(params['spray_time'], 10);
     }
 
     function eventConfig(e) {

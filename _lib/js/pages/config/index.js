@@ -1,28 +1,4 @@
-/**
- * Get the DOM of an element
- */
-function ctd(target){
-    // If this is an Element, return the DOM
-    if (target && target.nodeName)  return target;                  // If this is an Element, return the DOM
-
-    // If this is a string reference
-    if (typeof target === 'string' || target instanceof String) {
-        let dom = document.getElementById(target);                  // See if the string is an element's HTML ID
-        if (dom) {                                                  // If the string is an element's HTML ID; return the DOM
-            return dom;
-        }
-    }
-
-    else{                                                           // If attempting to fetch the target
-        throw new Error('DOM not found');     // Throw an error
-    }
-}
-
-const l = {
-    getDom: function (target){
-        return ctd(target);
-    }
-};
+import {default as l} from './src/common'
 
 
 var ws = new WebSocket("ws://" + location.hostname + ":80");
@@ -38,6 +14,7 @@ function init() {
 
     window.onload = function () {
         populateData();
+        l.loading.hide();
     }
 }
 
