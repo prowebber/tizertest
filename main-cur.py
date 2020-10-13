@@ -1,29 +1,10 @@
+from core.config_man import get_config, save_config
+from utils import move_files, f_read, run_main
 import gc
-import json
-
-gc.enable()  # Enable automatic garbage collection
-
-
-def get_config():
-	"""
-	Open the JSON config file and convert to a Python dict
-	"""
-	with open('/.sconfig') as params:
-		data = json.load(params)
-	return data
-
-
-def save_config(config_dict):
-	"""
-	Update the config file with new settings
-	"""
-	# Save the settings
-	with open('.sconfig', 'w') as data_out:
-		json.dump(config_dict, data_out)
 
 # Load config data
 config_data = get_config()
-
+gc.enable()  # Enable automatic garbage collection
 
 # Verify the board ID is recorded
 if not config_data['device_id']:
@@ -119,10 +100,9 @@ def rest():
 
 
 def start(broadcast = 0):
-	from utils import move_files
 	move_files()
-	# if _conn_wifi():  # If connected to WiFi
-	# 	ota()  # Check for OTA
+	if _conn_wifi():  # If connected to WiFi
+		ota()  # Check for OTA
 
 	from project.main import Main
 	app = Main()

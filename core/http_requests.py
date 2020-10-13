@@ -125,6 +125,8 @@ class HttpClient:
 			gc.collect()
 			return data
 		elif dtype == 'text':
+			print("raw")
+			# print(resp.text)
 			data = resp.text
 			resp.close()
 			gc.collect()

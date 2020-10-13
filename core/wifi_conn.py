@@ -21,9 +21,12 @@ def connect_to_wifi(wifi_ssid, wifi_pass):
 		print('network config:', sta_if.ifconfig())
 		import ntptime
 		from machine import RTC
-		ntptime.settime()  # set the rtc datetime from the remote server
-		# @todo if time is not retrieved [Errno 110] ETIMEOUT is triggered
-		# @todo check if ntptime() is successful and specify success/failure in config
+		try:
+			ntptime.settime()  # set the rtc datetime from the remote server
+			# @todo if time is not retrieved [Errno 110] ETIMEOUT is triggered
+			# @todo check if ntptime() is successful and specify success/failure in config
+		except:
+			print("Error setting time...")
 		print('clock synced to UTC')
 		return 1  # Specify it is connected
 	return 0  # Otherwise say it is NOT connected
