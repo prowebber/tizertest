@@ -65,6 +65,8 @@ def force_ota(target_dir = None):
 	github_url = config_data['ota_github_url']
 	if not target_dir:
 		target_dir = config_data['ota_tgt_dir']
+		
+	print("OTA Target dir: " + target_dir)
 
 	from core.ota_download import OTADownload
 	if _conn_wifi():  # Connect to WiFi
