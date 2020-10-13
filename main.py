@@ -100,9 +100,9 @@ def rest():
 
 
 def start(broadcast = 0):
-	move_files()
-	if _conn_wifi():  # If connected to WiFi
-		ota()  # Check for OTA
+	# move_files()
+	# if _conn_wifi():  # If connected to WiFi
+		# ota()  # Check for OTA
 
 	from project.main import Main
 	app = Main()

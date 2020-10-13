@@ -41,20 +41,20 @@ class Main:
 
 		#
 		# self.rgbled.pulse(timeout_ms = 5500)
-		# # Play melody on boot
-		# if not self.mute:
-		# 	self.speaker.play_tones(['C5', 'E5', 'G5'])  # Play tritone
-		# while True:
-		# 	switch_wifi_status = self.check_switch(self.switch_wifi, 2000)
-		# 	if switch_wifi_status == 'held':
-		# 		from main import setup
-		# 		setup()
-		# 		continue
-		# 	elif switch_wifi_status == 'pressed':
-		# 		continue
-		# 	switch_foot_status = self.check_switch(self.switch_foot)
-		# 	if switch_foot_status == 'released':
-		# 		self.run_device()
+		# Play melody on boot
+		if not self.mute:
+			self.speaker.play_tones(['C5', 'E5', 'G5'])  # Play tritone
+		while True:
+			switch_wifi_status = self.check_switch(self.switch_wifi, 2000)
+			if switch_wifi_status == 'held':
+				from main import setup
+				setup()
+				continue
+			elif switch_wifi_status == 'pressed':
+				continue
+			switch_foot_status = self.check_switch(self.switch_foot)
+			if switch_foot_status == 'released':
+				self.run_device()
 
 	def check_switch(self, switch, hold_ms = 500):
 		first = not switch.value()
