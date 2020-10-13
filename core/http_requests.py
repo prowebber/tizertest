@@ -33,6 +33,7 @@ class Response:
 	
 	def json(self):
 		import ujson
+		# print(self.content)
 		return ujson.loads(self.content)
 
 
