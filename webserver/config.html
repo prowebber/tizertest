@@ -17,14 +17,23 @@
         <tr><td><span id="bag_pct_msg">70% remaining</span></td><td><progress value="70" max="100" id="bag_level"></progress></td><td><button class="bttn" id="reset_bag" style="width:auto;">Reset</button></td></tr>
     </table>
     <hr>
+    <form id="form_config">
     <h3>WiFi Settings</h3>
-<table>
-    <tr><td>WiFi status:</td><td><span id="wifi_status"></span></td></tr>
-    <tr><td>WiFi network:</td><td><input type="text" name="wifi_ssid" value="" id="wifi_ssid"></td></tr>
-    <tr><td>WiFi password:</td><td><input type="text" name="wifi_pass" value="" id="wifi_pass"></td></tr>
-</table>
+    <table>
+        <tr><td>WiFi status:</td><td><span id="wifi_status"></span></td></tr>
+        <tr><td>WiFi network:</td><td><input type="text" name="wifi_ssid" value="" id="wifi_ssid"></td></tr>
+        <tr><td>WiFi password:</td><td><input type="text" name="wifi_pass" value="" id="wifi_pass"></td></tr>
+    </table>
+
+    <hr>
+    <h3>Device Settings</h3>
+    <table>
+        <tr><td>Melody:</td><td><select id="melody_status"><option value="unmute">Play melody</option><option value="mute">Mute Melody</option></select></td></tr>
+        <tr><td>Spray Time (ms):</td><td><input type="number" name="spray_time" id="spray_time_ms" max="10000" min="100" step="100"></td></tr>
+    </table>
     <br><br>
-<button class="bttn" id="submit">Save Settings</button>
+    <button class="bttn" id="submit">Save Settings</button>
+    </form>
 <hr>
 <textarea id="output"></textarea>
 </main>
