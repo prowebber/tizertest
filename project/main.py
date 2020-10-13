@@ -15,7 +15,7 @@ class Main:
 		# self.switch_foot = Pin(D2, Pin.IN, Pin.PULL_UP)
 		# self.rgbled = RGBLED(Pin(SD2, Pin.OUT), Pin(D3), Pin(D4), Pin(D5))
 		# self.led = LED(Pin(SD3))
-		# self.speaker = Speaker(Pin(D6))
+		self.speaker = Speaker(Pin(D6))
 		# self.pump = Pin(D7, Pin.OUT, value = 0)  # green
 		# self.relay = Pin(D8, Pin.OUT, value = 0)  # green
 		#
@@ -24,7 +24,7 @@ class Main:
 		# self.relay_timer = Timer(4)
 		#
 		# self.pressed_time = None
-		# self.update_params()
+		self.update_params()
 		# self.api = Rest()
 		#
 		# # API params
@@ -140,9 +140,3 @@ class Main:
 		self.relay_open_time_ms = int(self.config['relay_open_time_ms'])
 		self.total_unit_spray_time = int(self.config['total_unit_spray_time'])
 		self.total_doypack_spray_time = int(self.config['total_doypack_spray_time'])
-
-
-def play_melody(notes_list, volume = 10):
-	from project.tones import play_tones
-
-	play_tones(notes_list, volume = volume)
