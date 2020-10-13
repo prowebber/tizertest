@@ -11,19 +11,19 @@ from utime import sleep_ms, ticks_ms, ticks_diff
 class Main:
 	def __init__(self):
 		print("main.Main initted")
-		self.switch_wifi = Pin(D1, Pin.IN, Pin.PULL_UP)
-		self.switch_foot = Pin(D2, Pin.IN, Pin.PULL_UP)
-		self.rgbled = RGBLED(Pin(SD2, Pin.OUT), Pin(D3), Pin(D4), Pin(D5))
+		# self.switch_wifi = Pin(D1, Pin.IN, Pin.PULL_UP)
+		# self.switch_foot = Pin(D2, Pin.IN, Pin.PULL_UP)
+		# self.rgbled = RGBLED(Pin(SD2, Pin.OUT), Pin(D3), Pin(D4), Pin(D5))
 		self.led = LED(Pin(SD3))
 		self.speaker = Speaker(Pin(D6))
-		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
-		self.relay = Pin(D8, Pin.OUT, value = 0)  # green
+		# self.pump = Pin(D7, Pin.OUT, value = 0)  # green
+		# self.relay = Pin(D8, Pin.OUT, value = 0)  # green
 
-		# Timers
-		self.pump_timer = Timer(1)
-		self.relay_timer = Timer(4)
+		# # Timers
+		# self.pump_timer = Timer(1)
+		# self.relay_timer = Timer(4)
 
-		self.pressed_time = None
+		# self.pressed_time = None
 		self.update_params()
 		self.api = Rest()
 
@@ -34,7 +34,7 @@ class Main:
 
 	def start(self):
 		print('project main started')
-		self.led.blink_multi(2,timeout_ms = 6000)
+		self.led.blink_multi(2, timeout_ms = 6000)
 		#
 		# self.rgbled.rgb_color(blue)
 		# sleep_ms(1000)
@@ -44,17 +44,19 @@ class Main:
 		# Play melody on boot
 		if not self.mute:
 			self.speaker.play_tones(['C5', 'E5', 'G5'])  # Play tritone
-		while True:
-			switch_wifi_status = self.check_switch(self.switch_wifi, 2000)
-			if switch_wifi_status == 'held':
-				from main import setup
-				setup()
-				continue
-			elif switch_wifi_status == 'pressed':
-				continue
-			switch_foot_status = self.check_switch(self.switch_foot)
-			if switch_foot_status == 'released':
-				self.run_device()
+		# while True:
+		# 	switch_wifi_status = self.check_switch(self.switch_wifi, 2000)
+		# 	if switch_wifi_status == 'held':
+		# 		from main import setup
+		# 		setup()
+		# 		continue
+		# 	elif switch_wifi_status == 'pressed':
+		# 		continue
+		# 	switch_foot_status = self.check_switch(self.switch_foot)
+		# 	if switch_foot_status == 'released':
+		# 		self.run_device()
+		sleep_ms(2000)
+		self.start()
 
 	def check_switch(self, switch, hold_ms = 500):
 		first = not switch.value()
@@ -115,7 +117,7 @@ class Main:
 		self.relay.off()
 		self.config['total_unit_spray_time'] += self.relay_open_time_ms
 		self.config['total_doypack_spray_time'] += self.relay_open_time_ms
-		
+
 		if self.wifi_status == '1':
 			response = self.api.post('/tizer/devices/' + self.device_id + '/usage', {
 				'doypack_id': self.doypack_id,
@@ -124,7 +126,6 @@ class Main:
 			})
 			print("API Response:")
 			print(response)
-		
 
 	def update_params(self):
 		# Stored Params
