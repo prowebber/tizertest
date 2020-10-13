@@ -44,10 +44,10 @@ class LED:
 		self.blinking = not self.blinking
 
 	def on(self):
-		self.led.off()
+		self.led.on()
 
 	def off(self):
-		self.led.on()
+		self.led.off()
 
 
 class RGBLED:
