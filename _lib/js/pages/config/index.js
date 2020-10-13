@@ -54,6 +54,10 @@ function populateData() {
     l.getDom('wifi_ssid').value = params['ssid'];
     l.getDom('wifi_pass').value = params['pass'];
     l.getDom('wifi_status').innerHTML = (params['wifi_status'] == '1') ? 'Connected to internet' : 'Not connected to internet';
+
+    l.getDom('melody_status').value = params['melody'];
+    l.getDom('spray_time_ms').value = parseInt(params['spray_time'], 10);
+
 }
 
 function eventConfig(e) {
