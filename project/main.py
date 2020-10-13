@@ -25,12 +25,12 @@ class Main:
 		#
 		# self.pressed_time = None
 		self.update_params()
-		# self.api = Rest()
-		#
-		# # API params
-		# self.device_id = None
-		# self.doypack_id = None
-		# self.wifi_status = False
+		self.api = Rest()
+
+		# API params
+		self.device_id = None
+		self.doypack_id = None
+		self.wifi_status = False
 
 	def start(self):
 		print('project main started')
