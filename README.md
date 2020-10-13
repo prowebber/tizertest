@@ -76,7 +76,7 @@ import os
 os.remove('/ota_updater/main.py')
 
 # View contents of file
-with open('.sconfig', 'r') as f:
+with open('main.py', 'r') as f:
     print(f.read())
     
 for f in os.listdir():
