@@ -6,7 +6,7 @@ from project.pins import *
 
 class Button:
 	def __init__(self, pin):
-		self.button = Pin(pin,  Pin.IN, Pin.PULL_UP)
+		self.button = Pin(pin, Pin.IN, Pin.PULL_UP)
 		self.hold_ms = 500
 		self.pressed_time = None
 		self.enabled = True
@@ -38,6 +38,9 @@ class Button:
 
 	def deinit(self):
 		self.enabled = False
+
+	def reset(self):
+		self.pressed_time = False
 
 
 class LED:
