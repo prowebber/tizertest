@@ -16,11 +16,10 @@ class Button:
 		# start recursive state check
 		self.check(self.button.value())
 
-
 	def check(self, val_1):
 		print('button checked')
 		if self.enabled:
-			Timer(-1).init(period = 100, mode = Timer.ONE_SHOT, callback = lambda t: self.check(self.button.value()))
+
 			val_2 = not self.button.value()
 
 			self.pressed = val_2 and not val_1
@@ -34,6 +33,8 @@ class Button:
 			self.held = val_1 and val_2 and ticks_diff(ticks_ms(), self.pressed_time) >= self.hold_ms
 			if self.held:
 				print('button held')
+
+			Timer(-1).init(period = 100, mode = Timer.ONE_SHOT, callback = lambda t: self.check(self.button.value()))
 
 	def deinit(self):
 		self.enabled = False
@@ -147,4 +148,3 @@ def test_led():
 	while True:
 		if switch.held:
 			sleep_ms(2000)
-
