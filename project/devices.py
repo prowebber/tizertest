@@ -10,13 +10,15 @@ class Button:
 		self.hold_ms = 500
 		self.pressed_time = None
 		self.enabled = True
-		# start recursive state check
-		self.check(self.button.value())
 		self.pressed = False
 		self.released = False
 		self.held = False
+		# start recursive state check
+		self.check(self.button.value())
+
 
 	def check(self, val_1):
+		print('button checked')
 		if self.enabled:
 			Timer(-1).init(period = 100, mode = Timer.ONE_SHOT, callback = lambda t: self.check(self.button.value()))
 			val_2 = not self.button.value()
@@ -24,7 +26,7 @@ class Button:
 			self.pressed = val_2 and not val_1
 			if self.pressed:
 				self.pressed_time = ticks_ms()
-
+				print('button pressed')
 			self.released = val_1 and not val_2
 			if self.released:
 				print('button released')
