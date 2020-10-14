@@ -4,9 +4,19 @@ from utime import sleep_ms, ticks_ms, ticks_diff
 from project.pins import *
 
 
-class LED:
+# class Button:
+# 	def __init__(self, pin):
+# 		self.button = Pin(pin, Pin.IN, Pin.PULL_UP)
+# 		self.led_timer = Timer(-1)
+# 		self.blink_timer = Timer(-1)
+# 		self.TIMEOUT = False
+# 		self.blinking = False
+
+
+class LED(Pin):
 	def __init__(self, pin):
-		self.led = Pin(pin, Pin.OUT, value = 0)
+		Pin.__init__(self, pin, Pin.OUT, value = 0)
+		# self.led = Pin(pin, Pin.OUT, value = 0)
 		self.led_timer = Timer(-1)
 		self.blink_timer = Timer(-1)
 		self.TIMEOUT = False
@@ -34,20 +44,14 @@ class LED:
 		self.blink_timer.deinit()
 
 	def toggle(self):
-		self.led.value(not self.led.value())
+		self.value(not self.value())
 
 	def toggle_blink(self, n, on_time, blink_hz):
 		if self.blinking:
 			self.blink_off()
 		elif not self.TIMEOUT:
-			self.blink(freq = blink_hz, timeout_ms = 2*n * int(on_time / (n + 1)))
+			self.blink(freq = blink_hz, timeout_ms = 2 * n * int(on_time / (n + 1)))
 		self.blinking = not self.blinking
-
-	def on(self):
-		self.led.on()
-
-	def off(self):
-		self.led.off()
 
 
 class RGBLED:
