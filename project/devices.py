@@ -139,6 +139,10 @@ def duty_val(val, max_val = 100):
 
 
 def test_led():
-	led = LED(SD3)
-	led.blink_multi(3, 1, 12000)
+	# led = LED(SD3)
+	# led.blink_multi(3, 1, 12000)
 	switch = Button(D2)
+	while True:
+		if switch.held:
+			sleep_ms(2000)
+
