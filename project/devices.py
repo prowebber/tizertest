@@ -99,5 +99,5 @@ def duty_val(val, max_val = 100):
 
 
 def test_led():
-	led = LED(SD3)
+	led = LED(D8)
 	led.blink_multi(3, 1, 12000)
