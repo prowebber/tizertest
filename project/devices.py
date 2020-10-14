@@ -16,8 +16,8 @@ class Button:
 		# start recursive state check
 		self.check(self.button.value())
 
-	def check(self, val_1):
-		print('button checked')
+	def check(self, val_1, check_ms = 100):
+
 		if self.enabled:
 
 			val_2 = not self.button.value()
@@ -34,21 +34,10 @@ class Button:
 			if self.held:
 				print('button held')
 
-			Timer(-1).init(period = 100, mode = Timer.ONE_SHOT, callback = lambda t: self.check(self.button.value()))
+			Timer(-1).init(period = check_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.check(val_2))
 
 	def deinit(self):
 		self.enabled = False
-
-
-#
-# def pressed(self):
-# 	print('button pressed')
-#
-# def released(self):
-# 	print('button released')
-#
-# def held(self):
-# 	print('button held')
 
 
 class LED:
@@ -147,4 +136,4 @@ def test_led():
 	switch = Button(D2)
 	while True:
 		if switch.held:
-			sleep_ms(2000)
+			break
