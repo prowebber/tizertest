@@ -4,6 +4,50 @@ from utime import sleep_ms, ticks_ms, ticks_diff
 from project.pins import *
 
 
+class Button:
+	def __init__(self, pin):
+		self.button = Pin(pin, Pin.OUT, value = 0)
+		self.hold_ms = 500
+		self.pressed_time = None
+		self.enabled = True
+		# start recursive state check
+		self.check(self.button.value())
+		self.pressed = False
+		self.released = False
+		self.held = False
+
+	def check(self, val_1):
+		if self.enabled:
+			Timer(-1).init(period = 100, mode = Timer.ONE_SHOT, callback = lambda t: self.check(self.button.value()))
+			val_2 = not self.button.value()
+
+			self.pressed = val_2 and not val_1
+			if self.pressed:
+				self.pressed_time = ticks_ms()
+
+			self.released = val_1 and not val_2
+			if self.released:
+				print('button released')
+
+			self.held = val_1 and val_2 and ticks_diff(ticks_ms(), self.pressed_time) >= self.hold_ms
+			if self.held:
+				print('button held')
+
+	def deinit(self):
+		self.enabled = False
+
+
+#
+# def pressed(self):
+# 	print('button pressed')
+#
+# def released(self):
+# 	print('button released')
+#
+# def held(self):
+# 	print('button held')
+
+
 class LED:
 	def __init__(self, pin):
 		self.led = Pin(pin, Pin.OUT, value = 0)
@@ -40,7 +84,7 @@ class LED:
 		if self.blinking:
 			self.blink_off()
 		elif not self.TIMEOUT:
-			self.blink(freq = blink_hz, timeout_ms = 2*n * int(on_time / (n + 1)))
+			self.blink(freq = blink_hz, timeout_ms = 2 * n * int(on_time / (n + 1)))
 		self.blinking = not self.blinking
 
 	def on(self):
@@ -97,3 +141,4 @@ def duty_val(val, max_val = 100):
 def test_led():
 	led = LED(SD3)
 	led.blink_multi(3, 1, 12000)
+	switch = Button(D2)
