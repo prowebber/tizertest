@@ -10,17 +10,16 @@ from utime import sleep_ms, ticks_ms, ticks_diff
 
 class Main:
 	def __init__(self):
-		print("main.Main initted")
 		self.switch_wifi = Button(D1)
 		self.switch_foot = Button(D2)
 		self.speaker = Speaker(D6)
 		self.led = LED(D8)
-		# self.pump = Pin(D7, Pin.OUT, value = 0)  # green
-		# self.relay = Pin(D8, Pin.OUT, value = 0)  # green
+		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
+		self.relay = Pin(D5, Pin.OUT, value = 0)  # green
 
 		# # Timers
-		# self.pump_timer = Timer(1)
-		# self.relay_timer = Timer(4)
+		self.pump_timer = Timer(1)
+		self.relay_timer = Timer(4)
 		self.relay_on_time = None
 		# Set hold time to 2sec on wifi button
 		self.switch_wifi.hold_ms = 2000

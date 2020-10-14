@@ -13,6 +13,7 @@ class Button:
 		self.pressed = False
 		self.released = False
 		self.held = False
+		print('self in button:', self.__dict__)
 		# start recursive state check
 		self.check(self.button.value())
 
@@ -33,7 +34,6 @@ class Button:
 			self.held = val_1 and val_2 and ticks_diff(ticks_ms(), self.pressed_time) >= self.hold_ms
 			if self.held:
 				print('button held')
-
 			Timer(-1).init(period = check_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.check(val_2))
 
 	def deinit(self):
