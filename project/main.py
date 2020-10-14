@@ -2,7 +2,7 @@ from core.config_man import get_config, save_config
 from machine import Pin, Timer, PWM
 from project.pins import *
 from project.colors import *
-from project.devices import RGBLED, LED
+from project.devices import RGBLED, LED, Button
 from project.tones import Speaker
 from project.rest_api import Rest
 from utime import sleep_ms, ticks_ms, ticks_diff
@@ -11,18 +11,20 @@ from utime import sleep_ms, ticks_ms, ticks_diff
 class Main:
 	def __init__(self):
 		print("main.Main initted")
-		# self.switch_wifi = Pin(D1, Pin.IN, Pin.PULL_UP)
-		# self.switch_foot = Pin(D2, Pin.IN, Pin.PULL_UP)
+		self.switch_wifi = Button(D1)
+		self.switch_foot = Button(D2)
+		self.speaker = Speaker(D6)
 		self.led = LED(D8)
-		self.speaker = Speaker(Pin(D6))
 		# self.pump = Pin(D7, Pin.OUT, value = 0)  # green
 		# self.relay = Pin(D8, Pin.OUT, value = 0)  # green
 
 		# # Timers
 		# self.pump_timer = Timer(1)
 		# self.relay_timer = Timer(4)
+		self.relay_on_time = None
+		# Set hold time to 2sec on wifi button
+		self.switch_wifi.hold_ms = 2000
 
-		# self.pressed_time = None
 		self.update_params()
 		self.api = Rest()
 
@@ -33,61 +35,29 @@ class Main:
 
 	def start(self):
 		print('project main started')
-		self.led.blink_multi(4, timeout_ms = 6000)
-		#
-		# self.rgbled.rgb_color(blue)
-		# sleep_ms(1000)
 
-		#
-		# self.rgbled.pulse(timeout_ms = 5500)
-		# Play melody on boot
+		# Play tritone on boot
 		if not self.mute:
 			self.speaker.play_tones(['C5', 'E5', 'G5'])  # Play tritone
-		# while True:
-		# 	switch_wifi_status = self.check_switch(self.switch_wifi, 2000)
-		# 	if switch_wifi_status == 'held':
-		# 		from main import setup
-		# 		setup()
-		# 		continue
-		# 	elif switch_wifi_status == 'pressed':
-		# 		continue
-		# 	switch_foot_status = self.check_switch(self.switch_foot)
-		# 	if switch_foot_status == 'released':
-		# 		self.run_device()
-		sleep_ms(12000)
-		self.start()
+		while True:
+			if self.switch_wifi.held:
+				print('wifi broadcast')
+				self.switch_wifi.reset()
+			if self.switch_foot.released:
+				self.run_device()
+			elif self.switch_foot.held:
+				self.run_device(timeout = 10000)
 
-	def check_switch(self, switch, hold_ms = 500):
-		first = not switch.value()
-		sleep_ms(100)
-		second = not switch.value()
-		status = None
-		if first and not second:
-			# return 'released'
-			status = 'released'
-		elif second and not first:
-			status = 'pressed'
-		# 	# return None
-		elif first and second and ticks_diff(ticks_ms(), self.pressed_time) >= hold_ms:
-			status = 'held'
-		return status
-
-	def switch_held(self):
-		self.pressed_time = None
-
-	def run_device(self):
+	def run_device(self, timeout = None):
 		"""
-		Run the Shoetizer for 1 iteration
+		Run the Shoetizer one time, up to timeout ms
 		"""
 		print('run device')
 		self.update_params()
-
-		for i in range(self.burst_count):  # Repeat for each burst
-			if not self.mute:  # Play note (if enabled)
-				self.speaker.play_tones(['G5'])
-			#
-			self.pump_timer.init(period = self.pump_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_on())
-			self.relay_timer.init(period = self.relay_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_on())
+		if not self.mute:  # Play note (if enabled)
+			self.speaker.play_tones(['G5'])
+		self.pump_timer.init(period = self.pump_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_on())
+		self.relay_timer.init(period = self.relay_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_on())
 
 		save_config(self.config)
 
@@ -97,6 +67,7 @@ class Main:
 		"""
 		print('pump_on')
 		self.pump.on()
+
 		self.pump_timer.init(period = self.pump_run_time_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_off())
 
 	def pump_off(self):
@@ -106,25 +77,27 @@ class Main:
 		print('pump_off')
 		self.pump.off()
 
-	def relay_on(self):
+	def relay_on(self, timeout):
 		print('relay_on')
+		per = timeout if timeout else self.relay_open_time_ms
 		self.relay.on()
-		self.relay_timer.init(period = self.relay_open_time_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_off())
+		self.relay_on_time = ticks_ms()
+		self.relay_timer.init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_off())
 
 	def relay_off(self):
 		print('relay_off')
 		self.relay.off()
-		self.config['total_unit_spray_time'] += self.relay_open_time_ms
-		self.config['total_doypack_spray_time'] += self.relay_open_time_ms
+		relay_duration = ticks_diff(ticks_ms(), self.relay_on_time)
+		self.config['total_unit_spray_time'] += relay_duration
+		self.config['total_doypack_spray_time'] += relay_duration
 
 		if self.wifi_status == '1':
 			response = self.api.post('/tizer/devices/' + self.device_id + '/usage', {
 				'doypack_id': self.doypack_id,
 				'usage_type': 1,
-				'duration': self.relay_open_time_ms
+				'duration': relay_duration
 			})
-			print("API Response:")
-			print(response)
+			print("API Response:\n", response)
 
 	def update_params(self):
 		# Stored Params
