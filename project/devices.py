@@ -17,7 +17,7 @@ class Button:
 		# # start recursive state check
 		# self.check(not self.button.value())
 
-		self.button.irq(trigger = Pin.IRQ_FALLING, handler = lambda p: self.f_press())
+		self.button.irq(trigger = Pin.IRQ_FALLING, handler = lambda p: self.on_press())
 
 	def check(self, val_1, check_ms = 100):
 		val_2 = not self.button.value()
@@ -37,7 +37,8 @@ class Button:
 
 	def on_press(self):
 		print('button pressed irq!')
-		self.f_press()
+		if self.f_press:
+			self.f_press()
 
 	def _reset(self):
 		self.pressed_time = None
