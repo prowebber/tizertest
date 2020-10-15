@@ -62,9 +62,6 @@ class Main:
 		self.pump_timer.init(period = self.pump_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_on())
 		self.relay_timer.init(period = self.relay_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_on(timeout))
 
-		# re enable switch
-		self.switch_foot.enabled = True
-
 	def pump_on(self):
 		"""
 		Run the pump

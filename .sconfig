@@ -12,7 +12,7 @@
   "relay_open_time_ms": "800",
   "spray_burst_count": "1",
   "total_doypack_spray_time": "30000",
-  "total_unit_spray_time": "0",
+  "total_unit_spray_time": "60000",
   "wifi_connect_on_boot": "0",
   "wifi_status": "0",
   "wifi_ssid": "magiceye",
