@@ -15,7 +15,7 @@ class Button:
 		self.held = False
 		print('self in button:', self.__dict__)
 		# start recursive state check
-		self.check(self.button.value())
+		self.check(not self.button.value())
 
 	def check(self, val_1, check_ms = 100):
 
