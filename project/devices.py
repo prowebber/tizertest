@@ -17,11 +17,8 @@ class Button:
 		self.check(not self.button.value())
 
 	def check(self, val_1, check_ms = 100):
-
+		val_2 = not self.button.value()
 		if self.enabled:
-
-			val_2 = not self.button.value()
-
 			self.pressed = val_2 and not val_1
 			if self.pressed:
 				self.pressed_time = ticks_ms()
