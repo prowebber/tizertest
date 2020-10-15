@@ -83,8 +83,9 @@ class Main:
 		per = self.t_max if self.t_max else self.relay_ms
 		self.relay.on()
 		self.t0_relay = ticks_ms()
-		sleep_ms(per)
-		self.relay_off()
+		Timer(-1).init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_off())
+		# sleep_ms(per)
+		# self.relay_off()
 
 	# Timer(-1).init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_off())
 
