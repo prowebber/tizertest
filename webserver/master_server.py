@@ -5,10 +5,9 @@ import websocket_helper
 from time import sleep
 import os
 
+
 class ClientClosedError(Exception):
 	pass
-
-
 
 
 class SocketConnection:
@@ -82,68 +81,67 @@ class SocketClient:
 	def process(self):
 		pass
 
-class SocketServer:
-	def __init__(self, page):
-		self._listen_s = None
-		self._clients = []
-		self._page = page
+
+class SocketMultiServer:
+	def __init__(self, index_page, max_conn=10):
+		super().__init__()
+		dir_idx = index_page.rfind("/webserver/")
+		self.index_pg = index_page
+		self.max_conn = max_conn
+		self.sock = None  # Listen for socket
+		self.clients = []  # Contains all clients
+		self._web_dir = index_page[0:dir_idx] if dir_idx > 0 else "/"
 	
-	def _setup_conn(self, port, accept_handler):
-		self._listen_s = socket.socket()
-		self._listen_s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+	def create_socket(self, conn):
+		pass
+	
+	def start(self, port=80):
+		if self.sock:
+			self.stop()
+		self.setup_conn(port, self._accept_conn)
+		print("Started WebSocket server...")
+		
+	def stop(self):
+		if self.sock:
+			self.sock.close()
+		self.sock = None
+		
+		for client in self.clients:
+			client.connection.close()
+		print("Stopped WebSocket server.")
+		
+	def process_all(self):
+		for client in self.clients:
+			client.process()
+			
+	def remove_connection(self, conn):
+		for client in self.clients:
+			if client.connection is conn:
+				self.clients.remove(client)
+				return
+		
+	def setup_conn(self, port, accept_handler):
+		self.sock = socket.socket()
+		self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 		
 		ai = socket.getaddrinfo("0.0.0.0", port)
 		addr = ai[0][4]
 		
-		self._listen_s.bind(addr)
-		self._listen_s.listen(4)  # Stops the connection if this many items fail
+		self.sock.bind(addr)
+		self.sock.listen(4)  # Stops the connection if this many items fail
+		
 		if accept_handler:
-			self._listen_s.setsockopt(socket.SOL_SOCKET, 20, accept_handler)
+			self.sock.setsockopt(socket.SOL_SOCKET, 20, accept_handler)
 		
 		for i in (network.AP_IF, network.STA_IF):
 			iface = network.WLAN(i)
 			if iface.active():
 				print("WebSocket started on ws://%s:%d" % (iface.ifconfig()[0], port))
 	
-	def stop(self):
-		if self._listen_s:
-			self._listen_s.close()
-		self._listen_s = None
-		for client in self._clients:
-			client.connection.close()
-		print("Stopped WebSocket server.")
-	
-	def start(self, port=80):
-		if self._listen_s:
-			self.stop()
-		self._setup_conn(port, self._accept_conn)
-		print("Started WebSocket server...")
-	
-	def process_all(self):
-		for client in self._clients:
-			client.process()
-	
-	def remove_connection(self, conn):
-		for client in self._clients:
-			if client.connection is conn:
-				self._clients.remove(client)
-				return
-
-
-class SocketMultiServer(SocketServer):
-	def __init__(self, index_page, max_conn=10):
-		super().__init__(index_page)
-		dir_idx = index_page.rfind("/webserver/")
-		self.max_conn = max_conn
-		self._web_dir = index_page[0:dir_idx] if dir_idx > 0 else "/"
-		
-	def create_socket(self, conn):
-		pass
-	
 	def _accept_conn(self, list):
-		cl, addr = self._listen_s.accept()
+		cl, addr = self.sock.accept()
 		
-		if len(self._clients) >= self.max_conn:
+		if len(self.clients) >= self.max_conn:
 			cl.setblocking(True)
 			create_static_page(cl, 503, "503 Too Many Connections")
 			return
@@ -153,11 +151,11 @@ class SocketMultiServer(SocketServer):
 		
 		if data and "Upgrade: websocket" not in data.split("\r\n") and "GET" == data.split(" ")[0]:
 			requested_file = data.split(" ")[1].split("?")[0]
-			requested_file = self._page if requested_file in [None, "/"] else requested_file
+			requested_file = self.index_pg if requested_file in [None, "/"] else requested_file
 		
 		try:
 			websocket_helper.server_handshake(cl)
-			self._clients.append(self.create_socket(SocketConnection(addr, cl, self.remove_connection)))
+			self.clients.append(self.create_socket(SocketConnection(addr, cl, self.remove_connection)))
 		except OSError:
 			if requested_file:
 				self._serve_file(requested_file, cl)
