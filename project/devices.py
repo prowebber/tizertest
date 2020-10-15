@@ -33,7 +33,7 @@ class Button:
 		Timer(-1).init(period = check_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.check(val_2))
 
 	def _reset(self):
-		self.pressed_time = False
+		self.pressed_time = None
 
 
 class LED:
