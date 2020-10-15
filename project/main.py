@@ -48,7 +48,7 @@ class Main:
 				if self.switch_foot.released:
 					self.run_device()
 				elif self.switch_foot.held:
-					self.run_device(timeout = 10000)
+					self.run_device(timeout = 5000)
 
 	def run_device(self, timeout = None):
 		"""
