@@ -36,9 +36,6 @@ class Button:
 				print('button held')
 			Timer(-1).init(period = check_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.check(val_2))
 
-	def deinit(self):
-		self.enabled = False
-
 	def reset(self):
 		self.pressed_time = False
 
