@@ -27,7 +27,6 @@ class Main:
 		self.update_params()
 		print(self.config)
 		self.api = Rest()
-
 		# API params
 		self.device_id = None
 		self.doypack_id = None
@@ -40,18 +39,22 @@ class Main:
 		if not self.mute:
 			self.speaker.play_tones(['C5', 'E5', 'G5'])  # Play tritone
 		while True:
-			if self.switch_wifi.held:
-				print('wifi broadcast')
-				self.switch_wifi.reset()
-			if self.switch_foot.released:
-				self.run_device()
-			elif self.switch_foot.held:
-				self.run_device(timeout = 10000)
+			if self.switch_wifi.enabled:
+				if self.switch_wifi.held:
+					print('wifi broadcast')
+					self.switch_wifi.reset()
+			if self.switch_foot.enabled:
+				if self.switch_foot.released:
+					self.run_device()
+				elif self.switch_foot.held:
+					self.run_device(timeout = 10000)
 
 	def run_device(self, timeout = None):
 		"""
 		Run the Shoetizer one time, up to timeout ms
 		"""
+		# disable switch while running
+		self.switch_foot.enabled = False
 		print('run device')
 		self.update_params()
 		if not self.mute:  # Play note (if enabled)
@@ -59,7 +62,8 @@ class Main:
 		self.pump_timer.init(period = self.pump_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_on())
 		self.relay_timer.init(period = self.relay_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_on(timeout))
 
-		save_config(self.config)
+		# re enable switch
+		self.switch_foot.enabled = True
 
 	def pump_on(self):
 		"""
@@ -92,6 +96,8 @@ class Main:
 		self.config['total_unit_spray_time'] += relay_duration
 		self.config['total_doypack_spray_time'] += relay_duration
 
+		save_config(self.config)
+
 		if self.wifi_status == '1':
 			response = self.api.post('/tizer/devices/' + self.device_id + '/usage', {
 				'doypack_id': self.doypack_id,
@@ -99,6 +105,8 @@ class Main:
 				'duration': relay_duration
 			})
 			print("API Response:\n", response)
+		# re enable switch
+		self.switch_foot.enabled = True
 
 	def update_params(self):
 		# Stored Params
