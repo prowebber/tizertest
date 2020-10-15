@@ -56,7 +56,7 @@ class Main:
 		if not self.mute:  # Play note (if enabled)
 			self.speaker.play_tones(['G5'])
 		self.pump_timer.init(period = self.pump_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_on())
-		self.relay_timer.init(period = self.relay_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_on())
+		self.relay_timer.init(period = self.relay_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_on(timeout))
 
 		save_config(self.config)
 
