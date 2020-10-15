@@ -17,7 +17,7 @@ class Button:
 		# # start recursive state check
 		# self.check(not self.button.value())
 
-		self.button.irq(trigger = Pin.IRQ_FALLING, handler = self.on_press)
+		self.button.irq(trigger = Pin.IRQ_FALLING, handler = lambda p: self.f_press())
 
 	def check(self, val_1, check_ms = 100):
 		val_2 = not self.button.value()
