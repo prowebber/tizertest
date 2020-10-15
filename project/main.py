@@ -81,8 +81,10 @@ class Main:
 		print('relay_on')
 		per = self.timeout if self.timeout else self.relay_open_time_ms
 		self.relay.on()
+		sleep_ms(per)
 		self.relay_on_time = ticks_ms()
-		Timer(-1).init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_off())
+		self.relay_off()
+		# Timer(-1).init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_off())
 
 	def relay_off(self):
 		print('relay_off')
