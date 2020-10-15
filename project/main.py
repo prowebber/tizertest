@@ -88,6 +88,7 @@ class Main:
 		print('relay_off')
 		self.relay.off()
 		relay_duration = ticks_diff(ticks_ms(), self.relay_on_time)
+		print('relay duration: ', relay_duration, ' ms')
 		self.config['total_unit_spray_time'] += relay_duration
 		self.config['total_doypack_spray_time'] += relay_duration
 
