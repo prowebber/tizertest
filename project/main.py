@@ -21,7 +21,7 @@ class Main:
 		# Set hold time to 2sec on wifi button
 		self.b_wifi.hold_ms = 2000
 		self.b_wifi.enabled = False
-
+		self.b_foot.f_press = self.run
 		self.sync_params()
 		print(self.c)
 		self.api = Rest()
@@ -49,7 +49,7 @@ class Main:
 					self.run(t_max = 5000)
 
 	def run(self, t_max = None):
-		#Run once up to t_max ms
+		# Run once up to t_max ms
 		# disable switch while running
 		self.b_foot.enabled = False
 		print('run...')

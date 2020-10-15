@@ -13,7 +13,7 @@ class Button:
 		self.pressed = False
 		self.released = False
 		self.held = False
-
+		self.f_press = None
 		# # start recursive state check
 		# self.check(not self.button.value())
 
@@ -35,10 +35,10 @@ class Button:
 				print('button held')
 		Timer(-1).init(period = check_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.check(val_2))
 
-	def on_press(self, f = None):
+	def on_press(self):
 		print('button pressed irq!')
-		if f:
-			f()
+		if self.f_press:
+			self.f_press()
 
 	def _reset(self):
 		self.pressed_time = None
