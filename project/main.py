@@ -18,6 +18,7 @@ class Main:
 		self.relay = Pin(D5, Pin.OUT, value = 0)  # green
 		self.t0_relay = None
 		self.t_max = None
+		self.running = False
 		# Set hold time to 2sec on wifi button
 		self.b_wifi.hold_ms = 2000
 		self.b_wifi.enabled = False
@@ -50,16 +51,17 @@ class Main:
 			pass
 
 	def run(self, t_max = None):
-		# Run once up to t_max ms
-		# disable switch while running
-		self.b_foot.enabled = False
-		print('run...')
-		self.sync_params()
-		self.t_max = t_max
-		if not self.mute:  # Play note (if enabled)
-			self.speaker.play_tones(['G5'])
-		t_single(self.pump_delay, self.pump_on)
-		t_single(self.relay_delay, self.relay_on)
+		# Run once up to t_max ms if not running
+		if not self.running:
+			# disable switch while running
+			self.b_foot.enabled = False
+			print('run...')
+			self.sync_params()
+			self.t_max = t_max
+			if not self.mute:  # Play note (if enabled)
+				self.speaker.play_tones(['G5'])
+			t_single(self.pump_delay, self.pump_on)
+			t_single(self.relay_delay, self.relay_on)
 
 	def pump_on(self):
 		print('pump_on')
@@ -96,6 +98,7 @@ class Main:
 			})
 			print("API Response:\n", response)
 		# re enable switch
+		# self.running=False
 		self.b_foot.enabled = True
 		self.t_max = None
 
