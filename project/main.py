@@ -49,9 +49,7 @@ class Main:
 					self.run(t_max = 5000)
 
 	def run(self, t_max = None):
-		"""
-		Run once up to t_max ms
-		"""
+		#Run once up to t_max ms
 		# disable switch while running
 		self.b_foot.enabled = False
 		print('run...')
@@ -63,17 +61,11 @@ class Main:
 		t_single(self.relay_delay, self.relay_on)
 
 	def pump_on(self):
-		"""
-		Run the pump
-		"""
 		print('pump_on')
 		self.pump.on()
 		t_single(self.pump_ms, self.pump_off)
 
 	def pump_off(self):
-		"""
-		Turn off the pump
-		"""
 		print('pump_off')
 		self.pump.off()
 
