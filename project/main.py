@@ -20,6 +20,7 @@ class Main:
 		self.timeout = None
 		# Set hold time to 2sec on wifi button
 		self.switch_wifi.hold_ms = 2000
+		self.switch_wifi.enabled = False
 
 		self.update_params()
 		print(self.config)
@@ -58,7 +59,7 @@ class Main:
 		self.timeout = timeout
 		if not self.mute:  # Play note (if enabled)
 			self.speaker.play_tones(['G5'])
-		Timer(-1).init(period = self.pump_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_on())
+		# Timer(-1).init(period = self.pump_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_on())
 		Timer(-1).init(period = self.relay_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_on())
 
 	def pump_on(self):
