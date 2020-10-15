@@ -25,6 +25,7 @@ class Main:
 		self.switch_wifi.hold_ms = 2000
 
 		self.update_params()
+		print(self.config)
 		self.api = Rest()
 
 		# API params
