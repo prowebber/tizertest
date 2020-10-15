@@ -43,6 +43,7 @@ class WebSocketMultiServer(WebSocketServer):
 		
 		requested_file = None
 		data = cl.recv(64).decode()
+		print("New connection")
 
 		if data and "Upgrade: websocket" not in data.split("\r\n") and "GET" == data.split(" ")[0]:
 			# data should looks like GET /index.html HTTP/1.1\r\nHost: 19"

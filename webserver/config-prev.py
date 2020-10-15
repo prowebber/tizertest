@@ -1,7 +1,10 @@
-from webserver.master_server import ClientClosedError, SocketClient, SocketMultiServer
+from webserver.ws_connection import ClientClosedError
+from webserver.ws_server import WebSocketClient
+from webserver.ws_multiserver import WebSocketMultiServer
 import ujson
+from time import sleep
 
-class UserInteraction(SocketClient):
+class UserInteraction(WebSocketClient):
 	def __init__(self, conn):
 		super().__init__(conn)
 	
@@ -79,12 +82,11 @@ class UserInteraction(SocketClient):
 		
 
 
-class TestServer(SocketMultiServer):
+class TestServer(WebSocketMultiServer):
 	def __init__(self):
 		super().__init__("/webserver/config.html", 50)
 	
-	def create_socket(self, conn):
-		print("This create socket was called")
+	def _make_client(self, conn):
 		return UserInteraction(conn)
 
 
