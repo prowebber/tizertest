@@ -10,7 +10,6 @@
   "pump_ms": "1000",
   "relay_delay": "200",
   "relay_ms": "800",
-  "spray_burst_count": "1",
   "bag_spray_ms": "30000",
   "unit_spray_ms": "60000",
   "wifi_on_boot": "0",
