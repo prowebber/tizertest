@@ -17,6 +17,7 @@ class Main:
 		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
 		self.relay = Pin(D5, Pin.OUT, value = 0)  # green
 		self.relay_on_time = None
+		self.timeout = None
 		# Set hold time to 2sec on wifi button
 		self.switch_wifi.hold_ms = 2000
 
@@ -54,10 +55,11 @@ class Main:
 		self.switch_foot.enabled = False
 		print('run device')
 		self.update_params()
+		self.timeout = timeout
 		if not self.mute:  # Play note (if enabled)
 			self.speaker.play_tones(['G5'])
 		Timer(-1).init(period = self.pump_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_on())
-		Timer(-1).init(period = self.relay_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_on(timeout))
+		Timer(-1).init(period = self.relay_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_on())
 
 	def pump_on(self):
 		"""
@@ -75,9 +77,9 @@ class Main:
 		print('pump_off')
 		self.pump.off()
 
-	def relay_on(self, timeout):
+	def relay_on(self):
 		print('relay_on')
-		per = timeout if timeout else self.relay_open_time_ms
+		per = self.timeout if self.timeout else self.relay_open_time_ms
 		self.relay.on()
 		self.relay_on_time = ticks_ms()
 		Timer(-1).init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_off())
@@ -101,6 +103,7 @@ class Main:
 			print("API Response:\n", response)
 		# re enable switch
 		self.switch_foot.enabled = True
+		self.timeout = None
 
 	def update_params(self):
 		# Stored Params
