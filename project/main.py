@@ -61,7 +61,6 @@ class Main:
 			self.speaker.play_tones(['G5'])
 		# Timer(-1).init(period = self.pump_delay, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_on())
 		Timer(-1).init(period = self.relay_delay, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_on())
-		self.relay_on()
 
 	def pump_on(self):
 		"""
