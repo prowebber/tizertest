@@ -38,15 +38,16 @@ class Main:
 		if not self.mute:
 			self.speaker.play_tones(['C5', 'E5', 'G5'])  # Play tritone
 		while True:
-			if self.b_wifi.enabled:
-				if self.b_wifi.held:
-					print('wifi broadcast')
-					self.b_wifi._reset()
-			if self.b_foot.enabled:
-				if self.b_foot.released:
-					self.run()
-				elif self.b_foot.held:
-					self.run(t_max = 5000)
+			# if self.b_wifi.enabled:
+			# 	if self.b_wifi.held:
+			# 		print('wifi broadcast')
+			# 		self.b_wifi._reset()
+			# if self.b_foot.enabled:
+			# 	if self.b_foot.released:
+			# 		self.run()
+			# 	elif self.b_foot.held:
+			# 		self.run(t_max = 5000)
+			pass
 
 	def run(self, t_max = None):
 		# Run once up to t_max ms

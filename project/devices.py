@@ -37,8 +37,7 @@ class Button:
 
 	def on_press(self):
 		print('button pressed irq!')
-		if self.f_press:
-			self.f_press()
+		self.f_press()
 
 	def _reset(self):
 		self.pressed_time = None
