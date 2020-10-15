@@ -5,7 +5,7 @@ def get_config():
 	"""
 	Open the JSON config file and convert to a Python dict
 	"""
-	with open('/.sconfig') as params:
+	with open('.sconfig') as params:
 		data = json.load(params)
 	return data
 
