@@ -116,15 +116,29 @@ class Main:
 		self.c = get_config()  # Get config info
 		self.unit_id = self.c['unit_id']
 		self.bag_id = self.c['bag_id']
-		self.enable_led = int(self.c['enable_led'])
-		self.mute = int(self.c['mute'])
-		self.pump_delay = int(self.c['pump_delay'])
-		self.pump_ms = int(self.c['pump_ms'])
-		self.relay_delay = int(self.c['relay_delay'])
-		self.relay_ms = int(self.c['relay_ms'])
-		self.unit_spray_ms = int(self.c['unit_spray_ms'])
-		self.bag_spray_ms = int(self.c['bag_spray_ms'])
+		self.enable_led = self.c['enable_led']
+		self.mute = self.c['mute']
+		self.pump_delay = self.c['pump_delay']
+		self.pump_ms = self.c['pump_ms']
+		self.relay_delay = self.c['relay_delay']
+		self.relay_ms = self.c['relay_ms']
+		self.unit_spray_ms = self.c['unit_spray_ms']
+		self.bag_spray_ms = self.c['bag_spray_ms']
 		self.has_wifi = self.c['has_wifi']
+
+		# # Stored Params
+		# self.c = get_config()  # Get config info
+		# self.unit_id = self.c['unit_id']
+		# self.bag_id = self.c['bag_id']
+		# self.enable_led = int(self.c['enable_led'])
+		# self.mute = int(self.c['mute'])
+		# self.pump_delay = int(self.c['pump_delay'])
+		# self.pump_ms = int(self.c['pump_ms'])
+		# self.relay_delay = int(self.c['relay_delay'])
+		# self.relay_ms = int(self.c['relay_ms'])
+		# self.unit_spray_ms = int(self.c['unit_spray_ms'])
+		# self.bag_spray_ms = int(self.c['bag_spray_ms'])
+		# self.has_wifi = self.c['has_wifi']
 
 
 def t_single(per, f):
