@@ -13,8 +13,11 @@ class Button:
 		self.pressed = False
 		self.released = False
 		self.held = False
-		# start recursive state check
-		self.check(not self.button.value())
+
+		# # start recursive state check
+		# self.check(not self.button.value())
+
+		self.button.irq(trigger = Pin.IRQ_FALLING, handler = self.on_press)
 
 	def check(self, val_1, check_ms = 100):
 		val_2 = not self.button.value()
@@ -31,6 +34,11 @@ class Button:
 			if self.held:
 				print('button held')
 		Timer(-1).init(period = check_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.check(val_2))
+
+	def on_press(self, f = None):
+		print('button pressed irq!')
+		if f:
+			f()
 
 	def _reset(self):
 		self.pressed_time = None
