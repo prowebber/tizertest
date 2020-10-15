@@ -9,6 +9,11 @@ def move_files():
 	[os.rename(f, f.replace('\\', '/').replace('\t', '/t').replace('\r', '/r')) for f in os.listdir()]
 
 
+def reboot():
+	from machine import reset
+	reset()
+
+
 def run_main():
 	from project.main import Main
 	app = Main()
