@@ -59,8 +59,7 @@ class Main:
 		self.t_max = t_max
 		if not self.mute:  # Play note (if enabled)
 			self.speaker.play_tones(['G5'])
-		# Timer(-1).init(period = self.pump_delay, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_on())
-		# Timer(-1).init(period = self.relay_delay, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_on())
+		# t_single(self.self.pump_delay, self.pump_on)
 		t_single(self.relay_delay, self.relay_on)
 
 	def pump_on(self):
@@ -69,8 +68,7 @@ class Main:
 		"""
 		print('pump_on')
 		self.pump.on()
-
-		Timer(-1).init(period = self.pump_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_off())
+		t_single(self.pump_ms, self.pump_off)
 
 	def pump_off(self):
 		"""
@@ -85,13 +83,6 @@ class Main:
 		self.relay.on()
 		self.t0_relay = ticks_ms()
 		t_single(per, self.relay_off)
-
-	# Timer(-1).init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_off())
-
-	# sleep_ms(per)
-	# self.relay_off()
-
-	# Timer(-1).init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_off())
 
 	def relay_off(self):
 		print('relay_off')
@@ -129,20 +120,6 @@ class Main:
 		self.unit_spray_ms = self.c['unit_spray_ms']
 		self.bag_spray_ms = self.c['bag_spray_ms']
 		self.has_wifi = self.c['has_wifi']
-
-# # Stored Params
-# self.c = get_config()  # Get config info
-# self.unit_id = self.c['unit_id']
-# self.bag_id = self.c['bag_id']
-# self.enable_led = int(self.c['enable_led'])
-# self.mute = int(self.c['mute'])
-# self.pump_delay = int(self.c['pump_delay'])
-# self.pump_ms = int(self.c['pump_ms'])
-# self.relay_delay = int(self.c['relay_delay'])
-# self.relay_ms = int(self.c['relay_ms'])
-# self.unit_spray_ms = int(self.c['unit_spray_ms'])
-# self.bag_spray_ms = int(self.c['bag_spray_ms'])
-# self.has_wifi = self.c['has_wifi']
 
 
 def t_single(per, f):
