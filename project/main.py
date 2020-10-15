@@ -34,7 +34,8 @@ class Main:
 
 	def start(self):
 		print('project main started')
-		self.led.on()
+		if self.enable_led:
+			self.led.on()
 		# Play tritone on boot
 		if not self.mute:
 			self.speaker.play_tones(['C5', 'E5', 'G5'])  # Play tritone
@@ -110,7 +111,7 @@ class Main:
 		self.config = get_config()  # Get config info
 		self.device_id = self.config['device_id']
 		self.doypack_id = self.config['doypack_id']
-		self.wifi_status = self.config['wifi_status']
+		self.enable_led = int(self.config['enable_led'])
 		self.burst_count = int(self.config['spray_burst_count'])
 		self.mute = int(self.config['mute'])
 		self.pump_delay_ms = int(self.config['pump_delay_ms'])
@@ -119,3 +120,4 @@ class Main:
 		self.relay_open_time_ms = int(self.config['relay_open_time_ms'])
 		self.total_unit_spray_time = int(self.config['total_unit_spray_time'])
 		self.total_doypack_spray_time = int(self.config['total_doypack_spray_time'])
+		self.wifi_status = self.config['wifi_status']
