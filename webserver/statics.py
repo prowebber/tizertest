@@ -23,8 +23,8 @@ def getSprayVolumeBag(config):
 	bag_ml = 500
 	ml_sprayed = 0
 	
-	total_bag_spray_time = int(config['total_doypack_spray_time'])
-	if total_bag_spray_time:
-		ml_sprayed = round((total_bag_spray_time / 1000) * ml_per_sec)
+	bag_spray_ms = int(config['bag_spray_ms'])
+	if bag_spray_ms:
+		ml_sprayed = round((bag_spray_ms / 1000) * ml_per_sec)
 	
 	return ml_sprayed

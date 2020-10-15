@@ -50,7 +50,7 @@ class Main:
 
 	def run(self, t_max = None):
 		"""
-		Run the Shoetizer one time, up to t_max ms
+		Run once up to t_max ms
 		"""
 		# disable switch while running
 		self.b_foot.enabled = False

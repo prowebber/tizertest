@@ -54,8 +54,8 @@ class TestClient(WebSocketClient):
 		
 		# Save bag ID in config
 		if 'data' in response:
-			if 'doypack_id' in response['data']:
-				config['doypack_id'] = response['data']['doypack_id']
+			if 'bag_id' in response['data']:
+				config['bag_id'] = response['data']['bag_id']
 				save_config(config)
 				print('saved config')
 		
