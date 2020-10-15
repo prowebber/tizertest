@@ -59,7 +59,7 @@ class Main:
 		self.t_max = t_max
 		if not self.mute:  # Play note (if enabled)
 			self.speaker.play_tones(['G5'])
-		t_single(self.self.pump_delay, self.pump_on)
+		t_single(self.pump_delay, self.pump_on)
 		t_single(self.relay_delay, self.relay_on)
 
 	def pump_on(self):
