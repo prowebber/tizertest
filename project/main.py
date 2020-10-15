@@ -41,7 +41,7 @@ class Main:
 			if self.switch_wifi.enabled:
 				if self.switch_wifi.held:
 					print('wifi broadcast')
-					self.switch_wifi.reset()
+					self.switch_wifi._reset()
 			if self.switch_foot.enabled:
 				if self.switch_foot.released:
 					self.run_device()
