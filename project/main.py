@@ -34,7 +34,7 @@ class Main:
 
 	def start(self):
 		print('project main started')
-
+		self.led.on()
 		# Play tritone on boot
 		if not self.mute:
 			self.speaker.play_tones(['C5', 'E5', 'G5'])  # Play tritone
