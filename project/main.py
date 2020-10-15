@@ -16,10 +16,6 @@ class Main:
 		self.led = LED(D8)
 		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
 		self.relay = Pin(D5, Pin.OUT, value = 0)  # green
-
-		# # Timers
-		self.pump_timer = Timer(1)
-		self.relay_timer = Timer(4)
 		self.relay_on_time = None
 		# Set hold time to 2sec on wifi button
 		self.switch_wifi.hold_ms = 2000
@@ -60,8 +56,8 @@ class Main:
 		self.update_params()
 		if not self.mute:  # Play note (if enabled)
 			self.speaker.play_tones(['G5'])
-		self.pump_timer.init(period = self.pump_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_on())
-		self.relay_timer.init(period = self.relay_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_on(timeout))
+		Timer(-1).init(period = self.pump_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_on())
+		Timer(-1).init(period = self.relay_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_on(timeout))
 
 	def pump_on(self):
 		"""
@@ -70,7 +66,7 @@ class Main:
 		print('pump_on')
 		self.pump.on()
 
-		self.pump_timer.init(period = self.pump_run_time_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_off())
+		Timer(-1).init(period = self.pump_run_time_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_off())
 
 	def pump_off(self):
 		"""
@@ -84,7 +80,7 @@ class Main:
 		per = timeout if timeout else self.relay_open_time_ms
 		self.relay.on()
 		self.relay_on_time = ticks_ms()
-		self.relay_timer.init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_off())
+		Timer(-1).init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_off())
 
 	def relay_off(self):
 		print('relay_off')
