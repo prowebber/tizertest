@@ -36,7 +36,7 @@ class Button:
 	# 			print('button held')
 	# 	Timer(-1).init(period = check_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.check(val_2))
 
-	def on_press(self):
+	def on_click(self):
 		print('button pressed irq!')
 		if self.f_press:
 			self.f_press()
