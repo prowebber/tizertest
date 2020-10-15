@@ -9,7 +9,7 @@ def get_config():
 	"""
 	Open the JSON config file and convert to a Python dict
 	"""
-	with open('/.sconfig') as params:
+	with open('.sconfig') as params:
 		data = json.load(params)
 	return data
 
@@ -22,18 +22,18 @@ def save_config(config_dict):
 	with open('.sconfig', 'w') as data_out:
 		json.dump(config_dict, data_out)
 
+
 # Load config data
 config_data = get_config()
 
-
 # Verify the board ID is recorded
-if not config_data['device_id']:
+if not config_data['unit_id']:
 	from core.config_man import board_id
 
-	config_data['device_id'] = board_id()
+	config_data['unit_id'] = board_id()
 
 
-def _conn_wifi(broadcast=False):
+def _conn_wifi(broadcast = False):
 	"""
 	Connect to WiFi
 	"""
@@ -46,12 +46,12 @@ def _conn_wifi(broadcast=False):
 		print("Connecting to WiFi")
 		is_connected = connect_to_wifi(wifi_ssid, wifi_pass)
 
-	config_data['wifi_status'] = is_connected
+	config_data['has_wifi'] = is_connected
 	save_config(config_data)  # Update the config
 
 	# Broadcast the WiFi
 	if broadcast:
-		broadcast_wifi('ShoeTizer-' + config_data['device_id'], '123456789')
+		broadcast_wifi('ShoeTizer-' + config_data['unit_id'], '123456789')
 		print("Broadcasting WiFi...")
 
 	return is_connected
@@ -85,7 +85,7 @@ def force_ota(target_dir = None):
 	github_url = config_data['ota_github_url']
 	if not target_dir:
 		target_dir = config_data['ota_tgt_dir']
-		
+
 	print("OTA Target dir: " + target_dir)
 
 	from core.ota_download import OTADownload
@@ -95,8 +95,8 @@ def force_ota(target_dir = None):
 
 
 def setup():
-	wifi_status = _conn_wifi(True)  # Connect to WiFi
-	if wifi_status:  # If connected to WiFi
+	has_wifi = _conn_wifi(True)  # Connect to WiFi
+	if has_wifi:  # If connected to WiFi
 		from webserver.statics import createParamsJs
 		createParamsJs()  # Create JS params file
 		import webserver.config
@@ -104,7 +104,7 @@ def setup():
 
 def rest():
 	from project.rest_api import Rest
-	
+
 	api = Rest()
 
 	# Get time
@@ -112,7 +112,7 @@ def rest():
 
 	# Post doypack
 	payload = {
-		'device_id': 'stevtest',
+		'unit_id': 'stevtest',
 		'volume_ml': '500'
 	}
 	resp = api.post('/tizer/doypacks', payload)

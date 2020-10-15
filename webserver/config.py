@@ -45,7 +45,7 @@ class TestClient(WebSocketClient):
 		print("Reset bag on python side...")
 		config = get_config()
 		payload = {
-			'device_id': config['device_id'],
+			'unit_id': config['unit_id'],
 			'volume_ml': 500,
 		}
 		
