@@ -10,25 +10,25 @@ from utime import sleep_ms, ticks_ms, ticks_diff
 
 class Main:
 	def __init__(self):
-		self.switch_wifi = Button(D1)
-		self.switch_foot = Button(D2)
+		self.b_wifi = Button(D1)
+		self.b_foot = Button(D2)
 		self.speaker = Speaker(D6)
 		self.led = LED(D8)
 		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
 		self.relay = Pin(D5, Pin.OUT, value = 0)  # green
-		self.relay_on_time = None
-		self.timeout = None
+		self.t0_relay = None
+		self.t_max = None
 		# Set hold time to 2sec on wifi button
-		self.switch_wifi.hold_ms = 2000
-		self.switch_wifi.enabled = False
+		self.b_wifi.hold_ms = 2000
+		self.b_wifi.enabled = False
 
-		self.update_params()
-		print(self.config)
+		self.sync_params()
+		print(self.c)
 		self.api = Rest()
 		# API params
-		self.device_id = None
-		self.doypack_id = None
-		self.wifi_status = False
+		self.unit_id = None
+		self.bag_id = None
+		self.has_wifi = False
 
 	def start(self):
 		print('project main started')
@@ -38,29 +38,29 @@ class Main:
 		if not self.mute:
 			self.speaker.play_tones(['C5', 'E5', 'G5'])  # Play tritone
 		while True:
-			if self.switch_wifi.enabled:
-				if self.switch_wifi.held:
+			if self.b_wifi.enabled:
+				if self.b_wifi.held:
 					print('wifi broadcast')
-					self.switch_wifi._reset()
-			if self.switch_foot.enabled:
-				if self.switch_foot.released:
-					self.run_device()
-				elif self.switch_foot.held:
-					self.run_device(timeout = 5000)
+					self.b_wifi._reset()
+			if self.b_foot.enabled:
+				if self.b_foot.released:
+					self.run()
+				elif self.b_foot.held:
+					self.run(t_max = 5000)
 
-	def run_device(self, timeout = None):
+	def run(self, t_max = None):
 		"""
-		Run the Shoetizer one time, up to timeout ms
+		Run the Shoetizer one time, up to t_max ms
 		"""
 		# disable switch while running
-		self.switch_foot.enabled = False
-		print('run device')
-		self.update_params()
-		self.timeout = timeout
+		self.b_foot.enabled = False
+		print('run...')
+		self.sync_params()
+		self.t_max = t_max
 		if not self.mute:  # Play note (if enabled)
 			self.speaker.play_tones(['G5'])
-		# Timer(-1).init(period = self.pump_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_on())
-		# Timer(-1).init(period = self.relay_delay_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_on())
+		# Timer(-1).init(period = self.pump_delay, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_on())
+		# Timer(-1).init(period = self.relay_delay, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_on())
 		self.relay_on()
 
 	def pump_on(self):
@@ -70,7 +70,7 @@ class Main:
 		print('pump_on')
 		self.pump.on()
 
-		Timer(-1).init(period = self.pump_run_time_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_off())
+		Timer(-1).init(period = self.pump_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.pump_off())
 
 	def pump_off(self):
 		"""
@@ -81,10 +81,10 @@ class Main:
 
 	def relay_on(self):
 		print('relay_on')
-		per = self.timeout if self.timeout else self.relay_open_time_ms
+		per = self.t_max if self.t_max else self.relay_ms
 		self.relay.on()
+		self.t0_relay = ticks_ms()
 		sleep_ms(per)
-		self.relay_on_time = ticks_ms()
 		self.relay_off()
 
 	# Timer(-1).init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: self.relay_off())
@@ -92,36 +92,41 @@ class Main:
 	def relay_off(self):
 		print('relay_off')
 		self.relay.off()
-		relay_duration = ticks_diff(ticks_ms(), self.relay_on_time)
+		relay_duration = ticks_diff(ticks_ms(), self.t0_relay)
 		print('relay duration: ', relay_duration, ' ms')
-		self.config['total_unit_spray_time'] += relay_duration
-		self.config['total_doypack_spray_time'] += relay_duration
+		self.unit_spray_ms += relay_duration
+		self.bag_spray_ms += relay_duration
+		self.c['unit_spray_ms'] = self.unit_spray_ms
+		self.c['bag_spray_ms'] = self.bag_spray_ms
+		save_config(self.c)
 
-		save_config(self.config)
-
-		if self.wifi_status == '1':
-			response = self.api.post('/tizer/devices/' + self.device_id + '/usage', {
-				'doypack_id': self.doypack_id,
+		if self.has_wifi == '1':
+			response = self.api.post('/tizer/devices/' + self.unit_id + '/usage', {
+				'bag_id': self.bag_id,
 				'usage_type': 1,
 				'duration': relay_duration
 			})
 			print("API Response:\n", response)
 		# re enable switch
-		self.switch_foot.enabled = True
-		self.timeout = None
+		self.b_foot.enabled = True
+		self.t_max = None
 
-	def update_params(self):
+	def sync_params(self):
 		# Stored Params
-		self.config = get_config()  # Get config info
-		self.device_id = self.config['device_id']
-		self.doypack_id = self.config['doypack_id']
-		self.enable_led = int(self.config['enable_led'])
-		self.burst_count = int(self.config['spray_burst_count'])
-		self.mute = int(self.config['mute'])
-		self.pump_delay_ms = int(self.config['pump_delay_ms'])
-		self.pump_run_time_ms = int(self.config['pump_run_time_ms'])
-		self.relay_delay_ms = int(self.config['relay_delay_ms'])
-		self.relay_open_time_ms = int(self.config['relay_open_time_ms'])
-		self.total_unit_spray_time = int(self.config['total_unit_spray_time'])
-		self.total_doypack_spray_time = int(self.config['total_doypack_spray_time'])
-		self.wifi_status = self.config['wifi_status']
+		self.c = get_config()  # Get config info
+		self.unit_id = self.c['unit_id']
+		self.bag_id = self.c['bag_id']
+		self.enable_led = int(self.c['enable_led'])
+		self.mute = int(self.c['mute'])
+		self.pump_delay = int(self.c['pump_delay'])
+		self.pump_ms = int(self.c['pump_ms'])
+		self.relay_delay = int(self.c['relay_delay'])
+		self.relay_ms = int(self.c['relay_ms'])
+		self.unit_spray_ms = int(self.c['unit_spray_ms'])
+		self.bag_spray_ms = int(self.c['bag_spray_ms'])
+		self.has_wifi = self.c['has_wifi']
+
+
+def t_single(per, f):
+	# to shorten code
+	Timer(-1).init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: f())
