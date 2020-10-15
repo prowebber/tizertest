@@ -7,33 +7,34 @@ from project.pins import *
 class Button:
 	def __init__(self, pin):
 		self.button = Pin(pin, Pin.IN, Pin.PULL_UP)
-		self.hold_ms = 500
-		self.pressed_time = None
+		# self.hold_ms = 500
+		# self.pressed_time = None
 		self.enabled = True
-		self.pressed = False
-		self.released = False
-		self.held = False
-		self.f_press = None
+		# self.pressed = False
+		# self.released = False
+		# self.held = False
+		self.f_click = None
+		self.f_hold = None
 		# # start recursive state check
 		# self.check(not self.button.value())
 
-		self.button.irq(trigger = Pin.IRQ_FALLING, handler = lambda p: self.on_press())
+		self.button.irq(lambda p: self.on_click(), Pin.IRQ_FALLING)
 
-	def check(self, val_1, check_ms = 100):
-		val_2 = not self.button.value()
-		if self.enabled:
-			self.pressed = val_2 and not val_1
-			if self.pressed:
-				self.pressed_time = ticks_ms()
-				print('button pressed')
-			self.released = val_1 and not val_2
-			if self.released:
-				print('button released')
-
-			self.held = val_1 and val_2 and ticks_diff(ticks_ms(), self.pressed_time) >= self.hold_ms
-			if self.held:
-				print('button held')
-		Timer(-1).init(period = check_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.check(val_2))
+	# def check(self, val_1, check_ms = 100):
+	# 	val_2 = not self.button.value()
+	# 	if self.enabled:
+	# 		self.pressed = val_2 and not val_1
+	# 		if self.pressed:
+	# 			self.pressed_time = ticks_ms()
+	# 			print('button pressed')
+	# 		self.released = val_1 and not val_2
+	# 		if self.released:
+	# 			print('button released')
+	#
+	# 		self.held = val_1 and val_2 and ticks_diff(ticks_ms(), self.pressed_time) >= self.hold_ms
+	# 		if self.held:
+	# 			print('button held')
+	# 	Timer(-1).init(period = check_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.check(val_2))
 
 	def on_press(self):
 		print('button pressed irq!')
