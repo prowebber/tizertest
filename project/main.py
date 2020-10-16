@@ -52,6 +52,7 @@ class Main:
 
 	def run(self):
 		# Run once up to t_max ms if not running
+		print('run attempt')
 		if not self.running:
 			self.running = True
 			# disable switch while running
