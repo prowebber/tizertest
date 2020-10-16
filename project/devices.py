@@ -18,8 +18,9 @@ class Button:
 
 	def on_press(self):
 		print('button press')
-		# check in hold_ms for hold (no depress)
-		Timer(-1).init(period = self.hold_ms, mode = Timer.ONE_SHOT, callback = lambda t: self._check_hold())
+		if self.enabled:
+			# check in hold_ms for hold (no depress)
+			Timer(-1).init(period = self.hold_ms, mode = Timer.ONE_SHOT, callback = lambda t: self._check_hold())
 
 	def on_click(self):
 		self._reset()
