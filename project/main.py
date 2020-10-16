@@ -53,8 +53,9 @@ class Main:
 	def run(self, t_max = None):
 		# Run once up to t_max ms if not running
 		if not self.running:
+			self.running=True
 			# disable switch while running
-			self.b_foot.enabled = False
+			# self.b_foot.enabled = False
 			print('run...')
 			self.sync_params()
 			self.t_max = t_max
@@ -98,8 +99,8 @@ class Main:
 			})
 			print("API Response:\n", response)
 		# re enable switch
-		# self.running=False
-		self.b_foot.enabled = True
+		self.running=False
+		# self.b_foot.enabled = True
 		self.t_max = None
 
 	def sync_params(self):

@@ -9,6 +9,7 @@ def move_files():
 	from utils import move_files
 	move_files()
 
+
 def get_config():
 	"""
 	Open the JSON config file and convert to a Python dict
@@ -103,20 +104,20 @@ def setup():
 	if has_wifi:  # If connected to WiFi
 		from webserver.statics import createParamsJs
 		createParamsJs()  # Create JS params file
-		
+
 		from webserver.config import InitServer
-		
+
 		index_pg = "/webserver/config.html"
 		max_conn = 50
 		server = InitServer(index_pg, max_conn)
 		server.start()
-	
+
 		try:
 			while True:
 				server.process_all()
 		except KeyboardInterrupt:
 			pass
-		
+
 		server.stop()
 
 
@@ -144,3 +145,6 @@ def start():
 	from project.main import Main
 	app = Main()
 	app.start()
+
+
+# start()
