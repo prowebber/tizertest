@@ -7,7 +7,7 @@
   "ota_github_url": "https://github.com/prowebber/tizertest",
   "ota_tgt_dir": "project",
   "pump_delay": 0,
-  "pump_ms": 1000,
+  "pump_ms": 900,
   "relay_delay": 200,
   "relay_ms": 800,
   "bag_spray_ms": 30000,
