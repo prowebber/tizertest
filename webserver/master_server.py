@@ -41,7 +41,6 @@ class SocketConnection:
 			return
 		
 		if not msg_bytes and self.client_close:
-			print("Got to this client close")
 			raise ClientClosedError()
 		
 		return msg_bytes
@@ -100,7 +99,7 @@ class SocketMultiServer:
 			self.stop()
 		self.setup_conn(port, self._accept_conn)
 		print("Started WebSocket server...")
-		
+	
 	def stop(self):
 		if self.sock:
 			self.sock.close()
@@ -109,17 +108,17 @@ class SocketMultiServer:
 		for client in self.clients:
 			client.connection.close()
 		print("Stopped WebSocket server.")
-		
+	
 	def process_all(self):
 		for client in self.clients:
 			client.process()
-			
+	
 	def remove_connection(self, conn):
 		for client in self.clients:
 			if client.connection is conn:
 				self.clients.remove(client)
 				return
-		
+	
 	def setup_conn(self, port, accept_handler):
 		self.sock = socket.socket()
 		self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)

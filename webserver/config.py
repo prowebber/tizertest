@@ -1,7 +1,8 @@
 from webserver.master_server import ClientClosedError, SocketClient, SocketMultiServer
 import ujson
 
-class UserInteraction(SocketClient):
+
+class ProcessSocket(SocketClient):
 	def __init__(self, conn):
 		super().__init__(conn)
 	
@@ -76,19 +77,27 @@ class UserInteraction(SocketClient):
 		save_config(config)
 		
 		self.connection.write("Updated successfully!")
-		
 
 
-class TestServer(SocketMultiServer):
-	def __init__(self):
-		super().__init__("/webserver/config.html", 50)
+class InitServer(SocketMultiServer):
+	"""
+	Start the web server and specify the core params
+	"""
+	def __init__(self, index_page, max_connections):
+		super().__init__(index_page, max_connections)
 	
 	def create_socket(self, conn):
+		"""
+		When a web-socket is created return the above Class for processing
+		"""
 		print("This create socket was called")
-		return UserInteraction(conn)
+		return ProcessSocket(conn)
 
 
-server = TestServer()
+index_pg = "/webserver/config.html"
+max_conn = 50
+
+server = InitServer(index_pg, max_conn)
 server.start()
 try:
 	while True:
