@@ -7,18 +7,21 @@ from project.pins import *
 class Button:
 	def __init__(self, pin):
 		self.button = Pin(pin, Pin.IN, Pin.PULL_UP)
-		# self.hold_ms = 500
-		# self.pressed_time = None
+		self.hold_ms = 500
+		self.pressed_time = None
 		self.enabled = True
-		# self.pressed = False
-		# self.released = False
-		# self.held = False
 		self.f_click = None
 		self.f_hold = None
-		# # start recursive state check
-		# self.check(not self.button.value())
 
 		self.button.irq(lambda p: self.on_click(), Pin.IRQ_FALLING)
+
+	def on_click(self):
+		print('button pressed irq!')
+		if self.f_click:
+			self.f_click()
+
+	def _reset(self):
+		self.pressed_time = None
 
 	# def check(self, val_1, check_ms = 100):
 	# 	val_2 = not self.button.value()
@@ -36,13 +39,7 @@ class Button:
 	# 			print('button held')
 	# 	Timer(-1).init(period = check_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.check(val_2))
 
-	def on_click(self):
-		print('button pressed irq!')
-		if self.f_click:
-			self.f_click()
 
-	def _reset(self):
-		self.pressed_time = None
 
 
 class LED:
