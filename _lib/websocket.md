@@ -2,6 +2,14 @@
 
 ### Requirements
 
+**References**
+- https://realpython.com/python-sockets/
+- https://github.com/realpython/materials/tree/master/python-sockets-tutorial
+- https://github.com/BetaRavener/upy-websocket-server
+
+
+
+
 #### Install MicroPython Selectors
 ```python
 import upip

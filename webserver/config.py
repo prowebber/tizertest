@@ -2,6 +2,8 @@ from webserver.master_server import ClientClosedError, SocketClient, SocketMulti
 import ujson
 
 
+print("Step A")
+
 class ProcessSocket(SocketClient):
 	def __init__(self, conn):
 		super().__init__(conn)
@@ -94,15 +96,19 @@ class InitServer(SocketMultiServer):
 		return ProcessSocket(conn)
 
 
-index_pg = "/webserver/config.html"
-max_conn = 50
-
-server = InitServer(index_pg, max_conn)
-server.start()
-try:
-	while True:
-		server.process_all()
-except KeyboardInterrupt:
-	pass
-
-server.stop()
+# index_pg = "/webserver/config.html"
+# max_conn = 50
+#
+# print("Step B")
+# server = InitServer(index_pg, max_conn)
+# print("Step C")
+# server.start()
+# print("Step D")
+# try:
+# 	while True:
+# 		server.process_all()
+# except KeyboardInterrupt:
+# 	pass
+#
+# server.stop()
+# print("Stopped server")

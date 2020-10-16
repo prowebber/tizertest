@@ -102,10 +102,21 @@ def setup():
 	if wifi_status:  # If connected to WiFi
 		from webserver.statics import createParamsJs
 		createParamsJs()  # Create JS params file
-		import webserver.config
-		# from webserver.server import Server
-		# app = Server('0.0.0.0', 80)
-		# app.start()
+		
+		from webserver.config import InitServer
+		
+		index_pg = "/webserver/config.html"
+		max_conn = 50
+		server = InitServer(index_pg, max_conn)
+		server.start()
+	
+		try:
+			while True:
+				server.process_all()
+		except KeyboardInterrupt:
+			pass
+		
+		server.stop()
 
 
 def rest():
