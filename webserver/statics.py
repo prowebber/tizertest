@@ -10,7 +10,7 @@ def createParamsJs():
 	text += "'spray_time':'" + config['relay_open_time_ms'] + "',"
 	text += "'ssid':'" + config['wifi_ssid'] + "',"
 	text += "'pass':'" + config['wifi_pass'] + "',"
-	text += "'wifi_status':'" + str(config['wifi_status'])
+	text += "'has_wifi':'" + str(config['has_wifi'])
 	text += "'};"
 	
 	f = open('/webserver/src/js/params.js', 'w')
@@ -23,8 +23,8 @@ def getSprayVolumeBag(config):
 	bag_ml = 500
 	ml_sprayed = 0
 	
-	total_bag_spray_time = int(config['total_doypack_spray_time'])
-	if total_bag_spray_time:
-		ml_sprayed = round((total_bag_spray_time / 1000) * ml_per_sec)
+	bag_spray_ms = int(config['bag_spray_ms'])
+	if bag_spray_ms:
+		ml_sprayed = round((bag_spray_ms / 1000) * ml_per_sec)
 	
 	return ml_sprayed
