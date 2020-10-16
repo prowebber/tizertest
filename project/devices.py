@@ -16,9 +16,10 @@ class Button:
 		self.button.irq(lambda p: self.on_click(), Pin.IRQ_FALLING)
 
 	def on_click(self):
-		print('button pressed irq!')
-		if self.f_click:
-			self.f_click()
+		if self.enabled:
+			print('button pressed irq!')
+			if self.f_click:
+				self.f_click()
 
 	def _reset(self):
 		self.pressed_time = None

@@ -55,7 +55,7 @@ class Main:
 		if not self.running:
 			self.running = True
 			# disable switch while running
-			# self.b_foot.enabled = False
+			self.b_foot.enabled = False
 			print('run...')
 			self.sync_params()
 			self.t_max = t_max
