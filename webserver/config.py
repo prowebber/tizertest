@@ -44,7 +44,7 @@ class ProcessSocket(SocketClient):
 		print("Reset bag on python side...")
 		config = get_config()
 		payload = {
-			'unit_id': config['unit_id'],
+			'device_id': config['unit_id'],  # @warn do not set the payload to 'device_id'
 			'volume_ml': 500,
 		}
 		
