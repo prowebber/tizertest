@@ -1,4 +1,4 @@
-from webserver.master_server import ClientClosedError, SocketClient, SocketMultiServer
+from webserver.server import ClientClosedError, SocketClient, SocketMultiServer
 import ujson
 
 
@@ -94,21 +94,3 @@ class InitServer(SocketMultiServer):
 		"""
 		print("This create socket was called")
 		return ProcessSocket(conn)
-
-
-# index_pg = "/webserver/config.html"
-# max_conn = 50
-#
-# print("Step B")
-# server = InitServer(index_pg, max_conn)
-# print("Step C")
-# server.start()
-# print("Step D")
-# try:
-# 	while True:
-# 		server.process_all()
-# except KeyboardInterrupt:
-# 	pass
-#
-# server.stop()
-# print("Stopped server")
