@@ -24,7 +24,7 @@ class Main:
 		self.b_wifi.enabled = False
 		self.b_foot.f_press = self.run
 		self.sync_params()
-		print(self.c)
+		print('config: ',self.c)
 		self.api = Rest()
 		# API params
 		self.unit_id = None
