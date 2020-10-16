@@ -84,7 +84,6 @@ class Main:
 		print('relay_off')
 		self.relay.off()
 		relay_duration = ticks_diff(ticks_ms(), self.t0_relay)
-		print('relay duration: ', relay_duration, ' ms')
 		self.unit_spray_ms += relay_duration
 		self.bag_spray_ms += relay_duration
 		self.c['unit_spray_ms'] = self.unit_spray_ms

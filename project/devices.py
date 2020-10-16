@@ -25,6 +25,7 @@ class Button:
 	def on_click(self):
 		self._reset()
 		if self.enabled:
+			self.enabled = False
 			print('button click')
 			if self.f_click:
 				self.f_click()
