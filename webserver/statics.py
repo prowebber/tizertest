@@ -6,10 +6,10 @@ def createParamsJs():
 	
 	text = "var params={"
 	text += "'ml_sprayed':'" + str(ml_sprayed) + "',"
-	text += "'melody':'" + config['mute'] + "',"
-	text += "'spray_time':'" + config['relay_open_time_ms'] + "',"
-	text += "'ssid':'" + config['wifi_ssid'] + "',"
-	text += "'pass':'" + config['wifi_pass'] + "',"
+	text += "'melody':'" + str(config['mute']) + "',"
+	text += "'spray_time':'" + str(config['relay_ms']) + "',"
+	text += "'ssid':'" + str(config['wifi_ssid']) + "',"
+	text += "'pass':'" + str(config['wifi_pass']) + "',"
 	text += "'has_wifi':'" + str(config['has_wifi'])
 	text += "'};"
 	

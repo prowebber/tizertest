@@ -48,6 +48,7 @@ class ProcessSocket(SocketClient):
 			'volume_ml': 500,
 		}
 		
+		# Send API response
 		api = Rest()
 		response = api.post('/tizer/doypacks', payload)
 		
@@ -55,10 +56,10 @@ class ProcessSocket(SocketClient):
 		if 'data' in response:
 			if 'bag_id' in response['data']:
 				config['bag_id'] = response['data']['bag_id']
-				save_config(config)
-				print('saved config')
 		
-		print(response)
+		config['bag_spray_ms'] = 0  # Reset the bag
+		save_config(config)
+		
 		self.connection.write(ujson.dumps(response))
 		
 	def load_params(self, data):
