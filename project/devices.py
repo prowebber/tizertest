@@ -1,4 +1,4 @@
-from machine import PWM, Pin, Timer, disable_irq, enable_irq
+from machine import PWM, Pin, Timer
 from math import sin, pi
 from utime import sleep_ms, ticks_ms, ticks_diff
 from project.pins import *
@@ -24,15 +24,15 @@ class Button:
 
 	def on_click(self):
 		self._reset()
-		self.irq_state = disable_irq()
-		# if self.enabled:
-		# 	self.enabled = False
-		print('button click')
-		if self.f_click:
-			self.f_click()
-		print('re enabling irq')
-		enable_irq(self.irq_state)
-			# self.enabled = True
+		# self.irq_state = disable_irq()
+		if self.enabled:
+			self.enabled = False
+			print('button click')
+			if self.f_click:
+				self.f_click()
+		# print('re enabling irq')
+		# enable_irq(self.irq_state)
+			self.enabled = True
 
 	def _check_hold(self):
 		if self.pressed_time:
