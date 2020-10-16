@@ -14,7 +14,7 @@ class Main:
 		self.b_foot = Button(D2)
 		self.speaker = Speaker(D6)
 		self.led = LED(D8)
-		self.pump = Pin(D7, Pin.OUT,value = 0)  # green
+		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
 		self.relay = Pin(D5, Pin.OUT, value = 0)  # green
 		self.t0_relay = None
 		self.t_max = None
@@ -56,7 +56,7 @@ class Main:
 		if not self.running:
 			self.running = True
 			# disable switch while running
-			self.b_foot.enabled = False
+			# self.b_foot.enabled = False
 			print('run...')
 			self.sync_params()
 			if not self.mute:  # Play note (if enabled)

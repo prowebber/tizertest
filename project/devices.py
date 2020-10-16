@@ -29,7 +29,7 @@ class Button:
 			print('button click')
 			if self.f_click:
 				self.f_click()
-				self.enabled = True
+				# self.enabled = True
 
 	def _check_hold(self):
 		if self.pressed_time:
