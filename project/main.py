@@ -99,7 +99,7 @@ class Main:
 			print("API Response:\n", response)
 		# re enable switch
 		self.running = False
-		self.b_foot.enabled = True
+		# self.b_foot.enabled = True
 		self.t_max = None
 
 	def sync_params(self):
