@@ -16,6 +16,7 @@ def createParamsJs():
 	f = open('/webserver/src/js/params.js', 'w')
 	f.write(text)
 	f.close()
+	print("Created server params")
 
 
 def getSprayVolumeBag(config):
