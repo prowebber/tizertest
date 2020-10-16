@@ -50,7 +50,7 @@ class Main:
 			# 		self.run(t_max = 5000)
 			pass
 
-	def run(self, t_max = None):
+	def run(self):
 		# Run once up to t_max ms if not running
 		if not self.running:
 			self.running = True
@@ -58,7 +58,6 @@ class Main:
 			self.b_foot.enabled = False
 			print('run...')
 			self.sync_params()
-			self.t_max = t_max
 			if not self.mute:  # Play note (if enabled)
 				self.speaker.play_tones(['G5'])
 			t_single(self.pump_delay, self.pump_on)
@@ -67,7 +66,8 @@ class Main:
 	def pump_on(self):
 		print('pump_on')
 		self.pump.on()
-		t_single(self.pump_ms, self.pump_off)
+		per = self.t_max if self.t_max else self.pump_ms
+		t_single(per, self.pump_off)
 
 	def pump_off(self):
 		print('pump_off')
