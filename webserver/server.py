@@ -4,6 +4,7 @@ from websocket import websocket
 import websocket_helper
 from time import sleep
 import os
+import gc
 
 
 class ClientClosedError(Exception):
@@ -33,6 +34,8 @@ class SocketConnection:
 		msg_bytes = None
 		try:
 			msg_bytes = self.ws.read()
+		except AttributeError:
+			return False
 		except OSError:
 			return False
 		# self.client_close = True
@@ -64,7 +67,7 @@ class SocketConnection:
 		return self.socket is None
 	
 	def close(self):
-		print("Closing connection.")
+		print("Closing connection for %s" % self.address[0])
 		self.socket.setsockopt(socket.SOL_SOCKET, 20, None)
 		self.socket.close()
 		self.socket = None
@@ -90,9 +93,21 @@ class SocketMultiServer:
 		self.sock = None  # Listen for socket
 		self.clients = []  # Contains all clients
 		self._web_dir = index_page[0:dir_idx] if dir_idx > 0 else "/"
+		self.prev_client_ip = None
 	
 	def create_socket(self, conn):
 		pass
+	
+	def close_prev_conn(self):
+		"""
+		Close all connections except for the current client
+		"""
+		if len(self.clients) > 0:  # If there are multiple connections or someone refreshed the page
+			prev_client = self.clients[0]  # Get the previous client
+			prev_client.connection.close()
+			
+		# for client in self.clients:  # Loop through each client
+		# 	print("Client loop: %s" % client.connection.address[0])
 	
 	def start(self, port=80):
 		if self.sock:
@@ -140,13 +155,30 @@ class SocketMultiServer:
 	def _accept_conn(self, list):
 		cl, addr = self.sock.accept()
 		
+		self.close_prev_conn()  # Close any previous connections
+		print("\nTotal Clients: %s" % len(self.clients))
+		print(addr[0])
+		print("Mem: %s" % gc.mem_free())
+		
 		if len(self.clients) >= self.max_conn:
 			cl.setblocking(True)
 			create_static_page(cl, 503, "503 Too Many Connections")
 			return
 		
 		requested_file = None
-		data = cl.recv(64).decode()  # Get first 64 chars of browser response
+		self.sock.settimeout(3)  # Timeout after n seconds
+		
+		# Catch timeouts, don't continue if timeout occurs
+		try:
+			data = cl.recv(64).decode()  # Get first 64 chars of browser response
+		except OSError:
+			print("TIMEOUT for: %s" % addr[0])
+			if len(self.clients):
+				self.clients[0].connection.close()
+			return
+		
+		self.sock.settimeout(None)  # Remove timeout
+			
 		
 		if data and "Upgrade: websocket" not in data.split("\r\n") and "GET" == data.split(" ")[0]:
 			requested_file = data.split(" ")[1].split("?")[0]
@@ -188,7 +220,9 @@ class SocketMultiServer:
 			sleep(0.1)  # Wait before ending the session
 			c_socket.close()
 		except OSError:
-			create_static_page(c_socket, 500, "500 Internal Server Error [2]")
+			if len(self.clients):
+				self.clients[0].connection.close()
+			# create_static_page(c_socket, 500, "500 Internal Server Error [2]")
 
 
 http_codes = {
@@ -218,7 +252,10 @@ def build_headers(code, filename=None, length=None):
 		if ext in mime_types:
 			content_type = mime_types[ext]
 	
-	return "HTTP/1.1 {} {}\n" \
+	return "HTTP/1.0 {} {}\n" \
+	       "Cache-Control: no-cache, no-store, must-revalidate\n"\
+	       "Pragma: no-cache\n" \
+	       "Expires: 0\n" \
 	       "Content-Type: {}\n" \
 	       "Content-Length: {}\n" \
 	       "Server: Shoetizer\n" \
