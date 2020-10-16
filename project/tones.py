@@ -97,7 +97,7 @@ notes = {
 
 class Speaker():
 	def __init__(self, pin):
-		self.speaker = PWM(pin)
+		self.speaker = PWM(Pin(pin))
 
 	def play_tones(self, notes_list, speed = 100, volume = 30):
 		"""

@@ -41,8 +41,7 @@ class OTADownload:
 		import machine, sys
 		sys.exit()
 	
-	# machine.reset()
-	
+
 	def rmtree(self, directory):
 		print("Remove Directory: %s" % directory)
 		for entry in os.ilistdir(directory):

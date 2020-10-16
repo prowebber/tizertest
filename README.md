@@ -29,26 +29,25 @@ When Android interacts with the WebSocket connection the following happens:
 
 ### Config Params
 
-| Param                       |  Type  | Description                                                                              | Enabled |
-|:----------------------------|:------:|:-----------------------------------------------------------------------------------------|:-------:|
-| `device_id`                 | string | The ID of the device                                                                     |         |
-| `doypack_id`                |  int   | The ID of the doypack                                                                    |         |
-| `enable_led`                |  int   |                                                                                          |         |
-| `enable_wifi`               |  bool  |                                                                                          |         |
-| `mute`                      |  bool  |                                                                                          |         |
-| `ota_github_url`            | string | The URL of the GitHub repo to update the project from                                    |         |
-| `ota_tgt_dir`               | string | The default directory to update via OTA                                                  |         |
-| `pump_delay_ms`             |  int   | How many milliseconds the pump waits before turning on after the spray button is pressed |   Yes   |
-| `pump_run_time_ms`          |  int   | How long (in milliseconds) the pump runs for each spray burst                            |   Yes   |
-| `relay_delay_ms`            |  int   | How long to wait after the pump starts before the relay opens                            |   Yes   |
-| `relay_open_time_ms`        |  int   | How long the relay is open                                                               |   Yes   |
-| `spray_burst_count`         |  int   | How many times the nozzle sprays when the spray button is pressed                        |         |
-| `total_doypack_spray_time ` |  int   | Total tiem (in milliseconds) the current doypack has sprayed solution                    |         |
-| `total_unit_spray_time`     |  int   | Total time (in milliseconds) the unit has sprayed solution                               |         |
-| `wifi_connect_on_boot`      |  bool  | True if the unit automatically connects to WiFi when turned on                           |   Yes   |
-| `wifi_status`               |  bool  | True if the unit is connected to the WiFi network                                        |   Yes   |
-| `wifi_ssid`                 | string | The name of the WiFi network the ShoeTizer connects to for internet access               |   Yes   |
-| `wifi_pass`                 | string | The password for the WiFi network                                                        |   Yes   |
+| Param            |  Type  | Description                                                                              | Enabled |
+|:-----------------|:------:|:-----------------------------------------------------------------------------------------|:-------:|
+| `unit_id`        | string | The ID of the device                                                                     |         |
+| `bag_id`         |  int   | The ID of the doypack                                                                    |         |
+| `enable_led`     |  int   |                                                                                          |         |
+| `enable_wifi`    |  bool  |                                                                                          |         |
+| `mute`           |  bool  |                                                                                          |         |
+| `ota_github_url` | string | The URL of the GitHub repo to update the project from                                    |         |
+| `ota_tgt_dir`    | string | The default directory to update via OTA                                                  |         |
+| `pump_delay`     |  int   | How many milliseconds the pump waits before turning on after the spray button is pressed |   Yes   |
+| `pump_ms`        |  int   | How long (in milliseconds) the pump runs for each spray burst                            |   Yes   |
+| `relay_delay`    |  int   | How long to wait after the pump starts before the relay opens                            |   Yes   |
+| `relay_ms`       |  int   | How long the relay is open                                                               |   Yes   |
+| `bag_spray_ms `  |  int   | Total tiem (in milliseconds) the current doypack has sprayed solution                    |         |
+| `unit_spray_ms`  |  int   | Total time (in milliseconds) the unit has sprayed solution                               |         |
+| `wifi_on_boot`   |  bool  | True if the unit automatically connects to WiFi when turned on                           |   Yes   |
+| `has_wifi`       |  bool  | True if the unit is connected to the WiFi network                                        |   Yes   |
+| `wifi_ssid`      | string | The name of the WiFi network the ShoeTizer connects to for internet access               |   Yes   |
+| `wifi_pass`      | string | The password for the WiFi network                                                        |   Yes   |
 
 
 ```

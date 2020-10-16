@@ -4,19 +4,50 @@ from utime import sleep_ms, ticks_ms, ticks_diff
 from project.pins import *
 
 
-# class Button:
-# 	def __init__(self, pin):
-# 		self.button = Pin(pin, Pin.IN, Pin.PULL_UP)
-# 		self.led_timer = Timer(-1)
-# 		self.blink_timer = Timer(-1)
-# 		self.TIMEOUT = False
-# 		self.blinking = False
-
-
-class LED(Pin):
+class Button:
 	def __init__(self, pin):
-		Pin(pin, Pin.OUT, value = 0).init(self)
-		# self.led = Pin(pin, Pin.OUT, value = 0)
+		self.button = Pin(pin, Pin.IN, Pin.PULL_UP)
+		# self.hold_ms = 500
+		# self.pressed_time = None
+		self.enabled = True
+		# self.pressed = False
+		# self.released = False
+		# self.held = False
+		self.f_click = None
+		self.f_hold = None
+		# # start recursive state check
+		# self.check(not self.button.value())
+
+		self.button.irq(lambda p: self.on_click(), Pin.IRQ_FALLING)
+
+	# def check(self, val_1, check_ms = 100):
+	# 	val_2 = not self.button.value()
+	# 	if self.enabled:
+	# 		self.pressed = val_2 and not val_1
+	# 		if self.pressed:
+	# 			self.pressed_time = ticks_ms()
+	# 			print('button pressed')
+	# 		self.released = val_1 and not val_2
+	# 		if self.released:
+	# 			print('button released')
+	#
+	# 		self.held = val_1 and val_2 and ticks_diff(ticks_ms(), self.pressed_time) >= self.hold_ms
+	# 		if self.held:
+	# 			print('button held')
+	# 	Timer(-1).init(period = check_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.check(val_2))
+
+	def on_click(self):
+		print('button pressed irq!')
+		if self.f_press:
+			self.f_press()
+
+	def _reset(self):
+		self.pressed_time = None
+
+
+class LED:
+	def __init__(self, pin):
+		self.led = Pin(pin, Pin.OUT, value = 0)
 		self.led_timer = Timer(-1)
 		self.blink_timer = Timer(-1)
 		self.TIMEOUT = False
@@ -44,7 +75,7 @@ class LED(Pin):
 		self.blink_timer.deinit()
 
 	def toggle(self):
-		self.value(not self.value())
+		self.led.value(not self.led.value())
 
 	def toggle_blink(self, n, on_time, blink_hz):
 		if self.blinking:
@@ -52,6 +83,12 @@ class LED(Pin):
 		elif not self.TIMEOUT:
 			self.blink(freq = blink_hz, timeout_ms = 2 * n * int(on_time / (n + 1)))
 		self.blinking = not self.blinking
+
+	def on(self):
+		self.led.on()
+
+	def off(self):
+		self.led.off()
 
 
 class RGBLED:
@@ -99,5 +136,9 @@ def duty_val(val, max_val = 100):
 
 
 def test_led():
-	led = LED(D8)
-	led.blink_multi(3, 1, 12000)
+	# led = LED(SD3)
+	# led.blink_multi(3, 1, 12000)
+	switch = Button(D2)
+	while True:
+		if switch.held:
+			break
