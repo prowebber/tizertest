@@ -146,4 +146,4 @@ def start():
 	app = Main()
 	app.start()
 
-start()
+# start()
