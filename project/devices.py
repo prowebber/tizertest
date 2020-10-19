@@ -20,6 +20,7 @@ class Button:
 		print('button press')
 		if self.enabled:
 			# check in hold_ms for hold (no depress)
+			self.pressed_time = ticks_ms()
 			Timer(-1).init(period = self.hold_ms, mode = Timer.ONE_SHOT, callback = lambda t: self._check_hold())
 
 	def on_click(self):
