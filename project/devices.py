@@ -24,6 +24,7 @@ class Button:
 			Timer(-1).init(period = self.hold_ms, mode = Timer.ONE_SHOT, callback = lambda t: self._check_hold())
 
 	def on_click(self):
+		print('click detected')
 		self._reset()
 		if self.enabled:
 			self.enabled = False
@@ -33,6 +34,7 @@ class Button:
 			self.enabled = True
 
 	def _check_hold(self):
+		print('checking for hold')
 		if self.pressed_time:
 			if ticks_diff(ticks_ms(), self.pressed_time) >= self.hold_ms and self.f_hold:
 				print('button hold')
