@@ -13,8 +13,6 @@ class Button:
 		self.enabled = True
 		self.f_click = None
 		self.f_hold = None
-		self.button.irq(lambda p: self.on_press(), Pin.IRQ_FALLING, priority = 2)
-		self.button.irq(lambda p: self.on_click(), Pin.IRQ_RISING, priority = 1)
 
 	def on_press(self):
 		if self.enabled:
@@ -23,15 +21,21 @@ class Button:
 			self.pressed_time = ticks_ms()
 			Timer(-1).init(period = self.hold_ms, mode = Timer.ONE_SHOT, callback = lambda t: self._check_hold())
 
-	def on_click(self):
+	def click(self, callback):
 		print('click detected')
 		self._reset()
 		if self.enabled:
 			self.enabled = False
 			print('button click')
-			if self.f_click:
-				self.f_click()
+			if callback:
+				callback()
 			self.enabled = True
+
+	def on_click(self, callback = None):
+		self.button.irq(lambda p: self.click(callback), Pin.IRQ_RISING)
+
+	# def set_irq(self, irq_mode = (Pin.IRQ_RISING | Pin.IRQ_FALLING), callback = None):
+	# 	self.button.irq(lambda p: callback, irq_mode)
 
 	def _check_hold(self):
 		print('checking for hold')
