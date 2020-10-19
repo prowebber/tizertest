@@ -17,8 +17,8 @@ class Button:
 		self.button.irq(lambda p: self.on_press(), Pin.IRQ_FALLING)
 
 	def on_press(self):
-		print('button press')
 		if self.enabled:
+			print('button press')
 			# check in hold_ms for hold (no depress)
 			self.pressed_time = ticks_ms()
 			Timer(-1).init(period = self.hold_ms, mode = Timer.ONE_SHOT, callback = lambda t: self._check_hold())
@@ -35,12 +35,12 @@ class Button:
 
 	def _check_hold(self):
 		print('checking for hold')
-		if self.pressed_time:
-			if ticks_diff(ticks_ms(), self.pressed_time) >= self.hold_ms and self.f_hold:
-				print('button hold')
-				self.t_max = 6000
-				self.f_hold()
-				self._reset()
+		if self.pressed_time and self.f_hold:
+			# if ticks_diff(ticks_ms(), self.pressed_time) >= self.hold_ms and self.f_hold:
+			print('button hold')
+			self.t_max = 6000
+			self.f_hold()
+			self._reset()
 
 	def _reset(self):
 		self.pressed_time = None
