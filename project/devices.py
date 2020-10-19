@@ -35,7 +35,7 @@ class Button:
 
 	def _check_hold(self):
 		print('checking for hold')
-		if self.pressed_time and self.f_hold:
+		if self.pressed_time:
 			# if ticks_diff(ticks_ms(), self.pressed_time) >= self.hold_ms and self.f_hold:
 			print('button hold')
 			self.t_max = 6000
