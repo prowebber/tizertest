@@ -13,9 +13,8 @@ class Button:
 		self.enabled = True
 		self.f_click = None
 		self.f_hold = None
-		self.button.irq(lambda p: self.on_press(), Pin.IRQ_FALLING)
-		self.button.irq(lambda p: self.on_click(), Pin.IRQ_RISING)
-
+		self.button.irq(lambda p: self.on_press(), Pin.IRQ_FALLING, 2)
+		self.button.irq(lambda p: self.on_click(), Pin.IRQ_RISING, 1)
 
 	def on_press(self):
 		if self.enabled:
