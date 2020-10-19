@@ -23,6 +23,7 @@ class Main:
 		self.b_wifi.hold_ms = 2000
 		self.b_wifi.enabled = False
 		self.b_foot.f_click = self.run
+		self.b_foot.f_hold = self.broadcast
 		self.sync_params()
 		print('config: ', self.c)
 		self.api = Rest()
@@ -63,6 +64,9 @@ class Main:
 				self.speaker.play_tones(['G5'])
 			t_single(self.pump_delay, self.pump_on)
 			t_single(self.relay_delay, self.relay_on)
+
+	def broadcast(self):
+		print('button held, broadcasting')
 
 	def pump_on(self):
 		print('pump_on')

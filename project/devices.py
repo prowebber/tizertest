@@ -32,10 +32,9 @@ class Button:
 			if self.f_click:
 				self.f_click()
 			self.enabled = True
-
 	def _check_hold(self):
 		print('checking for hold')
-		if self.pressed_time:
+		if self.pressed_time and self.f_hold:
 			# if ticks_diff(ticks_ms(), self.pressed_time) >= self.hold_ms and self.f_hold:
 			print('button hold')
 			self.t_max = 6000
