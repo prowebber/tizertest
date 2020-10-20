@@ -10,7 +10,7 @@ from utime import sleep_ms, ticks_ms, ticks_diff
 
 class Main:
 	def __init__(self):
-		self.b_wifi = Button(D1)
+		# self.b_wifi = Button(D1)
 		self.b_foot = Button(D2)
 		# self.b_foot.on_click(self.run)
 		self.b_foot.set_irq()
@@ -22,8 +22,8 @@ class Main:
 		self.t_max = None
 		self.running = False
 		# Set hold time to 2sec on wifi button
-		self.b_wifi.hold_ms = 2000
-		self.b_wifi.enabled = False
+		# self.b_wifi.hold_ms = 2000
+		# self.b_wifi.enabled = False
 		self.b_foot.f_click = self.run
 		self.b_foot.f_hold = self.broadcast
 		self.sync_params()

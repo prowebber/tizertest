@@ -14,44 +14,34 @@ class Button:
 		self.f_click = None
 		self.f_hold = None
 
-	def press(self, callback = None):
-		if self.enabled:
-			# @todo on press set irq for release and callback functions so both events can be used
-			print('button press')
-			# check in hold_ms for hold (no depress)
-			self.pressed_time = ticks_ms()
-			Timer(-1).init(period = self.hold_ms, mode = Timer.ONE_SHOT, callback = lambda t: self._check_hold(callback))
+	def on_press(self):
+		self.pressed_time = ticks_ms()
+		# check in hold_ms for hold (no click)
+		Timer(-1).init(period = self.hold_ms, mode = Timer.ONE_SHOT, callback = lambda t: self._check_hold())
 
-	def click(self, callback = None):
+	def on_click(self):
 		print('click detected')
+		self.enabled = False
 		self._reset()
-		if self.enabled:
-			self.enabled = False
-			print('button click')
-			if callback:
-				callback()
-			self.enabled = True
+		if self.f_click:
+			self.f_click()
+		self.enabled = True
 
 	def set_irq(self):
 		self.button.irq(lambda p: self.on_change(p.value()))
 
 	def on_change(self, val):
-		print('val: ', val)
 		if self.enabled:
 			if val:
 				print('released')
+				self.on_click()
 			else:
 				print('pressed')
+				self.on_press()
 
-	def on_click(self, callback = None):
-		self.button.irq(lambda p: self.click(callback), Pin.IRQ_RISING)
-
-	def on_press(self, callback = None):
-		self.button.irq(lambda p: self.press(callback), Pin.IRQ_FALLING)
-
-	def _check_hold(self, callback = None):
+	def _check_hold(self):
 		print('checking for hold')
-		if self.pressed_time and self.callback:
+		if self.pressed_time and self.f_hold:
 			# if ticks_diff(ticks_ms(), self.pressed_time) >= self.hold_ms and self.f_hold:
 			print('button hold')
 			self.t_max = 6000
