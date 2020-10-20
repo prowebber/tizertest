@@ -39,7 +39,7 @@ class Button:
 		self.button.irq(lambda p: self.on_change(p.value()))
 
 	def _check_hold(self):
-		print('checking for hold')
+		# print('checking for hold')
 		if self.pressed_time and self.f_hold:
 			# if ticks_diff(ticks_ms(), self.pressed_time) >= self.hold_ms and self.f_hold:
 			print('button hold')
