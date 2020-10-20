@@ -32,6 +32,17 @@ class Button:
 				callback()
 			self.enabled = True
 
+	def set_irq(self):
+		self.button.irq(lambda p: self.on_change(p.value()))
+
+	def on_change(self, val):
+		print('val: ', val)
+		if self.enabled:
+			if val:
+				print('released')
+			else:
+				print('pressed')
+
 	def on_click(self, callback = None):
 		self.button.irq(lambda p: self.click(callback), Pin.IRQ_RISING)
 

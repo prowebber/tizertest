@@ -12,7 +12,8 @@ class Main:
 	def __init__(self):
 		self.b_wifi = Button(D1)
 		self.b_foot = Button(D2)
-		self.b_foot.on_click(self.run)
+		# self.b_foot.on_click(self.run)
+		self.b_foot.set_irq()
 		self.speaker = Speaker(D6)
 		self.led = LED(D8)
 		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
