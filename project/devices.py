@@ -14,22 +14,6 @@ class Button:
 		self.f_click = None
 		self.f_hold = None
 
-	def on_press(self):
-		self.pressed_time = ticks_ms()
-		# check in hold_ms for hold (no click)
-		Timer(-1).init(period = self.hold_ms, mode = Timer.ONE_SHOT, callback = lambda t: self._check_hold())
-
-	def on_click(self):
-		print('click detected')
-		self.enabled = False
-		self._reset()
-		if self.f_click:
-			self.f_click()
-		self.enabled = True
-
-	def set_irq(self):
-		self.button.irq(lambda p: self.on_change(p.value()))
-
 	def on_change(self, val):
 		if self.enabled:
 			if val:
@@ -38,6 +22,21 @@ class Button:
 			else:
 				print('pressed')
 				self.on_press()
+
+	def on_click(self):
+		self.enabled = False
+		self._reset()
+		if self.f_click:
+			self.f_click()
+		self.enabled = True
+
+	def on_press(self):
+		self.pressed_time = ticks_ms()
+		# check in hold_ms for hold
+		Timer(-1).init(period = self.hold_ms, mode = Timer.ONE_SHOT, callback = lambda t: self._check_hold())
+
+	def set_irq(self):
+		self.button.irq(lambda p: self.on_change(p.value()))
 
 	def _check_hold(self):
 		print('checking for hold')
