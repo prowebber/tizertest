@@ -44,6 +44,7 @@ class Button:
 			# if ticks_diff(ticks_ms(), self.pressed_time) >= self.hold_ms and self.f_hold:
 			print('button hold')
 			self.t_max = 6000
+			self.enabled = False
 			self.f_hold()
 			self._reset()
 

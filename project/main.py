@@ -14,6 +14,7 @@ class Main:
 		self.b_foot = Button(D2)
 		# self.b_foot.on_click(self.run)
 		self.b_foot.set_irq()
+		self.b_foot.hold_ms = 2000
 		self.speaker = Speaker(D6)
 		self.led = LED(D8)
 		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
