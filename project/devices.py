@@ -51,6 +51,7 @@ class Button:
 		self.button.irq(lambda p: self.on_change(p.value()))
 
 	def _check_hold(self):
+		#@todo set to allow click to stop (for spraying)
 		if self.pressed_time and self.f_hold:
 			self.enabled = False
 			print('button held')
