@@ -8,43 +8,52 @@ class Button:
 	def __init__(self, pin):
 		self.button = Pin(pin, Pin.IN, Pin.PULL_UP)
 		self.hold_ms = 500
-		self.t_max = None
 		self.pressed_time = None
 		self.enabled = True
+		self.f_press = None
 		self.f_click = None
 		self.f_hold = None
+		self.set_irq()
 
 	def on_change(self, val):
+		# @todo allow args/kwargs in event callbacks
 		if self.enabled:
 			if val:
-				print('released')
-				self.on_click()
+				self.click()
 			else:
-				print('pressed')
-				self.on_press()
+				self.press()
 
-	def on_click(self):
+	def on_press(self, callback):
+		self.f_press = callback
+
+	def on_click(self, callback):
+		self.f_click = callback
+
+	def on_hold(self, callback, hold_ms = 500):
+		self.f_hold = callback
+		self.hold_ms = hold_ms
+
+	def press(self):
+		self.pressed_time = ticks_ms()
+		if self.f_press:
+			self.f_press()
+		# check in hold_ms for hold
+		t_single(self.hold_ms, self._check_hold)
+
+	def click(self):
 		self.enabled = False
 		self._reset()
 		if self.f_click:
 			self.f_click()
 		self.enabled = True
 
-	def on_press(self):
-		self.pressed_time = ticks_ms()
-		# check in hold_ms for hold
-		Timer(-1).init(period = self.hold_ms, mode = Timer.ONE_SHOT, callback = lambda t: self._check_hold())
-
 	def set_irq(self):
 		self.button.irq(lambda p: self.on_change(p.value()))
 
 	def _check_hold(self):
-		# print('checking for hold')
 		if self.pressed_time and self.f_hold:
-			# if ticks_diff(ticks_ms(), self.pressed_time) >= self.hold_ms and self.f_hold:
-			print('button hold')
-			self.t_max = 6000
 			self.enabled = False
+			print('button held')
 			self.f_hold()
 			self._reset()
 
@@ -65,7 +74,8 @@ class LED:
 		self.led_timer.init(period = int(1000 / freq), mode = Timer.PERIODIC, callback = lambda t: self.toggle())
 
 	def blink_multi(self, n = 2, freq = 1, timeout_ms = -1):
-		Timer(-1).init(period = timeout_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.timeout())
+		t_single(timeout_ms, self.timeout)
+		# Timer(-1).init(period = timeout_ms, mode = Timer.ONE_SHOT, callback = lambda t: self.timeout())
 		on_time = int(1000 / freq)
 		blink_hz = int(freq * (n + 1))
 		self.TIMEOUT = False
@@ -143,9 +153,12 @@ def duty_val(val, max_val = 100):
 
 
 def test_led():
-	# led = LED(SD3)
-	# led.blink_multi(3, 1, 12000)
 	switch = Button(D2)
 	while True:
 		if switch.held:
 			break
+
+
+def t_single(per, f):
+	# to shorten code @todo add args/kwargs to f
+	Timer(-1).init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: f())
