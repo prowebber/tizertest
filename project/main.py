@@ -24,6 +24,7 @@ class Main:
 		# Set hold time to 2sec on wifi button
 		self.b_wifi.on_hold(setup, 2000)
 		self.b_foot.on_click(self.run)
+		self.b_foot.on_hold(self.long_run)
 		self.sync_params()
 		print('config: ', self.c)
 		self.api = Rest()
