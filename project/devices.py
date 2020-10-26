@@ -1,5 +1,5 @@
 from machine import PWM, Pin, Timer
-from neopixel import Neopixel
+from neopixel import NeoPixel
 from math import sin, pi
 from utime import sleep_ms, ticks_ms, ticks_diff
 from project.pins import *
@@ -155,7 +155,7 @@ def duty_val(val, max_val = 100):
 
 
 def test_led():
-	px = Neopixel(Pin(D5), 4)
+	px = NeoPixel(Pin(D5), 4)
 	px[0] = (255, 0, 0)
 	px[0] = (0, 255, 0)
 	px[0] = (0, 0, 255)
