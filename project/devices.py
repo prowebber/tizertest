@@ -52,7 +52,7 @@ class Button:
 		self.button.irq(lambda p: self.on_change(p.value()))
 
 	def _check_hold(self):
-		#@todo set to allow click to stop (for spraying)
+		# @todo set to allow click to stop (for spraying)
 		if self.pressed_time and self.f_hold:
 			self.enabled = False
 			print('button held')
@@ -155,8 +155,8 @@ def duty_val(val, max_val = 100):
 
 
 def test_led():
-	px = Neopixel(Pin(D5),4)
-	px[0]=(255,0,0)
+	px = Neopixel(Pin(D5), 4)
+	px[0] = (255, 0, 0)
 	px[0] = (0, 255, 0)
 	px[0] = (0, 0, 255)
 	px[0] = (255, 255, 255)
