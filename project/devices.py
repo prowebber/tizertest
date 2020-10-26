@@ -1,4 +1,5 @@
 from machine import PWM, Pin, Timer
+from neopixel import Neopixel
 from math import sin, pi
 from utime import sleep_ms, ticks_ms, ticks_diff
 from project.pins import *
@@ -154,10 +155,11 @@ def duty_val(val, max_val = 100):
 
 
 def test_led():
-	switch = Button(D2)
-	while True:
-		if switch.held:
-			break
+	px = Neopixel(Pin(D5),4)
+	px[0]=(255,0,0)
+	px[0] = (0, 255, 0)
+	px[0] = (0, 0, 255)
+	px[0] = (255, 255, 255)
 
 
 def t_single(per, f):
