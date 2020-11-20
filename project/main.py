@@ -6,12 +6,14 @@ from project.devices import RGBLED, LED, Button
 from project.tones import Speaker
 from project.rest_api import Rest
 from utime import sleep_ms, ticks_ms, ticks_diff
+from main import setup
 
 
 class Main:
 	def __init__(self):
 		self.b_wifi = Button(D1)
 		self.b_foot = Button(D2)
+
 		self.speaker = Speaker(D6)
 		self.led = LED(D8)
 		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
@@ -20,9 +22,9 @@ class Main:
 		self.t_max = None
 		self.running = False
 		# Set hold time to 2sec on wifi button
-		self.b_wifi.hold_ms = 2000
-		self.b_wifi.enabled = False
-		self.b_foot.f_click = self.run
+		self.b_wifi.on_hold(setup, 2000)
+		self.b_foot.on_click(self.run)
+		self.b_foot.on_hold(self.long_run)
 		self.sync_params()
 		print('config: ', self.c)
 		self.api = Rest()
@@ -39,30 +41,24 @@ class Main:
 		if not self.mute:
 			self.speaker.play_tones(['C5', 'E5', 'G5'])  # Play tritone
 		while True:
-			# if self.b_wifi.enabled:
-			# 	if self.b_wifi.held:
-			# 		print('wifi broadcast')
-			# 		self.b_wifi._reset()
-			# if self.b_foot.enabled:
-			# 	if self.b_foot.released:
-			# 		self.run()
-			# 	elif self.b_foot.held:
-			# 		self.run(t_max = 5000)
 			pass
 
-	def run(self):
+	def run(self, tmax = None):
+		self.t_max = tmax
 		# Run once up to t_max ms if not running
-		print('run attempt')
 		if not self.running:
 			self.running = True
 			# disable switch while running
-			# self.b_foot.enabled = False
 			print('run...')
 			self.sync_params()
 			if not self.mute:  # Play note (if enabled)
 				self.speaker.play_tones(['G5'])
 			t_single(self.pump_delay, self.pump_on)
 			t_single(self.relay_delay, self.relay_on)
+
+	def long_run(self):
+		# timeout in 10sec
+		self.run(10000)
 
 	def pump_on(self):
 		print('pump_on')
@@ -98,9 +94,7 @@ class Main:
 				'duration': relay_duration
 			})
 			print("API Response:\n", response)
-		# re enable switch
 		self.running = False
-		# self.b_foot.enabled = True
 		self.t_max = None
 
 	def sync_params(self):
