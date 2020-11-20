@@ -11,13 +11,13 @@ from utime import sleep_ms, ticks_ms, ticks_diff
 
 class Main:
 	def __init__(self):
-		self.b_wifi = Button(D1)
-		self.b_foot = Button(D2)
+		self.b_wifi = Button(D2)
+		self.b_foot = Button(D4)
 
-		self.speaker = Speaker(D6)
+		self.speaker = Speaker(D5)
 		self.led = LED(D8)
-		self.pump = Pin(D7, Pin.OUT, value = 0)  # green
-		self.relay = Pin(D5, Pin.OUT, value = 0)  # green
+		self.pump = Pin(D6, Pin.OUT, value = 0)  # green
+		self.relay = Pin(D7, Pin.OUT, value = 0)  # green
 		self.t0_relay = None
 		self.t_max = None
 		self.running = False
