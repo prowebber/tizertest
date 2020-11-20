@@ -146,4 +146,5 @@ def start():
 	app = Main()
 	app.start()
 
-# start()
+print('starting...')
+start()

@@ -6,7 +6,7 @@ from project.devices import RGBLED, LED, Button
 from project.tones import Speaker
 from project.rest_api import Rest
 from utime import sleep_ms, ticks_ms, ticks_diff
-from main import setup
+# from main import setup
 
 
 class Main:
@@ -22,7 +22,7 @@ class Main:
 		self.t_max = None
 		self.running = False
 		# Set hold time to 2sec on wifi button
-		self.b_wifi.on_hold(setup, 2000)
+		# self.b_wifi.on_hold(setup, 2000)
 		self.b_foot.on_click(self.run)
 		self.b_foot.on_hold(self.long_run)
 		self.sync_params()
