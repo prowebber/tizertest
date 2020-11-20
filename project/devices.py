@@ -1,4 +1,5 @@
 from machine import PWM, Pin, Timer
+from neopixel import NeoPixel
 from math import sin, pi
 from utime import sleep_ms, ticks_ms, ticks_diff
 from project.pins import *
@@ -51,6 +52,7 @@ class Button:
 		self.button.irq(lambda p: self.on_change(p.value()))
 
 	def _check_hold(self):
+		# @todo set to allow click to stop (for spraying)
 		if self.pressed_time and self.f_hold:
 			self.enabled = False
 			print('button held')
@@ -153,10 +155,12 @@ def duty_val(val, max_val = 100):
 
 
 def test_led():
-	switch = Button(D2)
-	while True:
-		if switch.held:
-			break
+	px = NeoPixel(Pin(D5), 4)
+	px[0] = (255, 0, 0)
+	px[1] = (0, 255, 0)
+	px[2] = (0, 0, 255)
+	px[3] = (255, 255, 255)
+	px.write()
 
 
 def t_single(per, f):
