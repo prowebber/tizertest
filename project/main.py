@@ -26,7 +26,7 @@ class Main:
 		self.b_foot.on_click(self.run)
 		self.b_foot.on_hold(self.long_run)
 		self.sync_params()
-		print('config: ', self.c)
+		# print('config: ', self.c)
 		self.api = Rest()
 		# API params
 		self.unit_id = None
