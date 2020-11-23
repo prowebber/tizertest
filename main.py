@@ -6,6 +6,8 @@ from project.main import Main
 gc.enable()  # Enable automatic garbage collection
 
 
+
+
 def move_files():
 	from utils import move_files
 	move_files()
@@ -27,16 +29,6 @@ def save_config(config_dict):
 	# Save the settings
 	with open('.sconfig', 'w') as data_out:
 		json.dump(config_dict, data_out)
-
-
-# Load config data
-config_data = get_config()
-
-# Verify the board ID is recorded
-if not config_data['unit_id']:
-	from core.config_man import board_id
-
-	config_data['unit_id'] = board_id()
 
 
 def _conn_wifi(broadcast = False):
@@ -84,13 +76,11 @@ def ota():
 		oi.start()  # Download & install; reboot when done
 
 
-def force_ota(target_dir = None):
+def force_ota(target_dir = 'project'):
 	"""
 	Force update from Master branch
 	"""
 	github_url = config_data['ota_github_url']
-	if not target_dir:
-		target_dir = config_data['ota_tgt_dir']
 
 	print("OTA Target dir: " + target_dir)
 
@@ -144,5 +134,14 @@ def start():
 	# 	ota()  # Check for OTA
 
 	Main().start()
+
+# Load config data
+config_data = get_config()
+
+# Verify the board ID is recorded
+if not config_data['unit_id']:
+	from core.config_man import board_id
+
+	config_data['unit_id'] = board_id()
 
 # start()
