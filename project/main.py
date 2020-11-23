@@ -6,7 +6,7 @@ from project.devices import RGBLED, LED, Button
 from project.tones import Speaker
 from project.rest_api import Rest
 from utime import sleep_ms, ticks_ms, ticks_diff
-# from main import setup
+from main import setup
 
 
 class Main:
