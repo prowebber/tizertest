@@ -34,7 +34,6 @@ class Main:
 		self.has_wifi = False
 
 	def start(self):
-		print('project main started')
 		if self.enable_led:
 			self.led.on()
 		# Play tritone on boot
@@ -49,7 +48,7 @@ class Main:
 		if not self.running:
 			self.running = True
 			# disable switch while running
-			print('run...')
+			print('running...')
 			self.sync_params()
 			if not self.mute:  # Play note (if enabled)
 				self.speaker.play_tones(['G5'])
