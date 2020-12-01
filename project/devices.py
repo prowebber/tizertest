@@ -14,6 +14,8 @@ class Button:
 		self.f_press = None
 		self.f_click = None
 		self.f_hold = None
+		self.f_end_hold = None
+		self.held = False
 		self.set_irq()
 
 	def on_change(self, val):
@@ -23,6 +25,9 @@ class Button:
 				self.click()
 			else:
 				self.press()
+		elif self.held and val and self.f_end_hold:
+			self.f_end_hold()
+			self._reset()
 
 	def on_press(self, callback):
 		self.f_press = callback
@@ -30,9 +35,10 @@ class Button:
 	def on_click(self, callback):
 		self.f_click = callback
 
-	def on_hold(self, callback, hold_ms = 500):
+	def on_hold(self, callback, end_hold = None, hold_ms = 500):
 		self.f_hold = callback
 		self.hold_ms = hold_ms
+		self.f_end_hold = end_hold
 
 	def press(self):
 		self.pressed_time = ticks_ms()
@@ -54,13 +60,15 @@ class Button:
 	def _check_hold(self):
 		# @todo set to allow click to stop (for spraying)
 		if self.pressed_time and self.f_hold:
+			self.held = True
 			self.enabled = False
 			print('button held')
 			self.f_hold()
-			self._reset()
 
 	def _reset(self):
 		self.pressed_time = None
+		self.held = False
+		self.enabled = True
 
 
 class LED:

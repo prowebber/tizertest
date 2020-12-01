@@ -22,7 +22,7 @@ class Main:
 		# Set hold time to 2sec on wifi button
 		# self.b_wifi.on_hold(setup, 2000)
 		self.b_foot.on_click(self.run)
-		# self.b_foot.on_hold(self.long_run)
+		self.b_foot.on_hold(self.long_run,self.end_run)
 		self.sync_params()
 		self.api = Rest()
 		# API params
@@ -54,7 +54,13 @@ class Main:
 
 	def long_run(self):
 		# timeout in 10sec
+		print('long run')
 		self.run(10000)
+
+	def end_run(self):
+		print('end_run')
+		self.pump_off()
+		self.relay_off()
 
 	def pump_on(self):
 		print('pump_on')
@@ -76,22 +82,24 @@ class Main:
 	def relay_off(self):
 		print('relay_off')
 		self.relay.off()
-		relay_duration = ticks_diff(ticks_ms(), self.t0_relay)
-		self.unit_spray_ms += relay_duration
-		self.bag_spray_ms += relay_duration
-		self.c['unit_spray_ms'] = self.unit_spray_ms
-		self.c['bag_spray_ms'] = self.bag_spray_ms
-		save_config(self.c)
 
-		if self.has_wifi == '1':
-			response = self.api.post('/tizer/devices/' + self.unit_id + '/usage', {
-				'bag_id': self.bag_id,
-				'usage_type': 1,
-				'duration': relay_duration
-			})
-			print("API Response:\n", response)
-		self.running = False
-		self.t_max = None
+		if self.running:
+			relay_duration = ticks_diff(ticks_ms(), self.t0_relay)
+			self.unit_spray_ms += relay_duration
+			self.bag_spray_ms += relay_duration
+			self.c['unit_spray_ms'] = self.unit_spray_ms
+			self.c['bag_spray_ms'] = self.bag_spray_ms
+			save_config(self.c)
+
+			if self.has_wifi == '1':
+				response = self.api.post('/tizer/devices/' + self.unit_id + '/usage', {
+					'bag_id': self.bag_id,
+					'usage_type': 1,
+					'duration': relay_duration
+				})
+				print("API Response:\n", response)
+			self.running = False
+			self.t_max = None
 
 	def sync_params(self):
 		# Stored Params
