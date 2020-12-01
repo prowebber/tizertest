@@ -15,5 +15,5 @@
   "wifi_on_boot": 0,
   "has_wifi": 0,
   "wifi_ssid": "magiceye",
-  "wifi_pass": "magiceye",
+  "wifi_pass": "magiceye"
 }

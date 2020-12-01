@@ -6,14 +6,12 @@ from project.devices import RGBLED, LED, Button
 from project.tones import Speaker
 from project.rest_api import Rest
 from utime import sleep_ms, ticks_ms, ticks_diff
-from main import setup
 
 
 class Main:
 	def __init__(self):
 		self.b_wifi = Button(D2)
 		self.b_foot = Button(D4)
-
 		self.speaker = Speaker(D5)
 		self.led = LED(D8)
 		self.pump = Pin(D6, Pin.OUT, value = 0)  # green
@@ -114,3 +112,6 @@ class Main:
 def t_single(per, f):
 	# to shorten code
 	Timer(-1).init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: f())
+
+# print('this is a test again')
+# Main().start()
