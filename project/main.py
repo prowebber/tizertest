@@ -18,7 +18,6 @@ class Main:
 		self.t0_relay = None
 		self.t_max = None
 		self.running = False
-		# Set hold time to 2sec on wifi button
 		self.b_foot.on_click(self.run)
 		self.b_foot.on_hold(self.long_run, self.end_run)
 		self.c = get_config()  # Get config info
@@ -46,8 +45,8 @@ class Main:
 			t_single(self.c['relay_delay'], self.relay_on)
 
 	def long_run(self):
-		# timeout in 10sec
-		self.run(10000)
+		# timeout in 7sec
+		self.run(7000)
 
 	def end_run(self):
 		self.pump_off()
