@@ -1,10 +1,10 @@
 from core.config_man import get_config, save_config
 from machine import Pin, Timer, PWM
 from project.pins import *
-from project.devices import  LED, Button
+from project.devices import LED, Button
 from project.tones import Speaker
 from project.rest_api import Rest
-from utime import  ticks_ms, ticks_diff
+from utime import ticks_ms, ticks_diff
 
 
 class Main:
@@ -21,18 +21,14 @@ class Main:
 		# Set hold time to 2sec on wifi button
 		self.b_foot.on_click(self.run)
 		self.b_foot.on_hold(self.long_run, self.end_run)
-		self.sync_params()
+		self.c = get_config()  # Get config info
 		self.api = Rest()
-		# API params
-		self.unit_id = None
-		self.bag_id = None
-		self.has_wifi = False
 
 	def start(self):
-		if self.enable_led:
+		if self.c['enable_led']:
 			self.led.on()
 		# Play tritone on boot
-		if not self.mute:
+		if not self.c['mute']:
 			self.speaker.play_tones(['C5', 'E5', 'G5'])
 		while True:
 			pass
@@ -44,10 +40,10 @@ class Main:
 			self.running = True
 			# disable switch while running
 			self.sync_params()
-			if not self.mute:  # Play note (if enabled)
+			if not self.c['mute']:  # Play note (if enabled)
 				self.speaker.play_tones(['G5'])
-			t_single(self.pump_delay, self.pump_on)
-			t_single(self.relay_delay, self.relay_on)
+			t_single(self.c['pump_delay'], self.pump_on)
+			t_single(self.c['relay_delay'], self.relay_on)
 
 	def long_run(self):
 		# timeout in 10sec
@@ -59,14 +55,14 @@ class Main:
 
 	def pump_on(self):
 		self.pump.on()
-		per = self.t_max if self.t_max else self.pump_ms
+		per = self.t_max if self.t_max else self.c['pump_ms']
 		t_single(per, self.pump_off)
 
 	def pump_off(self):
 		self.pump.off()
 
 	def relay_on(self):
-		per = self.t_max if self.t_max else self.relay_ms
+		per = self.t_max if self.t_max else self.c['relay_ms']
 		self.relay.on()
 		self.t0_relay = ticks_ms()
 		t_single(per, self.relay_off)
@@ -76,27 +72,11 @@ class Main:
 
 		if self.running:
 			relay_duration = ticks_diff(ticks_ms(), self.t0_relay)
-			self.unit_spray_ms += relay_duration
-			self.bag_spray_ms += relay_duration
-			self.c['unit_spray_ms'] = self.unit_spray_ms
-			self.c['bag_spray_ms'] = self.bag_spray_ms
+			self.c['unit_spray_ms'] += relay_duration
+			self.c['bag_spray_ms'] += relay_duration
 			save_config(self.c)
 			self.running = False
 			self.t_max = None
-
-	def sync_params(self):
-		self.c = get_config()  # Get config info
-		self.unit_id = self.c['unit_id']
-		self.bag_id = self.c['bag_id']
-		self.enable_led = self.c['enable_led']
-		self.mute = self.c['mute']
-		self.pump_delay = self.c['pump_delay']
-		self.pump_ms = self.c['pump_ms']
-		self.relay_delay = self.c['relay_delay']
-		self.relay_ms = self.c['relay_ms']
-		self.unit_spray_ms = self.c['unit_spray_ms']
-		self.bag_spray_ms = self.c['bag_spray_ms']
-		self.has_wifi = self.c['has_wifi']
 
 
 def t_single(per, f):
