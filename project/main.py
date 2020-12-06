@@ -14,15 +14,14 @@ class Main:
 		self.b_foot = Button(D4)
 		self.speaker = Speaker(D5)
 		self.led = LED(D8)
-		self.pump = Pin(D6, Pin.OUT, value = 0)  # green
-		self.relay = Pin(D7, Pin.OUT, value = 0)  # green
+		self.pump = Pin(D6, Pin.OUT, value = 0)
+		self.relay = Pin(D7, Pin.OUT, value = 0)
 		self.t0_relay = None
 		self.t_max = None
 		self.running = False
 		# Set hold time to 2sec on wifi button
-		# self.b_wifi.on_hold(setup, 2000)
 		self.b_foot.on_click(self.run)
-		self.b_foot.on_hold(self.long_run,self.end_run)
+		self.b_foot.on_hold(self.long_run, self.end_run)
 		self.sync_params()
 		self.api = Rest()
 		# API params
@@ -35,7 +34,7 @@ class Main:
 			self.led.on()
 		# Play tritone on boot
 		if not self.mute:
-			self.speaker.play_tones(['C5', 'E5', 'G5'])  # Play tritone
+			self.speaker.play_tones(['C5', 'E5', 'G5'])
 		while True:
 			pass
 
@@ -45,7 +44,6 @@ class Main:
 		if not self.running:
 			self.running = True
 			# disable switch while running
-			print('running...')
 			self.sync_params()
 			if not self.mute:  # Play note (if enabled)
 				self.speaker.play_tones(['G5'])
@@ -54,33 +52,27 @@ class Main:
 
 	def long_run(self):
 		# timeout in 10sec
-		print('long run')
 		self.run(10000)
 
 	def end_run(self):
-		print('end_run')
 		self.pump_off()
 		self.relay_off()
 
 	def pump_on(self):
-		print('pump_on')
 		self.pump.on()
 		per = self.t_max if self.t_max else self.pump_ms
 		t_single(per, self.pump_off)
 
 	def pump_off(self):
-		print('pump_off')
 		self.pump.off()
 
 	def relay_on(self):
-		print('relay_on')
 		per = self.t_max if self.t_max else self.relay_ms
 		self.relay.on()
 		self.t0_relay = ticks_ms()
 		t_single(per, self.relay_off)
 
 	def relay_off(self):
-		print('relay_off')
 		self.relay.off()
 
 		if self.running:
@@ -102,7 +94,6 @@ class Main:
 			self.t_max = None
 
 	def sync_params(self):
-		# Stored Params
 		self.c = get_config()  # Get config info
 		self.unit_id = self.c['unit_id']
 		self.bag_id = self.c['bag_id']
@@ -120,6 +111,3 @@ class Main:
 def t_single(per, f):
 	# to shorten code
 	Timer(-1).init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: f())
-
-# print('this is a test again')
-# Main().start()
