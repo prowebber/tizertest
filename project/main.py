@@ -1,11 +1,10 @@
 from core.config_man import get_config, save_config
 from machine import Pin, Timer, PWM
 from project.pins import *
-from project.colors import *
-from project.devices import RGBLED, LED, Button
+from project.devices import  LED, Button
 from project.tones import Speaker
 from project.rest_api import Rest
-from utime import sleep_ms, ticks_ms, ticks_diff
+from utime import  ticks_ms, ticks_diff
 
 
 class Main:
