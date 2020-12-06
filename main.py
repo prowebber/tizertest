@@ -1,7 +1,7 @@
 import gc
 import json
 from utils import *
-from project.main import Main
+
 
 gc.enable()  # Enable automatic garbage collection
 
@@ -132,8 +132,9 @@ def rest():
 def start():
 	# if _conn_wifi():  # If connected to WiFi
 	# 	ota()  # Check for OTA
+	from project.main import start
+	start()
 
-	Main().start()
 
 # Load config data
 config_data = get_config()
