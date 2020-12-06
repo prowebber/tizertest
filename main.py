@@ -143,3 +143,5 @@ if not config_data['unit_id']:
 	from core.config_man import board_id
 
 	config_data['unit_id'] = board_id()
+
+start()
