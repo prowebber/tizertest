@@ -82,14 +82,6 @@ class Main:
 			self.c['unit_spray_ms'] = self.unit_spray_ms
 			self.c['bag_spray_ms'] = self.bag_spray_ms
 			save_config(self.c)
-
-			if self.has_wifi == '1':
-				response = self.api.post('/tizer/devices/' + self.unit_id + '/usage', {
-					'bag_id': self.bag_id,
-					'usage_type': 1,
-					'duration': relay_duration
-				})
-				print("API Response:\n", response)
 			self.running = False
 			self.t_max = None
 
