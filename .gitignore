@@ -10,3 +10,4 @@ node_modules
 config.js
 /imaging/
 /project/analog_read.py
+/parse_epa_results.py

@@ -1,11 +1,9 @@
 import gc
 import json
 from utils import *
-
+from project.main import start
 
 gc.enable()  # Enable automatic garbage collection
-
-
 
 
 def move_files():
@@ -129,12 +127,13 @@ def rest():
 	print(resp)
 
 
-def start():
-	# if _conn_wifi():  # If connected to WiFi
-	# 	ota()  # Check for OTA
-	from project.main import start
-	start()
+# def start():
+# 	# if _conn_wifi():  # If connected to WiFi
+# 	# 	ota()  # Check for OTA
+# 	from project.main import start
+# 	start()
 
+# start()
 
 # Load config data
 config_data = get_config()
@@ -145,4 +144,4 @@ if not config_data['unit_id']:
 
 	config_data['unit_id'] = board_id()
 
-start()
+

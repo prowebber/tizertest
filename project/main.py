@@ -3,7 +3,7 @@ from machine import Pin, Timer, PWM
 from project.pins import *
 from project.devices import LED, Button
 from project.tones import Speaker
-from project.rest_api import Rest
+# from project.rest_api import Rest
 from utime import ticks_ms, ticks_diff
 
 
@@ -84,9 +84,9 @@ relay = Pin(D7, Pin.OUT, value = 0)
 t0_relay = None
 t_max = None
 running = False
-b_foot.on_click(run)
-b_foot.on_hold(long_run, end_run)
+b_foot.on_hold(run, None, 300)
+# b_foot.on_hold(long_run, end_run)
 c = get_config()  # Get config info
-api = Rest()
+# api = Rest()
 
 start()

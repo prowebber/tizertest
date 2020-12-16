@@ -163,12 +163,7 @@ def duty_val(val, max_val = 100):
 
 
 def test_led():
-	px = NeoPixel(Pin(D5), 4)
-	px[0] = (255, 0, 0)
-	px[1] = (0, 255, 0)
-	px[2] = (0, 0, 255)
-	px[3] = (255, 255, 255)
-	px.write()
+	led=RGBLED()
 
 
 def t_single(per, f):
