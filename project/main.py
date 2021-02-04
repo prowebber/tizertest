@@ -5,16 +5,27 @@ from project.devices import LED, Button
 from project.tones import Speaker
 # from project.rest_api import Rest
 from utime import ticks_ms, ticks_diff
+from sys import exit
+from time import time
 
 
-def start():
+def start(timeout = None):
+	t0 = time()
 	if c['enable_led']:
 		led.on()
 	# Play tritone on boot
 	if not c['mute']:
 		speaker.play_tones(['C5', 'E5', 'G5'])
 	while True:
-		pass
+		if timeout:
+			if time() - t0 > timeout:
+				time_out()
+				break
+
+
+def time_out():
+	if not c['mute']:
+		speaker.play_tones(['G5', 'E5', 'C5'])
 
 
 def run(_tmax = None):
@@ -78,15 +89,15 @@ global running, tmax, t0_relay
 b_wifi = Button(D2)
 b_foot = Button(D4)
 speaker = Speaker(D5)
-led = LED(D8)
+led = LED(D1)
 pump = Pin(D6, Pin.OUT, value = 0)
-relay = Pin(D7, Pin.OUT, value = 0)
+# relay = Pin(D7, Pin.OUT, value = 0)
 t0_relay = None
 t_max = None
 running = False
-b_foot.on_hold(run, None, 300)
+b_foot.on_hold(run, end_run, 300)
 # b_foot.on_hold(long_run, end_run)
 c = get_config()  # Get config info
 # api = Rest()
 
-start()
+# start(15)

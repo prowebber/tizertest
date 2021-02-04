@@ -1,7 +1,8 @@
 import gc
-import json
+from json import load, dump
 from utils import *
-from project.main import start
+
+# from project.main import start
 
 gc.enable()  # Enable automatic garbage collection
 
@@ -16,7 +17,7 @@ def get_config():
 	Open the JSON config file and convert to a Python dict
 	"""
 	with open('.sconfig') as params:
-		data = json.load(params)
+		data = load(params)
 	return data
 
 
@@ -26,7 +27,7 @@ def save_config(config_dict):
 	"""
 	# Save the settings
 	with open('.sconfig', 'w') as data_out:
-		json.dump(config_dict, data_out)
+		dump(config_dict, data_out)
 
 
 def _conn_wifi(broadcast = False):
@@ -127,21 +128,21 @@ def rest():
 	print(resp)
 
 
-# def start():
-# 	# if _conn_wifi():  # If connected to WiFi
+def start():
+	if _conn_wifi(): # If connected to WiFi
+		pass
 # 	# 	ota()  # Check for OTA
-# 	from project.main import start
-# 	start()
+	from project.main import start as main_start
+	main_start(6)
 
-# start()
+config_data = get_config()
+start()
 
 # Load config data
-config_data = get_config()
+
 
 # Verify the board ID is recorded
 if not config_data['unit_id']:
 	from core.config_man import board_id
 
 	config_data['unit_id'] = board_id()
-
-
