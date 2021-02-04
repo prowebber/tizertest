@@ -86,8 +86,8 @@ def t_single(per, f):
 
 
 global running, tmax, t0_relay
-b_wifi = Button(D2)
-b_foot = Button(D4)
+b_wifi = Button(5)
+b_foot = Button(4)
 speaker = Speaker(D5)
 led = LED(D1)
 pump = Pin(D6, Pin.OUT, value = 0)
