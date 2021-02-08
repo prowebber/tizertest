@@ -131,7 +131,7 @@ def start():
 	Timer(-1).init(period = 0, mode = Timer.ONE_SHOT, callback = lambda t: _conn_wifi())
 	# 	ota()  # Check for OTA
 	from project.main import start as main_start
-	main_start(60)
+	main_start()
 
 
 
