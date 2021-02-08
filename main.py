@@ -1,8 +1,7 @@
 import gc
 from json import load, dump
 from utils import *
-
-# from project.main import start
+from machine import Timer
 
 gc.enable()  # Enable automatic garbage collection
 
@@ -30,7 +29,7 @@ def save_config(config_dict):
 		dump(config_dict, data_out)
 
 
-def _conn_wifi(broadcast = False):
+async def _conn_wifi(broadcast = False):
 	"""
 	Connect to WiFi
 	"""
@@ -129,20 +128,19 @@ def rest():
 
 
 def start():
-	if _conn_wifi(): # If connected to WiFi
-		pass
-# 	# 	ota()  # Check for OTA
+	Timer(-1).init(period = 0, mode = Timer.ONE_SHOT, callback = lambda t: _conn_wifi())
+	# 	ota()  # Check for OTA
 	from project.main import start as main_start
-	main_start(6)
+	main_start(60)
 
-config_data = get_config()
-start()
+
 
 # Load config data
-
-
+config_data = get_config()
 # Verify the board ID is recorded
 if not config_data['unit_id']:
 	from core.config_man import board_id
 
 	config_data['unit_id'] = board_id()
+
+start()
