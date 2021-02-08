@@ -77,7 +77,7 @@ global running, tmax
 b_foot = Button(4)
 b_wifi = Button(5)
 speaker = Speaker(D5)
-led = LED(D1)
+led = LED(13)
 pump = Pin(D6, Pin.OUT, value = 0)
 t0_relay = None
 t_max = None
