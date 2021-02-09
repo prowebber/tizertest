@@ -1,5 +1,5 @@
 from core.config_man import get_config, save_config
-from machine import Pin, Timer, PWM
+from machine import Pin, Timer
 from project.pins import *
 from project.devices import LED, Button
 from project.tones import Speaker
@@ -9,7 +9,7 @@ from sys import exit
 from time import time
 
 
-def start(timeout = None):
+def start():
 	t0 = time()
 	if c['enable_led']:
 		led.on()
@@ -17,15 +17,7 @@ def start(timeout = None):
 	if not c['mute']:
 		speaker.play_tones(['C5', 'E5', 'G5'])
 	while True:
-		if timeout:
-			if time() - t0 > timeout:
-				time_out()
-				break
-
-
-def time_out():
-	if not c['mute']:
-		speaker.play_tones(['G5', 'E5', 'C5'])
+		pass
 
 
 def run(_tmax = None):
@@ -76,10 +68,9 @@ def t_single(per, f):
 global running, tmax
 b_foot = Button(4)
 b_wifi = Button(5)
-speaker = Speaker(D5)
+speaker = Speaker(14)
 led = LED(13)
 pump = Pin(D6, Pin.OUT, value = 0)
-t0_relay = None
 t_max = None
 running = False
 b_foot.on_hold(run, end_run, 300)
