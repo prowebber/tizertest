@@ -2,7 +2,9 @@ import gc
 from json import load, dump
 from utils import *
 from machine import Timer
+from time import time
 
+t0 = time()
 gc.enable()  # Enable automatic garbage collection
 
 
@@ -128,13 +130,21 @@ def rest():
 
 
 def start():
+	global t1
+	print(f"start reached: {round(time() - t1, 3)} s")
+	t1 = time()
+
 	Timer(-1).init(period = 0, mode = Timer.ONE_SHOT, callback = lambda t: _conn_wifi())
 	# 	ota()  # Check for OTA
 	from project.main import start as main_start
+	print(f"project main imported: {round(time() - t1, 3)} s")
+	t1 = time()
+
 	main_start()
 
 
-
+t1 = time()
+print(f"load config reached: {round(time() - t0, 3)} s")
 # Load config data
 config_data = get_config()
 # Verify the board ID is recorded
@@ -143,4 +153,6 @@ if not config_data['unit_id']:
 
 	config_data['unit_id'] = board_id()
 
+print(f"config loaded: {round(time() - t1, 3)} s")
+t1 = time()
 start()
