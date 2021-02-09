@@ -16,7 +16,7 @@ def start():
 	# Play tritone on boot
 	if not c['mute']:
 		speaker.play_tones(['C5', 'E5', 'G5'])
-	deep_sleep()
+	sleep_timer()
 	while True:
 		pass
 
@@ -113,6 +113,10 @@ def deep_sleep():
 	deepsleep()
 
 
+def sleep_timer(timeout = 20):
+	t_single(timeout, deepsleep)
+
+
 def t_single(per, f):
 	# to shorten code
 	Timer(-1).init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: f())
@@ -130,3 +134,4 @@ b_foot.on_hold(run, end_run, 300)
 b_wifi.on_hold(broadcast, end_broadcast, 1000)
 c = get_config()  # Get config info
 # api = Rest()
+# sleep_timer()

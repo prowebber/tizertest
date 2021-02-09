@@ -1,5 +1,6 @@
-from machine import PWM, Pin, Timer
+from machine import PWM, Pin, Timer, DEEPSLEEP
 from utime import sleep_ms, ticks_ms, ticks_diff
+
 
 class Button:
 	def __init__(self, pin):
@@ -116,7 +117,6 @@ class LED:
 
 def duty_val(val, max_val = 100):
 	return 1023 - int(val / max_val * 1023)
-
 
 
 def t_single(per, f):
