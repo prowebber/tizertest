@@ -7,7 +7,6 @@ from project.tones import Speaker
 from utime import ticks_ms, ticks_diff
 from sys import exit
 from time import time
-from main import _conn_wifi
 
 
 def start():
@@ -62,7 +61,8 @@ def pump_off():
 		running = False
 		t_max = None
 
-async def _conn_wifi(broadcast = False):
+
+def _conn_wifi(broadcast = False):
 	"""
 	Connect to WiFi
 	"""
@@ -85,9 +85,15 @@ async def _conn_wifi(broadcast = False):
 
 	return is_connected
 
+
 def broadcast():
-	t_single(0, led.blink(4))
+	led.blink(4)
+	print('broadcasting from project main')
 	_conn_wifi(True)
+
+
+def end_broadcast():
+	pass
 
 
 def t_single(per, f):
@@ -104,6 +110,6 @@ pump = Pin(D6, Pin.OUT, value = 0)
 t_max = None
 running = False
 b_foot.on_hold(run, end_run, 300)
-b_wifi.on_hold(broadcast, None, 1000)
+b_wifi.on_hold(broadcast, end_broadcast, 1000)
 c = get_config()  # Get config info
 # api = Rest()
