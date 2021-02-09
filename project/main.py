@@ -1,5 +1,5 @@
 from core.config_man import get_config, save_config
-from machine import Pin, Timer
+from machine import Pin, Timer, RTC, deepsleep, DEEPSLEEP, DEEPSLEEP_RESET, reset_cause
 from project.pins import *
 from project.devices import LED, Button
 from project.tones import Speaker
@@ -16,6 +16,7 @@ def start():
 	# Play tritone on boot
 	if not c['mute']:
 		speaker.play_tones(['C5', 'E5', 'G5'])
+	deep_sleep()
 	while True:
 		pass
 
@@ -94,6 +95,22 @@ def broadcast():
 
 def end_broadcast():
 	pass
+
+
+def deep_sleep():
+	# configure RTC.ALARM0 to be able to wake the device
+	rtc = RTC()
+	rtc.irq(trigger = rtc.ALARM0, wake = DEEPSLEEP)
+
+	# check if the device woke from a deep sleep
+	if reset_cause() == DEEPSLEEP_RESET:
+		print('woke from a deep sleep')
+
+	# set RTC.ALARM0 to fire after 10 seconds (waking the device)
+	rtc.alarm(rtc.ALARM0, 10000)
+
+	# put the device to sleep
+	deepsleep()
 
 
 def t_single(per, f):
