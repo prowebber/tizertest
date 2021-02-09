@@ -143,6 +143,7 @@ def start():
 	main_start()
 
 
+global t1
 t1 = time()
 print(f"load config reached: {round(time() - t0, 3)} s")
 # Load config data
