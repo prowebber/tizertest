@@ -1,5 +1,6 @@
 from core.config_man import get_config, save_config
-from machine import Pin, Timer, RTC, deepsleep, DEEPSLEEP, DEEPSLEEP_RESET, reset_cause
+# from machine import Pin, Timer, RTC, deepsleep, DEEPSLEEP, DEEPSLEEP_RESET, reset_cause
+import machine
 from project.pins import *
 from project.devices import LED, Button
 from project.tones import Speaker
@@ -16,7 +17,7 @@ def start():
 	# Play tritone on boot
 	if not c['mute']:
 		speaker.play_tones(['C5', 'E5', 'G5'])
-	sleep_timer()
+	# sleep_timer()
 	while True:
 		pass
 
@@ -97,29 +98,35 @@ def end_broadcast():
 	pass
 
 
+def light_sleep():
+	b_foot.button.irq(wake = machine.SLEEP)
+	machine.sleep()
+	print("woke from light sleep")
+
+
 def deep_sleep():
 	# configure RTC.ALARM0 to be able to wake the device
-	rtc = RTC()
-	rtc.irq(trigger = rtc.ALARM0, wake = DEEPSLEEP)
+	rtc = machine.RTC()
+	rtc.irq(trigger = rtc.ALARM0, wake = machine.DEEPSLEEP)
 
 	# check if the device woke from a deep sleep
-	if reset_cause() == DEEPSLEEP_RESET:
+	if machine.reset_cause() == machine.DEEPSLEEP_RESET:
 		print('woke from a deep sleep')
 
 	# set RTC.ALARM0 to fire after 10 seconds (waking the device)
 	rtc.alarm(rtc.ALARM0, 10000)
 
 	# put the device to sleep
-	deepsleep()
+	machine.deepsleep()
 
 
 def sleep_timer(timeout = 20):
-	t_single(timeout, deepsleep)
+	t_single(timeout, machine.deepsleep)
 
 
 def t_single(per, f):
 	# to shorten code
-	Timer(-1).init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: f())
+	machine.Timer(-1).init(period = per, mode = machine.Timer.ONE_SHOT, callback = lambda t: f())
 
 
 global running, tmax
@@ -127,10 +134,11 @@ b_foot = Button(5)
 b_wifi = Button(4)
 speaker = Speaker(14)
 led = LED(13)
-pump = Pin(D6, Pin.OUT, value = 0)
+pump = machine.Pin(D6,  machine.Pin.OUT, value = 0)
 t_max = None
 running = False
-b_foot.on_hold(run, end_run, 300)
+# b_foot.on_hold(run, end_run, 300)
+b_foot.on_hold(light_sleep, end_broadcast, 300)
 b_wifi.on_hold(broadcast, end_broadcast, 1000)
 c = get_config()  # Get config info
 # api = Rest()
