@@ -7,6 +7,7 @@ from project.tones import Speaker
 from utime import ticks_ms, ticks_diff
 from sys import exit
 from time import time
+from main import _conn_wifi
 
 
 def start():
@@ -25,11 +26,10 @@ def run(_tmax = None):
 	t_max = _tmax
 	# Run once up to t_max ms if not running
 	if not running:
-		t_single(0, LED.blink)
 		running = True
 		if not c['mute']:  # Play note (if enabled)
 			speaker.play_tones(['G5'])
-		t_single(c['pump_delay'], pump_on)
+		pump_on()
 
 
 def long_run():
@@ -44,14 +44,16 @@ def end_run():
 def pump_on():
 	global t0_pump
 	pump.on()
+	print('pump on')
 	t0_pump = ticks_ms()
 	per = t_max if t_max else c['pump_ms']
 	t_single(per, pump_off)
 
 
 def pump_off():
-	pump.off()
 	global running, t_max, t0_pump
+	pump.off()
+	print('pump off')
 	if running:
 		spray_duration = ticks_diff(ticks_ms(), t0_pump)
 		c['unit_spray_ms'] += spray_duration
@@ -61,19 +63,25 @@ def pump_off():
 		t_max = None
 
 
+def broadcast():
+	t_single(0, led.blink)
+	_conn_wifi(True)
+
+
 def t_single(per, f):
 	# to shorten code
 	Timer(-1).init(period = per, mode = Timer.ONE_SHOT, callback = lambda t: f())
 
 
 global running, tmax
-b_foot = Button(4)
-b_wifi = Button(5)
+b_foot = Button(5)
+b_wifi = Button(4)
 speaker = Speaker(14)
 led = LED(13)
 pump = Pin(D6, Pin.OUT, value = 0)
 t_max = None
 running = False
 b_foot.on_hold(run, end_run, 300)
+b_wifi.on_hold(broadcast, None, 1000)
 c = get_config()  # Get config info
 # api = Rest()
