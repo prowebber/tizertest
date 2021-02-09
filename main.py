@@ -35,20 +35,20 @@ async def _conn_wifi(broadcast = False):
 	Connect to WiFi
 	"""
 	from core.wifi_conn import connect_to_wifi, broadcast_wifi
-	wifi_ssid = config_data['wifi_ssid']
-	wifi_pass = config_data['wifi_pass']
+	wifi_ssid = c['wifi_ssid']
+	wifi_pass = c['wifi_pass']
 
 	is_connected = 0  # Set to not connected by default
 	if wifi_ssid and wifi_pass:
 		print("Connecting to WiFi")
 		is_connected = connect_to_wifi(wifi_ssid, wifi_pass)
 
-	config_data['has_wifi'] = is_connected
-	save_config(config_data)  # Update the config
+	c['has_wifi'] = is_connected
+	save_config(c)  # Update the config
 
 	# Broadcast the WiFi
 	if broadcast:
-		broadcast_wifi('ShoeTizer-' + config_data['unit_id'], '123456789')
+		broadcast_wifi('ShoeTizer-' + c['unit_id'], '123456789')
 		print("Broadcasting WiFi...")
 
 	return is_connected
@@ -63,8 +63,8 @@ def ota():
 	"""
 	from core.ota_check import OTACheck
 
-	github_url = config_data['ota_github_url']
-	target_dir = config_data['ota_tgt_dir']
+	github_url = c['ota_github_url']
+	target_dir = c['ota_tgt_dir']
 
 	# Check if any new updates are posted to GitHub
 	oc = OTACheck(github_url, tgt_dir = target_dir)
@@ -79,7 +79,7 @@ def force_ota(target_dir = 'project'):
 	"""
 	Force update from Master branch
 	"""
-	github_url = config_data['ota_github_url']
+	github_url = c['ota_github_url']
 
 	print("OTA Target dir: " + target_dir)
 
@@ -136,13 +136,12 @@ def start():
 	main_start()
 
 
-
 # Load config data
-config_data = get_config()
+c = get_config()
 # Verify the board ID is recorded
-if not config_data['unit_id']:
+if not c['unit_id']:
 	from core.config_man import board_id
 
-	config_data['unit_id'] = board_id()
+	c['unit_id'] = board_id()
 
 start()

@@ -62,6 +62,28 @@ def pump_off():
 		running = False
 		t_max = None
 
+async def _conn_wifi(broadcast = False):
+	"""
+	Connect to WiFi
+	"""
+	from core.wifi_conn import connect_to_wifi, broadcast_wifi
+	wifi_ssid = c['wifi_ssid']
+	wifi_pass = c['wifi_pass']
+
+	is_connected = 0  # Set to not connected by default
+	if wifi_ssid and wifi_pass:
+		print("Connecting to WiFi")
+		is_connected = connect_to_wifi(wifi_ssid, wifi_pass)
+
+	c['has_wifi'] = is_connected
+	save_config(c)  # Update the config
+
+	# Broadcast the WiFi
+	if broadcast:
+		broadcast_wifi('ShoeTizer-' + c['unit_id'], '123456789')
+		print("Broadcasting WiFi...")
+
+	return is_connected
 
 def broadcast():
 	t_single(0, led.blink(4))
