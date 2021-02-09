@@ -64,7 +64,7 @@ def pump_off():
 
 
 def broadcast():
-	t_single(0, led.blink)
+	t_single(0, led.blink(4))
 	_conn_wifi(True)
 
 
