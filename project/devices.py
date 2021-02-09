@@ -1,6 +1,6 @@
 from machine import PWM, Pin, Timer
 # from neopixel import NeoPixel
-from math import sin, pi
+# from math import sin, pi
 from utime import sleep_ms, ticks_ms, ticks_diff
 # from project.pins import *
 

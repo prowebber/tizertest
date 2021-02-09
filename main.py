@@ -2,9 +2,9 @@ import gc
 from json import load, dump
 from utils import *
 from machine import Timer
-from time import time
+from utime import ticks_ms
 
-t0 = time()
+t0 = ticks_ms()
 gc.enable()  # Enable automatic garbage collection
 
 
@@ -130,20 +130,19 @@ def rest():
 
 
 def start(t1):
-	print("start reached: " + str(round(time() - t1, 3)) + "s")
-	t1 = time()
+	print("start reached: " + str(round((ticks_ms() - t1) / 1000, 3)) + "s")
+	t1 = ticks_ms()
 
 	Timer(-1).init(period = 0, mode = Timer.ONE_SHOT, callback = lambda t: _conn_wifi())
 	# 	ota()  # Check for OTA
 	from project.main import start as main_start
-	print("project main imported: " + str(round(time() - t1, 3)) + "s")
+	print("project main imported: " + str(round((ticks_ms() - t1) / 1000, 3)) + "s")
 
 	main_start()
 
 
-
-print("load config reached: " + str(round(time() - t0, 3)) + "s")
-t1 = time()
+print("load config reached: " + str(round((ticks_ms() - t0) / 1000, 3)) + "s")
+t1 = ticks_ms()
 # Load config data
 config_data = get_config()
 # Verify the board ID is recorded
@@ -152,6 +151,6 @@ if not config_data['unit_id']:
 
 	config_data['unit_id'] = board_id()
 
-print("config loaded: " + str(round(time() - t1, 3)) + "s")
-t1 = time()
+print("config loaded: " + str(round((ticks_ms() - t1) / 1000, 3)) + "s")
+t1 = ticks_ms()
 start(t1)
