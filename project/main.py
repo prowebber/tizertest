@@ -25,6 +25,7 @@ def run(_tmax = None):
 	t_max = _tmax
 	# Run once up to t_max ms if not running
 	if not running:
+		t_single(0, LED.blink)
 		running = True
 		if not c['mute']:  # Play note (if enabled)
 			speaker.play_tones(['G5'])
